@@ -2,25 +2,29 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
-public class SettingMusic : MonoBehaviour
+public class SettingMusic
 {
-    [SerializeField] private AudioMixer _mixer;
-    [SerializeField] private Slider _generalSlider;
-    [SerializeField] private Slider _musicSlider;
-    [SerializeField] private Toggle _mute;
-    [SerializeField] private Graphic _targetGraphic;
-    [SerializeField] private Graphic _muteGraphic;
-
+    private AudioMixer _mixer;
+    private Slider _generalSlider;
+    private Slider _musicSlider;
+    private Toggle _mute;
+    private Graphic _targetGraphic;
+    private Graphic _muteGraphic;
     private VolumeControl _volumeControl;
     private MuteControl _muteControl;
     private UIUpdates _uiUpdates;
 
-    private void Start()
+    public SettingMusic(AudioMixer mixer, Slider generalSlider, Slider musicSlider, Toggle mute, Graphic targetGraphic, Graphic muteGraphic)
     {
-        InitializeSettings();
+        _mixer = mixer;
+        _generalSlider = generalSlider;
+        _musicSlider = musicSlider;
+        _mute = mute;
+        _targetGraphic = targetGraphic;
+        _muteGraphic = muteGraphic;
     }
 
-    private void InitializeSettings()
+    public void Initialize()
     {
         _volumeControl = new VolumeControl(_mixer);
         _muteControl = new MuteControl();
