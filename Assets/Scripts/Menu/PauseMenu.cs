@@ -11,11 +11,6 @@ public class PauseMenu : MonoBehaviour
 
     private bool _isPause = false;
 
-    private void OnEnable()
-    {
-        _optionsMenu.OnCloseSettings += ResumeAfterSettings;
-    }
-
     private void Start()
     {
         _backToMainMenu.onClick.AddListener(LoadMenu);
@@ -23,17 +18,12 @@ public class PauseMenu : MonoBehaviour
         _settings.onClick.AddListener(OpenSettings);
     }
 
-    private void OnDisable()
-    {
-        _optionsMenu.OnCloseSettings -= ResumeAfterSettings;
-    }
-
     public void TogglePause()
     {
-        if (_isPause)
-            Resume();
-        else
+        if (!_isPause)
             Pause();
+        else
+            Resume();
     }
 
     private void Resume()
@@ -62,7 +52,7 @@ public class PauseMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void ResumeAfterSettings()
+    public void ReturnToPauseMenu()
     {
         _optionsMenu.CloseWindow();
         gameObject.SetActive(true);

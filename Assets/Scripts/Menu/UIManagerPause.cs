@@ -9,11 +9,6 @@ public class UIManagerPause : MonoBehaviour
 
     private KeyCode _pauseKey = KeyCode.Escape;
 
-    private void OnEnable()
-    {
-        _optionsMenu.OnCloseSettings += ShowPauseMenu;
-    }
-
     private void Start()
     {
         _menuButton.onClick.AddListener(TogglePauseMenu);
@@ -23,11 +18,6 @@ public class UIManagerPause : MonoBehaviour
     {
         if (Input.GetKeyDown(_pauseKey))
             TogglePauseMenu();
-    }
-
-    private void OnDisable()
-    {
-        _optionsMenu.OnCloseSettings -= ShowPauseMenu;
     }
 
     private void TogglePauseMenu()

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -15,9 +14,6 @@ public class OptionsMenu : MonoBehaviour
 
     private SettingMusic _settingMusic;
 
-    public event Action OnCloseSettings;
-    public event Action OnOpenSettings;
-
     private void Start()
     {
         Initialize();
@@ -26,13 +22,11 @@ public class OptionsMenu : MonoBehaviour
 
     public void CloseWindow()
     {
-        OnCloseSettings?.Invoke();
         gameObject.SetActive(false);
     }
 
     public void OpenWindow()
     {
-        OnOpenSettings?.Invoke();
         gameObject.SetActive(true);
     }
 
