@@ -1,21 +1,53 @@
 using UnityEngine;
 
+[System.Serializable]
+public struct ColorMaterialPair
+{
+    public BaseColor color;
+    public Material material;
+}
+
+[RequireComponent(typeof(AnimationController))]
 public class Key : MonoBehaviour
 {
-    private KeyColor _color;
+    [SerializeField] private ColorMaterialPair[] _colorMaterials;
 
-    private bool _isCollected;
+    private AnimationController _animationController;
+    private Renderer _renderer;
+    private BaseColor _color;
 
     private void Awake()
     {
-        _isCollected = false;
+        _renderer = GetComponent<Renderer>();
+        _animationController = GetComponent<AnimationController>();
     }
 
-    public void Collected()
+    public void Initialize(BaseColor color)
     {
-        if (!_isCollected)
+        _color = color;
+
+        ApplyColor();
+    }
+
+    public BaseColor GetColor()
+    {
+        return _color;
+    }
+
+    public void Use(Lockbox lockbox)
+    {
+        lockbox.AddKey(this);
+    }
+
+    private void ApplyColor()
+    {
+        foreach (var pair in _colorMaterials)
         {
-            _isCollected = true;
+            if (pair.color.Equals(_color))
+            {
+                _renderer.material = pair.material;
+                return;
+            }
         }
     }
 }

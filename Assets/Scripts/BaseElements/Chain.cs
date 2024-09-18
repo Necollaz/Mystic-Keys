@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(AnimationController))]
-public class Padlock : MonoBehaviour
+public class Chain : MonoBehaviour
 {
-
+    
 }

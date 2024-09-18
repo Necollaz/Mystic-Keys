@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 5252140097280456435}
   - component: {fileID: 5458693670994782700}
   - component: {fileID: 4198464618134779737}
+  - component: {fileID: 4053589398914368788}
   m_Layer: 0
   m_Name: Padlock
   m_TagString: Untagged
@@ -177,7 +178,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5252140097278453811}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 0a682d6759cc84addbee7ede1b91fe3a, type: 2}
   m_CullingMode: 0
@@ -200,5 +201,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99a34033187a64391a597f8015e18351, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4053589398914368788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5252140097278453811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c0b5f32802e84e72b1e073cc0225540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
