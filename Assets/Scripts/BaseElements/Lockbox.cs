@@ -2,12 +2,11 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(AnimationController))]
+[RequireComponent(typeof(ControllerAnimations))]
 public class Lockbox : MonoBehaviour
 {
-    [SerializeField] private PoolKeys _keyPool;
-
-    private AnimationController _animationController;
+    private PoolKeys _keyPool;
+    private ControllerAnimations _animationController;
     private BaseColor _color;
     private int _requiredKeys = 3;
     private int _currentKeys = 0;
@@ -17,7 +16,7 @@ public class Lockbox : MonoBehaviour
 
     private void Awake()
     {
-        _animationController = GetComponent<AnimationController>();
+        _animationController = GetComponent<ControllerAnimations>();
     }
 
     public void Initialize(BaseColor color)
@@ -38,26 +37,45 @@ public class Lockbox : MonoBehaviour
             if (_currentKeys >= _requiredKeys)
             {
                 _animationController.IdleOpenLockbox(false);
-                _animationController.CloseLockbox(true);
-                _animationController.DisappearanceLockbox(true);
-                StartCoroutine(NotifyLockboxFilled());
+                StartCoroutine(Close());
             }
         }
     }
 
-    private IEnumerator NotifyLockboxFilled()
+    private IEnumerator Full()
     {
-        yield return new WaitForSeconds(_waitTime);
+        yield return Wait();
 
         OnLockboxFilled?.Invoke(this);
     }
 
     private IEnumerator Open()
     {
-        yield return new WaitForSeconds(_waitTime);
+        yield return Wait();
 
         _animationController.AppearanceLockbox(false);
         _animationController.OpenLockbox(true);
+
+        yield return Wait();
+
+        _animationController.OpenLockbox(false);
         _animationController.IdleOpenLockbox(true);
+    }
+
+    private IEnumerator Close()
+    {
+        _animationController.CloseLockbox(true);
+
+        yield return Wait();
+
+        _animationController.CloseLockbox(false);
+        _animationController.DisappearanceLockbox(true);
+
+        StartCoroutine(Full());
+    }
+
+    private WaitForSeconds Wait()
+    {
+        return new WaitForSeconds(_waitTime);
     }
 }

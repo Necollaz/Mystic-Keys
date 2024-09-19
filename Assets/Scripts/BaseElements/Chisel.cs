@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AnimationController))]
+[RequireComponent(typeof(ControllerAnimations))]
 public class Chisel : MonoBehaviour
 {
 

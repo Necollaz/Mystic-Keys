@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(AnimationController))]
+[RequireComponent(typeof(Rigidbody))]
 public class Beam : MonoBehaviour
 {
     

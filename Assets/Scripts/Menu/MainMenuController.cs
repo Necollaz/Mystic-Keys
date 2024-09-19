@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UIManagerMenu : MonoBehaviour
+public class MainMenuController : MonoBehaviour
 {
     [SerializeField] private MainMenu _mainMenu;
     [SerializeField] private OptionsMenu _optionsMenu;
@@ -19,6 +19,11 @@ public class UIManagerMenu : MonoBehaviour
     public void ShowOptionsMenu()
     {
         _optionsMenu.OpenWindow();
+        _optionsMenu.SetBackButtonAction(() =>
+        {
+            _optionsMenu.CloseWindow();
+            ShowMainMenu();
+        });
         _mainMenu.gameObject.SetActive(false);
     }
 }

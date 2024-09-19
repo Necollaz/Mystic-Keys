@@ -9,6 +9,8 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Button _continue;
     [SerializeField] private Button _settings;
 
+    private float _minWaitTime = 0f;
+    private float _maxWaitTime = 1f;
     private bool _isPause = false;
 
     private void Start()
@@ -37,18 +39,19 @@ public class PauseMenu : MonoBehaviour
     {
         _isPause = true;
         gameObject.SetActive(true);
-        Time.timeScale = 0f;
+        Time.timeScale = _minWaitTime;
     }
 
     private void LoadMenu()
     {
-        Time.timeScale = 1f;
+        Time.timeScale = _maxWaitTime;
         SceneManager.LoadScene("Menu");
     }
 
     private void OpenSettings()
     {
         _optionsMenu.OpenWindow();
+        _optionsMenu.SetBackButtonAction(ReturnToPauseMenu);
         gameObject.SetActive(false);
     }
 

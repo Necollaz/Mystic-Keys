@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class OptionsMenu : MonoBehaviour
@@ -17,7 +18,6 @@ public class OptionsMenu : MonoBehaviour
     private void Start()
     {
         Initialize();
-        _backButton.onClick.AddListener(CloseWindow);
     }
 
     public void CloseWindow()
@@ -34,5 +34,11 @@ public class OptionsMenu : MonoBehaviour
     {
         _settingMusic = new SettingMusic(_mixer, _generalSlider, _musicSlider, _mute, _targetGraphic, _muteGraphic);
         _settingMusic.Initialize();
+    }
+
+    public void SetBackButtonAction(UnityAction action)
+    {
+        _backButton.onClick.RemoveAllListeners();
+        _backButton.onClick.AddListener(action);
     }
 }

@@ -25,28 +25,47 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
 
     public override void Spawn()
     {
-        if (_availableSpawnPoints == 0) return;
+        Debug.Log("Начало спавна Lockbox");
+        if (_availableSpawnPoints == 0 || _currentSpawnIndex >= _availableSpawnPoints)
+        {
+            Debug.LogWarning("Нет доступных точек спавна или превышен индекс спавна");
+            return;
+        }
 
-        BaseColor[] availableColors = _keysSpawner.TakeAvailable();
 
-        if (availableColors.Length == 0) return;
+        BaseColor[] availableColors = _keysSpawner.GetActiveKey();
+
+        if (availableColors.Length == 0)
+        {
+            Debug.LogWarning("Нет доступных цветов для ключей");
+            return;
+        }
+
 
         BaseColor randomColor = availableColors[Random.Range(0, availableColors.Length)];
-        Lockbox lockbox = _pool.Get();
+        Lockbox lockbox = _lockboxPool.Get();
+
+        if (lockbox == null)
+        {
+            Debug.LogWarning("Нет доступных объектов в пуле Lockbox");
+            return;
+        }
+
+
         Transform spawnPoint = _spawnPoints[_currentSpawnIndex];
+        _currentSpawnIndex++;
         lockbox.transform.position = spawnPoint.position;
         lockbox.transform.rotation = spawnPoint.rotation;
         lockbox.transform.localScale = spawnPoint.localScale;
         lockbox.Initialize(randomColor);
         lockbox.OnLockboxFilled += Filled;
+        Debug.Log("Успешный спавн Lockbox");
 
-        _currentSpawnIndex = (_currentSpawnIndex + 1) % _availableSpawnPoints;
     }
 
     private void Filled(Lockbox lockbox)
     {
         lockbox.OnLockboxFilled -= Filled;
-        _pool.Return(lockbox);
-        Spawn();
+        _lockboxPool.Return(lockbox);
     }
 }

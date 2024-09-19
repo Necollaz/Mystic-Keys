@@ -1,21 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasePool<T>  where T : MonoBehaviour
+public class BasePool<T> where T : MonoBehaviour
 {
     private T _prefab;
     private Transform _parent;
-    private Queue<T> _pool = new Queue<T>();
+    private Queue<T> _pool;
 
     public BasePool(T prefab, int initialSize, Transform parent = null)
     {
         _prefab = prefab;
         _parent = parent;
+        _pool = new Queue<T>();
+
         for (int i = 0; i < initialSize; i++)
         {
-            T obj = Object.Instantiate(_prefab, _parent);
-            obj.gameObject.SetActive(false);
-            _pool.Enqueue(obj);
+            T instance = CreateInstance();
+            Return(instance);
         }
     }
 
@@ -23,19 +24,26 @@ public class BasePool<T>  where T : MonoBehaviour
     {
         if (_pool.Count > 0)
         {
-            T obj = _pool.Dequeue();
-            obj.gameObject.SetActive(true);
-            return obj;
+            T instance = _pool.Dequeue();
+            instance.gameObject.SetActive(true);
+            return instance;
         }
         else
         {
-            return Object.Instantiate(_prefab, _parent);
+            return CreateInstance();
         }
     }
 
-    public void Return(T obj)
+    public void Return(T instance)
     {
-        obj.gameObject.SetActive(false);
-        _pool.Enqueue(obj);
+        instance.gameObject.SetActive(false);
+        _pool.Enqueue(instance);
+    }
+
+    private T CreateInstance()
+    {
+        T instance = Object.Instantiate(_prefab, _parent);
+        instance.gameObject.SetActive(false);
+        return instance;
     }
 }

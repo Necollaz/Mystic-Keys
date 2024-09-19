@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManagerPause : MonoBehaviour
+public class PauseMenuController : MonoBehaviour
 {
     [SerializeField] private PauseMenu _pauseMenu;
     [SerializeField] private OptionsMenu _optionsMenu;

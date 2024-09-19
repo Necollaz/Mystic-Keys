@@ -6,7 +6,7 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] private Button _startButton;
     [SerializeField] private Button _settingsButton;
-    [SerializeField] private UIManagerMenu _uiManager;
+    [SerializeField] private MainMenuController _uiManager;
 
     private void Start()
     {

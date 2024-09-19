@@ -1,25 +1,21 @@
 using UnityEngine;
 
-[System.Serializable]
-public struct ColorMaterialPair
-{
-    public BaseColor color;
-    public Material material;
-}
-
-[RequireComponent(typeof(AnimationController))]
+[RequireComponent(typeof(ControllerAnimations))]
 public class Key : MonoBehaviour
 {
     [SerializeField] private ColorMaterialPair[] _colorMaterials;
 
-    private AnimationController _animationController;
     private Renderer _renderer;
     private BaseColor _color;
 
     private void Awake()
     {
-        _renderer = GetComponent<Renderer>();
-        _animationController = GetComponent<AnimationController>();
+        _renderer = GetComponentInChildren<Renderer>();
+        if (_renderer == null)
+        {
+            Debug.LogError("Renderer не найден в потомках объекта Key");
+        }
+
     }
 
     public void Initialize(BaseColor color)
@@ -46,8 +42,12 @@ public class Key : MonoBehaviour
             if (pair.color.Equals(_color))
             {
                 _renderer.material = pair.material;
+                Debug.Log($"Цвет ключа установлен на {pair.color}");
+
                 return;
             }
         }
+        Debug.LogWarning($"Материал для цвета {_color} не найден!");
+
     }
 }
