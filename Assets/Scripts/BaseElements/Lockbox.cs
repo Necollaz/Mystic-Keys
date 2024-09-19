@@ -1,30 +1,35 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(ControllerAnimations))]
+[RequireComponent(typeof(LockboxAnimator))]
 public class Lockbox : MonoBehaviour
 {
+    [SerializeField] private ColorMaterialPair[] _colorMaterials;
+
     private PoolKeys _keyPool;
-    private ControllerAnimations _animationController;
+    private LockboxAnimator _animator;
+    private ApplyColorService _applyColorService;
+    private Renderer _renderer;
     private BaseColor _color;
     private int _requiredKeys = 3;
     private int _currentKeys = 0;
-    private float _waitTime = 1f;
 
     public event Action<Lockbox> OnLockboxFilled;
 
     private void Awake()
     {
-        _animationController = GetComponent<ControllerAnimations>();
+        _animator = GetComponent<LockboxAnimator>();
+        _applyColorService = new ApplyColorService { ColorMaterials = _colorMaterials };
+        _renderer = GetComponentInChildren<Renderer>();
     }
 
     public void Initialize(BaseColor color)
     {
         _color = color;
         _currentKeys = 0;
-        _animationController.AppearanceLockbox(true);
-        StartCoroutine(Open());
+        _applyColorService.Apply(_renderer, _color);
+        _animator.Appearance();
+        StartCoroutine(_animator.Open());
     }
 
     public void AddKey(Key key)
@@ -36,46 +41,10 @@ public class Lockbox : MonoBehaviour
 
             if (_currentKeys >= _requiredKeys)
             {
-                _animationController.IdleOpenLockbox(false);
-                StartCoroutine(Close());
+                OnLockboxFilled?.Invoke(this);
+                _animator.IdleOpenLockbox(false);
+                StartCoroutine(_animator.Close());
             }
         }
-    }
-
-    private IEnumerator Full()
-    {
-        yield return Wait();
-
-        OnLockboxFilled?.Invoke(this);
-    }
-
-    private IEnumerator Open()
-    {
-        yield return Wait();
-
-        _animationController.AppearanceLockbox(false);
-        _animationController.OpenLockbox(true);
-
-        yield return Wait();
-
-        _animationController.OpenLockbox(false);
-        _animationController.IdleOpenLockbox(true);
-    }
-
-    private IEnumerator Close()
-    {
-        _animationController.CloseLockbox(true);
-
-        yield return Wait();
-
-        _animationController.CloseLockbox(false);
-        _animationController.DisappearanceLockbox(true);
-
-        StartCoroutine(Full());
-    }
-
-    private WaitForSeconds Wait()
-    {
-        return new WaitForSeconds(_waitTime);
     }
 }

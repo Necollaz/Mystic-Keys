@@ -1,20 +1,17 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SpawnerLockbox : BaseSpawner<Lockbox>
 {
     [SerializeField] private SpawnerKeys _keysSpawner;
-    [SerializeField] private PoolLockbox _lockboxPool;
-    private int _availableSpawnPoints = 1;
-    private int _currentSpawnIndex = 0;
+    [SerializeField] private int _availableSpawnPoints = 2;
+
+    public List<BaseColor> SpawnedLockboxColors { get; private set; } = new List<BaseColor>();
 
     protected override void Awake()
     {
         base.Awake();
-    }
-
-    private void Start()
-    {
-        Spawn();
     }
 
     public void UnlockPoint()
@@ -25,47 +22,41 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
 
     public override void Spawn()
     {
-        Debug.Log("Начало спавна Lockbox");
-        if (_availableSpawnPoints == 0 || _currentSpawnIndex >= _availableSpawnPoints)
-        {
-            Debug.LogWarning("Нет доступных точек спавна или превышен индекс спавна");
-            return;
-        }
-
-
         BaseColor[] availableColors = _keysSpawner.GetActiveKey();
 
-        if (availableColors.Length == 0)
+        if (availableColors.Length == 0 || _availableSpawnPoints == 0) return;
+
+        SpawnedLockboxColors.Clear();
+
+        if (availableColors.Length == 0) return;
+
+        int lockboxesToSpawn = Mathf.Min(availableColors.Length, _availableSpawnPoints);
+
+        BaseColor[] selectedColors = availableColors.OrderBy(c => Random.value).Take(lockboxesToSpawn).ToArray();
+        Transform[] availableSpawnPoints = _spawnPoints.Take(_availableSpawnPoints).ToArray();
+        Transform[] selectedSpawnPoints = availableSpawnPoints.OrderBy(s => Random.value).Take(lockboxesToSpawn).ToArray();
+
+        for (int i = 0; i < lockboxesToSpawn; i++)
         {
-            Debug.LogWarning("Нет доступных цветов для ключей");
-            return;
+            BaseColor color = selectedColors[i];
+            Transform spawnPoint = selectedSpawnPoints[i];
+            Lockbox lockbox = _pool.Get();
+
+            if (lockbox == null) return;
+
+            lockbox.transform.position = spawnPoint.position;
+            lockbox.transform.rotation = spawnPoint.rotation;
+            lockbox.transform.localScale = spawnPoint.localScale;
+            lockbox.Initialize(color);
+            lockbox.OnLockboxFilled += Filled;
+
+            SpawnedLockboxColors.Add(color);
         }
-
-
-        BaseColor randomColor = availableColors[Random.Range(0, availableColors.Length)];
-        Lockbox lockbox = _lockboxPool.Get();
-
-        if (lockbox == null)
-        {
-            Debug.LogWarning("Нет доступных объектов в пуле Lockbox");
-            return;
-        }
-
-
-        Transform spawnPoint = _spawnPoints[_currentSpawnIndex];
-        _currentSpawnIndex++;
-        lockbox.transform.position = spawnPoint.position;
-        lockbox.transform.rotation = spawnPoint.rotation;
-        lockbox.transform.localScale = spawnPoint.localScale;
-        lockbox.Initialize(randomColor);
-        lockbox.OnLockboxFilled += Filled;
-        Debug.Log("Успешный спавн Lockbox");
-
     }
 
     private void Filled(Lockbox lockbox)
     {
         lockbox.OnLockboxFilled -= Filled;
-        _lockboxPool.Return(lockbox);
+        _pool.Return(lockbox);
     }
 }
