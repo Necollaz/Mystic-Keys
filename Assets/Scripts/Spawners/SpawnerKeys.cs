@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class SpawnerKeys : BaseSpawner<Key>
 {
-    [SerializeField] private ColorKeyCount[] _keyCounts;
-    [SerializeField] private SpawnLayer[] _spawnLayers;
+    [SerializeField] private KeySpawnConfig _keySpawnConfig;
 
     private SpawnIndexSelector _spawnIndexSelector;
-    private HashSet<BaseColor> _activeColors = new HashSet<BaseColor>();
+    private List<Key> _activeKeys = new List<Key>();
 
     public override void Awake()
     {
@@ -20,61 +19,63 @@ public class SpawnerKeys : BaseSpawner<Key>
         Create();
     }
 
-    public IEnumerable<ColorKeyCount> GetActiveKeys()
+    public IEnumerable<Key> GetActiveKeys()
     {
-        return _keyCounts;
+        return _activeKeys;
     }
 
     private void Create()
     {
-        foreach (var layer in _spawnLayers)
+        _activeKeys.Clear();
+
+        foreach (var layer in _keySpawnConfig.KeyLayers)
         {
             CreateKeysForLayer(layer);
         }
     }
 
-    private void CreateKeysForLayer(SpawnLayer layer)
+    private void CreateKeysForLayer(KeyLayer layer)
     {
         int totalKeys = 0;
 
-        foreach (var colorKeyCount in _keyCounts)
+        foreach (var colorKeyCount in layer.ColorKeyCount)
         {
-            totalKeys += colorKeyCount.KeyCount;
+            totalKeys += colorKeyCount.Count;
         }
 
-        if (totalKeys > layer.SpawnPoints.Length)
+        if (totalKeys > SpawnPoints.Length)
         {
-            totalKeys = layer.SpawnPoints.Length;
+            totalKeys = SpawnPoints.Length;
         }
 
-        List<int> spawnIndices = _spawnIndexSelector.GetIndices(totalKeys, totalKeys, layer.SpawnPoints.Length);
+        List<int> spawnIndices = _spawnIndexSelector.GetIndices(totalKeys, totalKeys, SpawnPoints.Length);
 
-        foreach (var colorKeyCount in _keyCounts)
+        foreach (var colorKeyCount in layer.ColorKeyCount)
         {
-            SpawnKeysOfColor(colorKeyCount.Color, colorKeyCount.KeyCount, spawnIndices, layer.SpawnPoints);
+            SpawnKeysOfColor(colorKeyCount.Color, colorKeyCount.Count, spawnIndices);
         }
     }
 
-    private void SpawnKeysOfColor(BaseColor color, int amount, List<int> spawnIndices, Transform[] layerSpawnPoints)
+    private void SpawnKeysOfColor(BaseColor color, int amount, List<int> spawnIndices)
     {
+        if (spawnIndices.Count < amount)
+        {
+            return;
+        }
+
         for (int i = 0; i < amount; i++)
         {
-            if (spawnIndices.Count == 0)
-            {
-                break;
-            }
-
             int randomIndex = Random.Range(0, spawnIndices.Count);
             int spawnIndex = spawnIndices[randomIndex];
 
             spawnIndices.RemoveAt(randomIndex);
 
             Key key = Pool.Get();
-            Transform spawnPoint = layerSpawnPoints[spawnIndex];
+            Transform spawnPoint = SpawnPoints[spawnIndex];
 
             SetInstanceTransform(key, spawnPoint);
             key.Initialize(color);
-            _activeColors.Add(color);
+            _activeKeys.Add(key);
         }
     }
 }

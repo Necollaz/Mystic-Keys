@@ -4,14 +4,14 @@ public class LockboxCalculator
 {
     private int _value = 3;
 
-    public Dictionary<BaseColor, int> CalculatePerColor(List<ColorKeyCount> colorKeyCounts)
+    public Dictionary<BaseColor, int> CalculatePerColor(Dictionary<BaseColor, int> colorKeyCounts)
     {
         Dictionary<BaseColor, int> lockboxesPerColor = new Dictionary<BaseColor, int>();
 
         foreach (var colorKeyCount in colorKeyCounts)
         {
-            int lockboxesNeeded = colorKeyCount.KeyCount / _value;
-            lockboxesPerColor[colorKeyCount.Color] = lockboxesNeeded;
+            int lockboxesNeeded = colorKeyCount.Value / _value;
+            lockboxesPerColor[colorKeyCount.Key] = lockboxesNeeded;
         }
 
         return lockboxesPerColor;

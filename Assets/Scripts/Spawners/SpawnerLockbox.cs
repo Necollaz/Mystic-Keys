@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -31,14 +30,20 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
     {
         SpawnedLockboxColors.Clear();
 
-        var colorKeyCounts = _keysSpawner.GetActiveKeys().ToList();
+        var activeKeys = _keysSpawner.GetActiveKeys().ToList();
+        var colorKeyCountsDict = new Dictionary<BaseColor, int>();
 
-        if (colorKeyCounts.Count == 0 || _availableSpawnPoints == 0)
+        foreach (var key in activeKeys)
         {
-            return;
+            if (!colorKeyCountsDict.ContainsKey(key.Color))
+            {
+                colorKeyCountsDict[key.Color] = 0;
+            }
+
+            colorKeyCountsDict[key.Color]++;
         }
 
-        Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCounts);
+        Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCountsDict);
 
         int totalLockboxesNeeded = lockboxesPerColor.Values.Sum();
         int totalAvailableLockboxes = Mathf.Min(totalLockboxesNeeded, _availableSpawnPoints, SpawnPoints.Length);
@@ -48,26 +53,12 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
 
         for (int i = 0; i < lockboxColorsToSpawn.Count; i++)
         {
-            if (i >= spawnIndices.Count)
-            {
-                break;
-            }
-
             BaseColor color = lockboxColorsToSpawn[i];
-
             int spawnIndex = spawnIndices[i];
-
             Lockbox lockbox = Pool.Get();
-
-            if (lockbox == null)
-            {
-                throw new ArgumentNullException(nameof(lockbox));
-            }
-
             Transform spawnPoint = SpawnPoints[spawnIndex];
 
             SetInstanceTransform(lockbox, spawnPoint);
-
             lockbox.Initialize(color);
             lockbox.OnLockboxFilled += Filled;
             SpawnedLockboxColors.Add(color);

@@ -8,7 +8,8 @@ public class Key : MonoBehaviour
     private Renderer _renderer;
     private KeyAnimator _animator;
     private ApplyColorService _applyColorService;
-    private BaseColor _color;
+
+    public BaseColor Color { get; private set; }
 
     private void Awake()
     {
@@ -18,13 +19,13 @@ public class Key : MonoBehaviour
 
     public void Initialize(BaseColor color)
     {
-        _color = color;
+        Color = color;
 
         _applyColorService.Apply(_renderer, color);
     }
 
     public BaseColor GetColor()
     {
-        return _color;
+        return Color;
     }
 }
