@@ -40,7 +40,7 @@ public class LockboxAnimator : MonoBehaviour
         _animationController.AppearanceLockbox(true);
     }
 
-    public void IdleOpenLockbox(bool isIdle)
+    public void IdleOpen(bool isIdle)
     {
         _animationController.IdleOpenLockbox(isIdle);
     }

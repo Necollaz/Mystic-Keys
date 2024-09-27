@@ -1,11 +1,12 @@
 using UnityEngine;
 
-[RequireComponent(typeof(ControllerAnimations))]
+[RequireComponent(typeof(KeyAnimator))]
 public class Key : MonoBehaviour
 {
     [SerializeField] private ColorMaterialPair[] _colorMaterials;
 
     private Renderer _renderer;
+    private KeyAnimator _animator;
     private ApplyColorService _applyColorService;
     private BaseColor _color;
 
@@ -25,10 +26,5 @@ public class Key : MonoBehaviour
     public BaseColor GetColor()
     {
         return _color;
-    }
-
-    public void Use(Lockbox lockbox)
-    {
-        lockbox.AddKey(this);
     }
 }

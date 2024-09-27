@@ -2,13 +2,13 @@ using UnityEngine;
 
 public abstract class BaseSpawner<T> : MonoBehaviour where T : MonoBehaviour
 {
-    [SerializeField] protected T _prefab;
-    [SerializeField] protected Transform[] _spawnPoints;
-    [SerializeField] protected int _initialSize = 10;
+    public T Prefab;
+    public Transform[] SpawnPoints;
+    public int SizePool = 10;
 
-    protected BasePool<T> _pool;
+    public BasePool<T> Pool;
 
-    protected virtual void Awake()
+    public virtual void Awake()
     {
         InitializePool();
     }
@@ -17,25 +17,26 @@ public abstract class BaseSpawner<T> : MonoBehaviour where T : MonoBehaviour
 
     private void InitializePool()
     {
-        _pool = new BasePool<T>(_prefab, _initialSize, transform);
+        Pool = new BasePool<T>(Prefab, SizePool, transform);
     }
 
-    protected void DefaultSpawn()
+    public void SpawnByPoints()
     {
-        if (_spawnPoints == null || _spawnPoints.Length == 0) return;
-
-        int spawnCount = Mathf.Min(_initialSize, _spawnPoints.Length);
+        int spawnCount = Mathf.Min(SizePool, SpawnPoints.Length);
 
         for (int i = 0; i < spawnCount; i++)
         {
-            T instance = _pool.Get();
+            T instance = Pool.Get();
+            Transform spawnPoint = SpawnPoints[i];
 
-            if (instance == null) continue;
-
-            Transform spawnPoint = _spawnPoints[i];
-            instance.transform.position = spawnPoint.position;
-            instance.transform.rotation = spawnPoint.rotation;
-            instance.transform.localScale = spawnPoint.localScale;
+            SetInstanceTransform(instance, spawnPoint);
         }
+    }
+
+    public void SetInstanceTransform(T instance, Transform spawnPoint)
+    {
+        instance.transform.position = spawnPoint.position;
+        instance.transform.rotation = spawnPoint.rotation;
+        instance.transform.localScale = spawnPoint.localScale;
     }
 }

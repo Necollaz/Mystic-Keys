@@ -25,6 +25,16 @@ public class ControllerAnimations : MonoBehaviour
         _animator.SetBool(AnimationData.Params.TurnKey, isTurning);
     }
 
+    public void TryTurnKey(bool isTryTurning)
+    {
+        _animator.SetBool(AnimationData.Params.TryTurnKey, isTryTurning);
+    }
+
+    public void RotateKey(bool isRotating)
+    {
+        _animator.SetBool(AnimationData.Params.RotateKey, isRotating);
+    }
+
     public void UnlockPadlock(bool isUnlocking)
     {
         _animator.SetBool(AnimationData.Params.UnlockPadlock, isUnlocking);

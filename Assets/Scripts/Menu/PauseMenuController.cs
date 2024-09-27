@@ -17,15 +17,21 @@ public class PauseMenuController : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(_pauseKey))
+        {
             TogglePauseMenu();
+        }
     }
 
     private void TogglePauseMenu()
     {
         if (_pauseMenu.gameObject.activeSelf)
+        {
             HidePauseMenu();
+        }
         else
+        {
             ShowPauseMenu();
+        }
     }
 
     private void ShowPauseMenu()

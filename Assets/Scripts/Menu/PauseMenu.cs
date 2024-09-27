@@ -23,9 +23,13 @@ public class PauseMenu : MonoBehaviour
     public void TogglePause()
     {
         if (!_isPause)
+        {
             Pause();
+        }
         else
+        {
             Resume();
+        }
     }
 
     private void Resume()

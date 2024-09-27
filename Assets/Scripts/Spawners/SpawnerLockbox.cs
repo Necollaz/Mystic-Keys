@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,49 +8,68 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
     [SerializeField] private SpawnerKeys _keysSpawner;
     [SerializeField] private int _availableSpawnPoints = 2;
 
+    private LockboxCalculator _lockboxCalculator;
+    private LockboxColorPicker _lockboxColorPicker;
+    private SpawnIndexSelector _spawnIndexSelector;
+
     public List<BaseColor> SpawnedLockboxColors { get; private set; } = new List<BaseColor>();
 
-    protected override void Awake()
+    public override void Awake()
     {
         base.Awake();
-    }
-
-    public void UnlockPoint()
-    {
-        if (_availableSpawnPoints < _spawnPoints.Length)
-            _availableSpawnPoints++;
+        _lockboxCalculator = new LockboxCalculator();
+        _lockboxColorPicker = new LockboxColorPicker();
+        _spawnIndexSelector = new SpawnIndexSelector();
     }
 
     public override void Spawn()
     {
-        BaseColor[] availableColors = _keysSpawner.GetActiveKey();
+        Create();
+    }
 
-        if (availableColors.Length == 0 || _availableSpawnPoints == 0) return;
-
+    private void Create()
+    {
         SpawnedLockboxColors.Clear();
 
-        if (availableColors.Length == 0) return;
+        var colorKeyCounts = _keysSpawner.GetActiveKeys().ToList();
 
-        int lockboxesToSpawn = Mathf.Min(availableColors.Length, _availableSpawnPoints);
-
-        BaseColor[] selectedColors = availableColors.OrderBy(c => Random.value).Take(lockboxesToSpawn).ToArray();
-        Transform[] availableSpawnPoints = _spawnPoints.Take(_availableSpawnPoints).ToArray();
-        Transform[] selectedSpawnPoints = availableSpawnPoints.OrderBy(s => Random.value).Take(lockboxesToSpawn).ToArray();
-
-        for (int i = 0; i < lockboxesToSpawn; i++)
+        if (colorKeyCounts.Count == 0 || _availableSpawnPoints == 0)
         {
-            BaseColor color = selectedColors[i];
-            Transform spawnPoint = selectedSpawnPoints[i];
-            Lockbox lockbox = _pool.Get();
+            return;
+        }
 
-            if (lockbox == null) return;
+        Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCounts);
 
-            lockbox.transform.position = spawnPoint.position;
-            lockbox.transform.rotation = spawnPoint.rotation;
-            lockbox.transform.localScale = spawnPoint.localScale;
+        int totalLockboxesNeeded = lockboxesPerColor.Values.Sum();
+        int totalAvailableLockboxes = Mathf.Min(totalLockboxesNeeded, _availableSpawnPoints, SpawnPoints.Length);
+
+        List<BaseColor> lockboxColorsToSpawn = _lockboxColorPicker.GetColors(lockboxesPerColor, totalAvailableLockboxes);
+        List<int> spawnIndices = _spawnIndexSelector.GetIndices(totalAvailableLockboxes, _availableSpawnPoints, SpawnPoints.Length);
+
+        for (int i = 0; i < lockboxColorsToSpawn.Count; i++)
+        {
+            if (i >= spawnIndices.Count)
+            {
+                break;
+            }
+
+            BaseColor color = lockboxColorsToSpawn[i];
+
+            int spawnIndex = spawnIndices[i];
+
+            Lockbox lockbox = Pool.Get();
+
+            if (lockbox == null)
+            {
+                throw new ArgumentNullException(nameof(lockbox));
+            }
+
+            Transform spawnPoint = SpawnPoints[spawnIndex];
+
+            SetInstanceTransform(lockbox, spawnPoint);
+
             lockbox.Initialize(color);
             lockbox.OnLockboxFilled += Filled;
-
             SpawnedLockboxColors.Add(color);
         }
     }
@@ -57,6 +77,6 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
     private void Filled(Lockbox lockbox)
     {
         lockbox.OnLockboxFilled -= Filled;
-        _pool.Return(lockbox);
+        Pool.Return(lockbox);
     }
 }

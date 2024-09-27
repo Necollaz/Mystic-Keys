@@ -32,6 +32,11 @@ public class Lockbox : MonoBehaviour
         StartCoroutine(_animator.Open());
     }
 
+    public BaseColor GetColor()
+    {
+        return _color;
+    }
+
     public void AddKey(Key key)
     {
         if(key.GetColor() == _color)
@@ -42,7 +47,7 @@ public class Lockbox : MonoBehaviour
             if (_currentKeys >= _requiredKeys)
             {
                 OnLockboxFilled?.Invoke(this);
-                _animator.IdleOpenLockbox(false);
+                _animator.IdleOpen(false);
                 StartCoroutine(_animator.Close());
             }
         }
