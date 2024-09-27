@@ -5,7 +5,6 @@ public class ColorKeyCount
 {
     public BaseColor Color;
     public int KeyCount;
-    public int Layer;
     private int _amount = 3;
 
     public void Validate()
