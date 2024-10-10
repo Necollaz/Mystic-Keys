@@ -1,73 +1,97 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class SpawnerLockbox : BaseSpawner<Lockbox>
 {
     [SerializeField] private SpawnerKeys _keysSpawner;
-    [SerializeField] private int _availableSpawnPoints = 2;
+    [SerializeField] private LockboxRegistry _lockboxRegistry;
+    [SerializeField] private ParticleSystem _prefab;
 
+    private LockboxSpawnPointsAvailability _spawnPointAvailability;
     private LockboxCalculator _lockboxCalculator;
     private LockboxColorPicker _lockboxColorPicker;
-    private SpawnIndexSelector _spawnIndexSelector;
-
-    public List<BaseColor> SpawnedLockboxColors { get; private set; } = new List<BaseColor>();
+    private ColorKeyCounter _colorKeyCounter;
 
     public override void Awake()
     {
         base.Awake();
         _lockboxCalculator = new LockboxCalculator();
         _lockboxColorPicker = new LockboxColorPicker();
-        _spawnIndexSelector = new SpawnIndexSelector();
+        _colorKeyCounter = new ColorKeyCounter(_keysSpawner);
+        _spawnPointAvailability = new LockboxSpawnPointsAvailability(SpawnPoints);
+    }
+
+    private void OnEnable()
+    {
+        _lockboxRegistry.LockboxFilled += OnFilled;
+    }
+
+    private void OnDisable()
+    {
+        _lockboxRegistry.LockboxFilled -= OnFilled;
     }
 
     public override void Spawn()
     {
-        Create();
+        CreateInitial();
     }
 
-    private void Create()
+    private void CreateInitial()
     {
-        SpawnedLockboxColors.Clear();
+        List<Transform> activeSpawnPoints = _spawnPointAvailability.GetActive();
+        List<Transform> inactiveSpawnPoints = _spawnPointAvailability.GetInactive();
 
-        var activeKeys = _keysSpawner.GetActiveKeys().ToList();
-        var colorKeyCountsDict = new Dictionary<BaseColor, int>();
+        Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.CountKeysPerColor();
+        Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCounts);
+        List<BaseColor> lockboxColors = _lockboxColorPicker.GetColors(lockboxesPerColor, activeSpawnPoints.Count);
 
-        foreach (var key in activeKeys)
+        for (int i = 0; i < lockboxColors.Count; i++)
         {
-            if (!colorKeyCountsDict.ContainsKey(key.Color))
+            BaseColor color = lockboxColors[i];
+            Transform spawnPoint = activeSpawnPoints[i];
+
+            Create(spawnPoint, color);
+        }
+
+        foreach (var spawnPoint in inactiveSpawnPoints)
+        {
+            CreateInactiveMarker(spawnPoint);
+        }
+    }
+
+    private void OnFilled(Lockbox filledLockbox)
+    {
+        if (filledLockbox.IsFull())
+        {
+            _lockboxRegistry.Unregister(filledLockbox);
+            Pool.Return(filledLockbox);
+
+            if (_colorKeyCounter.HasKeys())
             {
-                colorKeyCountsDict[key.Color] = 0;
+                CreateNew(filledLockbox.transform);
             }
-
-            colorKeyCountsDict[key.Color]++;
-        }
-
-        Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCountsDict);
-
-        int totalLockboxesNeeded = lockboxesPerColor.Values.Sum();
-        int totalAvailableLockboxes = Mathf.Min(totalLockboxesNeeded, _availableSpawnPoints, SpawnPoints.Length);
-
-        List<BaseColor> lockboxColorsToSpawn = _lockboxColorPicker.GetColors(lockboxesPerColor, totalAvailableLockboxes);
-        List<int> spawnIndices = _spawnIndexSelector.GetIndices(totalAvailableLockboxes, _availableSpawnPoints, SpawnPoints.Length);
-
-        for (int i = 0; i < lockboxColorsToSpawn.Count; i++)
-        {
-            BaseColor color = lockboxColorsToSpawn[i];
-            int spawnIndex = spawnIndices[i];
-            Lockbox lockbox = Pool.Get();
-            Transform spawnPoint = SpawnPoints[spawnIndex];
-
-            SetInstanceTransform(lockbox, spawnPoint);
-            lockbox.Initialize(color);
-            lockbox.OnLockboxFilled += Filled;
-            SpawnedLockboxColors.Add(color);
         }
     }
 
-    private void Filled(Lockbox lockbox)
+    private void CreateNew(Transform spawnPoint)
     {
-        lockbox.OnLockboxFilled -= Filled;
-        Pool.Return(lockbox);
+        Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.CountKeysPerColor();
+        Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCounts);
+        BaseColor newColor = _lockboxColorPicker.GetSingleColor(lockboxesPerColor);
+
+        Create(spawnPoint, newColor);
+    }
+
+    private void Create(Transform spawnPoint, BaseColor color)
+    {
+        Lockbox lockbox = Pool.Get();
+        _lockboxRegistry.Register(lockbox);
+        SetInstanceTransform(lockbox, spawnPoint);
+        lockbox.Initialize(color);
+    }
+
+    private void CreateInactiveMarker(Transform spawnPoint)
+    {
+        _prefab = Instantiate(_prefab, spawnPoint.position, spawnPoint.rotation);
     }
 }

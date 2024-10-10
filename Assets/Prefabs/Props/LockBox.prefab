@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 6278690369224684182}
   - component: {fileID: -216365209805077090}
   - component: {fileID: 5908002570600897537}
+  - component: {fileID: 6971910544415285111}
   m_Layer: 0
   m_Name: LockBox
   m_TagString: Untagged
@@ -160,6 +161,8 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: f26d6ae9129bc4f0caf49da41b536d6b, type: 2}
   - color: 3
     material: {fileID: 2100000, guid: c1fc76508aedd4754874452f322b80d1, type: 2}
+  _requiredKeys: 3
+  _inactiveMaterial: {fileID: 2100000, guid: da2a028438d7048c7bd232beda7f7b1f, type: 2}
 --- !u!114 &5908002570600897537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,6 +173,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16723c18c8eb644b8a0e99eb932f3582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6971910544415285111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2345361385483416144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c0b5f32802e84e72b1e073cc0225540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3169389479677207826

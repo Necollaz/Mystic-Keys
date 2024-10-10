@@ -5,51 +5,55 @@ using UnityEngine;
 public class Lockbox : MonoBehaviour
 {
     [SerializeField] private ColorMaterialPair[] _colorMaterials;
+    [SerializeField] private int _requiredKeys = 3;
 
-    private PoolKeys _keyPool;
+    private int _currentKeys = 0;
+    private Renderer _renderer;
     private LockboxAnimator _animator;
     private ApplyColorService _applyColorService;
-    private Renderer _renderer;
-    private BaseColor _color;
-    private int _requiredKeys = 3;
-    private int _currentKeys = 0;
 
-    public event Action<Lockbox> OnLockboxFilled;
+    public BaseColor Color { get; private set; }
+    public int CurrentKeyCount => _currentKeys;
+
+    public event Action<Lockbox, int> KeyAdded;
+    public event Action<Lockbox> Filled;
 
     private void Awake()
     {
+        _renderer = GetComponentInChildren<Renderer>();
         _animator = GetComponent<LockboxAnimator>();
         _applyColorService = new ApplyColorService { ColorMaterials = _colorMaterials };
-        _renderer = GetComponentInChildren<Renderer>();
     }
 
     public void Initialize(BaseColor color)
     {
-        _color = color;
+        Color = color;
         _currentKeys = 0;
-        _applyColorService.Apply(_renderer, _color);
+
+        _applyColorService.Apply(_renderer, Color);
         _animator.Appearance();
         StartCoroutine(_animator.Open());
     }
 
-    public BaseColor GetColor()
+    public void AddKey()
     {
-        return _color;
-    }
-
-    public void AddKey(Key key)
-    {
-        if(key.GetColor() == _color)
+        if (_currentKeys < _requiredKeys)
         {
             _currentKeys++;
-            _keyPool.Return(key);
+            KeyAdded?.Invoke(this, _currentKeys);
 
             if (_currentKeys >= _requiredKeys)
             {
-                OnLockboxFilled?.Invoke(this);
+                Filled?.Invoke(this);
                 _animator.IdleOpen(false);
                 StartCoroutine(_animator.Close());
             }
         }
+
+    }
+
+    public bool IsFull()
+    {
+        return _currentKeys >= _requiredKeys;
     }
 }

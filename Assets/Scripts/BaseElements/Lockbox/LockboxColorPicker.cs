@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using System;
 
 public class LockboxColorPicker
 {
+    private Random _random = new Random();
+
     public List<BaseColor> GetColors(Dictionary<BaseColor, int> lockboxesPerColor, int totalAvailable)
     {
         List<BaseColor> lockboxColors = new List<BaseColor>();
@@ -16,11 +18,34 @@ public class LockboxColorPicker
             }
         }
 
+        if (lockboxColors.Count == 0)
+        {
+            return lockboxColors;
+        }
+
+        lockboxColors = lockboxColors.OrderBy(x => _random.Next()).ToList();
+
         if (lockboxColors.Count > totalAvailable)
         {
-            lockboxColors = lockboxColors.OrderBy(color => Random.value).Take(totalAvailable).ToList();
+            lockboxColors = lockboxColors.Take(totalAvailable).ToList();
         }
 
         return lockboxColors;
+    }
+
+    public BaseColor GetSingleColor(Dictionary<BaseColor, int> lockboxesPerColor)
+    {
+        List<BaseColor> сolors = new List<BaseColor>();
+        int index = _random.Next(сolors.Count);
+
+        foreach (var pair in lockboxesPerColor)
+        {
+            if (pair.Value > 0)
+            {
+                сolors.Add(pair.Key);
+            }
+        }
+
+        return сolors[index];
     }
 }

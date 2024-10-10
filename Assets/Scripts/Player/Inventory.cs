@@ -1,39 +1,46 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private RectTransform[] _slotUI;
-    [SerializeField] private int _maxSlots = 4;
+    [SerializeField] private InventorySpawnSlots _spawnSlots;
+    [SerializeField] private LockboxRegistry _lockboxRegistry;
 
-    private InventorySlot[] _slots;
+    private List<Slot> _activeSlots;
+    private List<Slot> _inactiveSlots;
+    private Dictionary<Slot, Key> _activeKeys = new Dictionary<Slot, Key>();
 
     private void Awake()
     {
-        _slots = new InventorySlot[_maxSlots];
+        InitializeSlots();
+    }
 
-        for (int i = 0; i < _maxSlots; i++)
-        {
-            _slots[i] = new InventorySlot();
-        }
+    private void OnEnable()
+    {
+        _lockboxRegistry.LockboxCreated += OnHandledNewLockbox;
+    }
+
+    private void OnDisable()
+    {
+        _lockboxRegistry.LockboxCreated -= OnHandledNewLockbox;
+    }
+
+    private void InitializeSlots()
+    {
+        UpdateSlotLists();
     }
 
     public bool AddKey(Key key)
     {
-        for (int i = 0; i < _slots.Length; i++)
+        foreach (Slot slot in _activeSlots)
         {
-            if (_slots[i].IsEmpty())
+            if (_activeKeys.ContainsKey(slot) == false)
             {
-                _slots[i].Add(key);
+                _activeKeys[slot] = key;
 
-                if(key.TryGetComponent(out KeyAnimator animations))
-                {
-                    animations.Rotate();
-                }
-
-                if (i < _slotUI.Length)
-                {
-                    key.transform.SetParent(_slotUI[i].transform, false);
-                }
+                key.transform.SetParent(slot.Transform);
+                key.transform.localPosition = Vector3.zero;
+                key.transform.localRotation = Quaternion.identity;
 
                 return true;
             }
@@ -42,16 +49,53 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public void RemoveKey(BaseColor color, Lockbox lockbox)
+    public void RemoveKey(Slot slot)
     {
-        foreach (InventorySlot slot in _slots)
+        if (_activeKeys.ContainsKey(slot))
         {
-            if(!slot.IsEmpty() && slot.Get().GetColor() == color)
+            Key key = _activeKeys[slot];
+            key.transform.SetParent(null);
+            key.gameObject.SetActive(false);
+            _activeKeys.Remove(slot);
+        }
+    }
+
+    public List<Slot> GetActiveSlots()
+    {
+        return _activeSlots;
+    }
+
+    public void PurchaseSlot(int index)
+    {
+        _spawnSlots.Purchase(index);
+        UpdateSlotLists();
+    }
+
+    private void OnHandledNewLockbox(Lockbox lockbox)
+    {
+        foreach (var pair in _activeKeys)
+        {
+            Key key = pair.Value;
+
+            if (key.Color == lockbox.Color)
             {
-                Key key = slot.Get();
-                slot.Remove();
-                lockbox.AddKey(key);
+                RemoveKey(pair.Key);
+                lockbox.AddKey();
                 break;
+            }
+        }
+    }
+
+    private void UpdateSlotLists()
+    {
+        _activeSlots = _spawnSlots.GetActive();
+        _inactiveSlots = _spawnSlots.GetInactive();
+
+        foreach (Slot slot in _inactiveSlots)
+        {
+            if (slot.InactiveSlot != null)
+            {
+                Instantiate(slot.InactiveSlot, slot.Transform.position, Quaternion.identity, slot.Transform);
             }
         }
     }
