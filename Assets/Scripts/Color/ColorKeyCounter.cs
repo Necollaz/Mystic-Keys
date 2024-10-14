@@ -3,39 +3,37 @@ using System.Linq;
 
 public class ColorKeyCounter
 {
-    private readonly SpawnerKeys _keysSpawner;
+    private SpawnerKeys _keysSpawner;
+    private Dictionary<BaseColor, int> _availableKeys;
 
     public ColorKeyCounter(SpawnerKeys keysSpawner)
     {
         _keysSpawner = keysSpawner;
+        UpdateKeyCounts();
     }
 
-    public Dictionary<BaseColor, int> CountKeysPerColor()
+    public void UpdateKeyCounts()
     {
-        Dictionary<BaseColor, int> colorKeyCounts = new Dictionary<BaseColor, int>();
-        List<Key> activeKeys = _keysSpawner.GetActiveKeys();
+        _availableKeys = _keysSpawner.GetActive();
+    }
 
-        foreach (var key in activeKeys)
+    public bool ReserveKeys(BaseColor color, int count)
+    {
+        if (_availableKeys.ContainsKey(color) && _availableKeys[color] >= count)
         {
-            BaseColor color = key.Color;
-
-            if (colorKeyCounts.ContainsKey(color))
-            {
-                colorKeyCounts[color]++;
-            }
-            else
-            {
-                colorKeyCounts[color] = 1;
-            }
+            _availableKeys[color] -= count;
+            return true;
         }
+        return false;
+    }
 
-        return colorKeyCounts;
+    public Dictionary<BaseColor, int> GetKeysPerColor()
+    {
+        return new Dictionary<BaseColor, int>(_availableKeys);
     }
 
     public bool HasKeys()
     {
-        Dictionary<BaseColor, int> colorKeyCounts = CountKeysPerColor();
-
-        return colorKeyCounts.Values.Any(count => count > 0);
+        return _availableKeys.Values.Any(count => count > 0);
     }
 }

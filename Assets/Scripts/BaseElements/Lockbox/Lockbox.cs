@@ -1,16 +1,21 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LockboxAnimator))]
+[RequireComponent(typeof(LockboxKeyVisualizer))]
 public class Lockbox : MonoBehaviour
 {
     [SerializeField] private ColorMaterialPair[] _colorMaterials;
+    [SerializeField] private List<Transform> _keySlots;
+    [SerializeField] private Key _keyVisualPrefab;
     [SerializeField] private int _requiredKeys = 3;
 
     private int _currentKeys = 0;
     private Renderer _renderer;
     private LockboxAnimator _animator;
     private ApplyColorService _applyColorService;
+    private LockboxKeyVisualizer _keyVisualizer;
 
     public BaseColor Color { get; private set; }
     public int CurrentKeyCount => _currentKeys;
@@ -23,6 +28,7 @@ public class Lockbox : MonoBehaviour
         _renderer = GetComponentInChildren<Renderer>();
         _animator = GetComponent<LockboxAnimator>();
         _applyColorService = new ApplyColorService { ColorMaterials = _colorMaterials };
+        _keyVisualizer = new LockboxKeyVisualizer(_keySlots, _keyVisualPrefab);
     }
 
     public void Initialize(BaseColor color)
@@ -32,6 +38,8 @@ public class Lockbox : MonoBehaviour
 
         _applyColorService.Apply(_renderer, Color);
         _animator.Appearance();
+        _keyVisualizer.Initialize();
+
         StartCoroutine(_animator.Open());
     }
 
@@ -41,15 +49,14 @@ public class Lockbox : MonoBehaviour
         {
             _currentKeys++;
             KeyAdded?.Invoke(this, _currentKeys);
+            _keyVisualizer.UpdateVisual(_currentKeys, Color);
 
-            if (_currentKeys >= _requiredKeys)
+            if (IsFull())
             {
                 Filled?.Invoke(this);
-                _animator.IdleOpen(false);
                 StartCoroutine(_animator.Close());
             }
         }
-
     }
 
     public bool IsFull()

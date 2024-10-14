@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class SpawnerLockbox : BaseSpawner<Lockbox>
 {
-    [SerializeField] private SpawnerKeys _keysSpawner;
     [SerializeField] private LockboxRegistry _lockboxRegistry;
-    [SerializeField] private ParticleSystem _prefab;
+    [SerializeField] private SpawnerKeys _keysSpawner;
+    [SerializeField] private ParticleSystem _inactivePrefab;
 
     private LockboxSpawnPointsAvailability _spawnPointAvailability;
     private LockboxCalculator _lockboxCalculator;
@@ -15,9 +15,9 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
     public override void Awake()
     {
         base.Awake();
+        _colorKeyCounter = new ColorKeyCounter(_keysSpawner);
         _lockboxCalculator = new LockboxCalculator();
         _lockboxColorPicker = new LockboxColorPicker();
-        _colorKeyCounter = new ColorKeyCounter(_keysSpawner);
         _spawnPointAvailability = new LockboxSpawnPointsAvailability(SpawnPoints);
     }
 
@@ -41,19 +41,25 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
         List<Transform> activeSpawnPoints = _spawnPointAvailability.GetActive();
         List<Transform> inactiveSpawnPoints = _spawnPointAvailability.GetInactive();
 
-        Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.CountKeysPerColor();
+        _colorKeyCounter.UpdateKeyCounts();
+
+        Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.GetKeysPerColor();
         Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCounts);
         List<BaseColor> lockboxColors = _lockboxColorPicker.GetColors(lockboxesPerColor, activeSpawnPoints.Count);
 
         for (int i = 0; i < lockboxColors.Count; i++)
         {
             BaseColor color = lockboxColors[i];
-            Transform spawnPoint = activeSpawnPoints[i];
+            bool reserved = _colorKeyCounter.ReserveKeys(color, _lockboxCalculator.KeysPerLockbox);
 
-            Create(spawnPoint, color);
+            if (reserved)
+            {
+                Transform spawnPoint = activeSpawnPoints[i];
+                Create(spawnPoint, color);
+            }
         }
 
-        foreach (var spawnPoint in inactiveSpawnPoints)
+        foreach (Transform spawnPoint in inactiveSpawnPoints)
         {
             CreateInactiveMarker(spawnPoint);
         }
@@ -65,6 +71,7 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
         {
             _lockboxRegistry.Unregister(filledLockbox);
             Pool.Return(filledLockbox);
+            _colorKeyCounter.UpdateKeyCounts();
 
             if (_colorKeyCounter.HasKeys())
             {
@@ -75,7 +82,9 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
 
     private void CreateNew(Transform spawnPoint)
     {
-        Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.CountKeysPerColor();
+        _colorKeyCounter.UpdateKeyCounts();
+
+        Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.GetKeysPerColor();
         Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCounts);
         BaseColor newColor = _lockboxColorPicker.GetSingleColor(lockboxesPerColor);
 
@@ -92,6 +101,6 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
 
     private void CreateInactiveMarker(Transform spawnPoint)
     {
-        _prefab = Instantiate(_prefab, spawnPoint.position, spawnPoint.rotation);
+        _inactivePrefab = Instantiate(_inactivePrefab, spawnPoint.position, spawnPoint.rotation);
     }
 }

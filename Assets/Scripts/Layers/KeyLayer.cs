@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,31 +6,13 @@ public class KeyLayer : MonoBehaviour
     [SerializeField] private LayerInfo[] _layers;
 
     private Dictionary<int, HashSet<Key>> _activeKeysPerLayer = new Dictionary<int, HashSet<Key>>();
+    private int _currentLayerIndex = 0;
 
     public LayerInfo[] Layers => _layers;
-    public int CurrentLayerIndex
-    {
-        get { return CurrentLayerIndex; }
-        private set { CurrentLayerIndex = 0; }
-    }
 
-    public event Action LayerAdvanced;
-
-    public LayerInfo GetCurrentLayer()
+    public bool IsCurrent(int layerIndex)
     {
-        if(CurrentLayerIndex < _layers.Length)
-        {
-            return _layers[CurrentLayerIndex];
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public bool IsCurrentLayer(int layerIndex)
-    {
-        return layerIndex == CurrentLayerIndex;
+        return layerIndex == _currentLayerIndex;
     }
 
     public void Register(int layerIndex, Key key)
@@ -52,10 +33,8 @@ public class KeyLayer : MonoBehaviour
 
             if (_activeKeysPerLayer[layerIndex].Count == 0)
             {
-                if (layerIndex == CurrentLayerIndex)
-                {
-                    AdvanceToNextLayer();
-                }
+                _activeKeysPerLayer.Remove(layerIndex);
+                AdvanceToNext();
             }
         }
     }
@@ -65,20 +44,8 @@ public class KeyLayer : MonoBehaviour
         return _activeKeysPerLayer.ContainsKey(layerIndex) == false || _activeKeysPerLayer[layerIndex].Count == 0;
     }
 
-    public bool AllCleared()
+    private void AdvanceToNext()
     {
-        return CurrentLayerIndex >= _layers.Length;
-    }
-
-    private void AdvanceToNextLayer()
-    {
-        CurrentLayerIndex++;
-
-        if (CurrentLayerIndex < _layers.Length)
-        {
-            LayerAdvanced?.Invoke();
-        }
-
-        Debug.Log($"Слой {CurrentLayerIndex - 1} очищен. Переход к слою {CurrentLayerIndex}");
+        _currentLayerIndex++;
     }
 }

@@ -27,6 +27,7 @@ public class LockboxAnimator : MonoBehaviour
 
     public IEnumerator Close()
     {
+        _animationController.IdleOpenLockbox(false);
         _animationController.CloseLockbox(true);
 
         yield return Wait();

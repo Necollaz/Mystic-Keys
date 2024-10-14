@@ -17,13 +17,6 @@ public class SpawnerKeys : BaseSpawner<Key>
             colorKeyCount => colorKeyCount.Color,
             colorKeyCount => colorKeyCount.Count
             );
-
-        _keyLayer.LayerAdvanced += OnLayerAdvanced;
-    }
-
-    private void OnDestroy()
-    {
-        _keyLayer.LayerAdvanced -= OnLayerAdvanced;
     }
 
     public override void Spawn()
@@ -31,23 +24,37 @@ public class SpawnerKeys : BaseSpawner<Key>
         Create();
     }
 
-    public List<Key> GetActiveKeys()
+    public Dictionary<BaseColor, int> GetActive()
     {
-        return _activeKeys;
-    }
+        Dictionary<BaseColor, int> keysPerColor = new Dictionary<BaseColor, int>();
 
-    private void OnLayerAdvanced()
-    {
-        Create();
+        foreach (Key key in _activeKeys)
+        {
+            BaseColor color = key.Color;
+
+            if (keysPerColor.ContainsKey(color))
+            {
+                keysPerColor[color]++;
+            }
+            else
+            {
+                keysPerColor[color] = 1;
+            }
+        }
+
+        return keysPerColor;
     }
 
     private void Create()
     {
-        int layerIndex = _keyLayer.CurrentLayerIndex;
-
-        if (layerIndex < _keyLayer.Layers.Length)
+        for (int layerIndex = 0; layerIndex < _keyLayer.Layers.Length; layerIndex++)
         {
-            LayerInfo layer = _keyLayer.GetCurrentLayer();
+            LayerInfo layer = _keyLayer.Layers[layerIndex];
+
+            if (_remainingColorCounts.Values.Any(count => count > 0) == false)
+            {
+                break;
+            }
 
             CreateForLayer(layer, layerIndex);
         }
@@ -58,12 +65,11 @@ public class SpawnerKeys : BaseSpawner<Key>
         int totalSpawnPoints = layer.SpawnPoints.Length;
         List<int> availableSpawnIndices = Enumerable.Range(0, totalSpawnPoints).ToList();
 
-        foreach (KeyValuePair<BaseColor, int> colorKeyCount in _remainingColorCounts.Where(kvp => kvp.Value > 0).ToList())
+        foreach (BaseColor color in _remainingColorCounts.Keys.ToList())
         {
-            BaseColor color = colorKeyCount.Key;
-            int remainingCount = colorKeyCount.Value;
+            int remainingCount = _remainingColorCounts[color];
 
-            if (availableSpawnIndices.Count > 0)
+            if (remainingCount > 0 && availableSpawnIndices.Count > 0)
             {
                 int amountToSpawn = Mathf.Min(remainingCount, availableSpawnIndices.Count);
                 CreateOfColor(color, amountToSpawn, availableSpawnIndices, layer.SpawnPoints, layerIndex);

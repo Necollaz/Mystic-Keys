@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -12,24 +13,19 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
-        InitializeSlots();
+        UpdateSlotLists();
     }
 
     private void OnEnable()
     {
-        _lockboxRegistry.LockboxCreated += OnHandledNewLockbox;
+        _lockboxRegistry.LockboxCreated += OnMoveToLockbox;
     }
 
     private void OnDisable()
     {
-        _lockboxRegistry.LockboxCreated -= OnHandledNewLockbox;
+        _lockboxRegistry.LockboxCreated -= OnMoveToLockbox;
     }
-
-    private void InitializeSlots()
-    {
-        UpdateSlotLists();
-    }
-
+    
     public bool AddKey(Key key)
     {
         foreach (Slot slot in _activeSlots)
@@ -48,8 +44,14 @@ public class Inventory : MonoBehaviour
 
         return false;
     }
+     
+    public void PurchaseSlot(int index)
+    {
+        _spawnSlots.Purchase(index);
+        UpdateSlotLists();
+    }
 
-    public void RemoveKey(Slot slot)
+    private void RemoveKey(Slot slot)
     {
         if (_activeKeys.ContainsKey(slot))
         {
@@ -60,30 +62,18 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public List<Slot> GetActiveSlots()
+    private void OnMoveToLockbox(Lockbox lockbox)
     {
-        return _activeSlots;
-    }
+        var keysToMove = _activeKeys
+        .Where(pair => pair.Value.Color == lockbox.Color)
+        .ToList();
 
-    public void PurchaseSlot(int index)
-    {
-        _spawnSlots.Purchase(index);
-        UpdateSlotLists();
-    }
-
-    private void OnHandledNewLockbox(Lockbox lockbox)
-    {
-        foreach (var pair in _activeKeys)
+        foreach (var pair in keysToMove)
         {
-            Key key = pair.Value;
-
-            if (key.Color == lockbox.Color)
-            {
-                RemoveKey(pair.Key);
-                lockbox.AddKey();
-                break;
-            }
+            RemoveKey(pair.Key);
+            lockbox.AddKey();
         }
+
     }
 
     private void UpdateSlotLists()

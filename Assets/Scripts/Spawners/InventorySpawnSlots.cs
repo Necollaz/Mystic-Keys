@@ -1,4 +1,4 @@
 using System;
 
 [Serializable]
-public class InventorySpawnSlots : BaseSpawnSlots { }
+public class InventorySpawnSlots : BaseSpawnSlotsInventory { }

@@ -6,7 +6,7 @@ public class ApplyColorService
 
     public void Apply(Renderer renderer, BaseColor color)
     {
-        foreach (var pair in ColorMaterials)
+        foreach (ColorMaterialPair pair in ColorMaterials)
         {
             if (pair.color == color)
             {

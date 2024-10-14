@@ -10,23 +10,18 @@ public class KeyAnimator : MonoBehaviour
         _animationController = GetComponent<ControllerAnimations>();
     }
 
-    public void Rotate()
+    public void Rotate(bool isRotate)
     {
-        _animationController.RotateKey(true);
+        _animationController.RotateKey(isRotate);
     }
 
-    public void Turn()
+    public void Turn(bool isActive)
     {
-        _animationController.TurnKey(true);
+        _animationController.TurnKey(isActive);
     }
 
-    public void TryTurn()
+    public void TryTurn(bool isActive)
     {
-        _animationController.TryTurnKey(true);
-    }
-
-    public void StopRotate()
-    {
-        _animationController.RotateKey(false);
+        _animationController.TryTurnKey(isActive);
     }
 }

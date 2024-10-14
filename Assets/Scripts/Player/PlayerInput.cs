@@ -1,19 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
+    private const int GetMouseButtonDown = 0;
+
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private KeyLayer _keyLayer;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private LockboxRegistry _lockboxRegistry;
-    [SerializeField] private ParticleSystem _removeKey;
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(GetMouseButtonDown))
         {
             TryPickupKey();
         }    
@@ -25,42 +25,31 @@ public class PlayerInput : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if(hit.collider.TryGetComponent(out Key key) && key.TryGetComponent(out KeyAnimator animator))
+            if(hit.collider.TryGetComponent(out Key key))
             {
-                if (_keyLayer.IsCurrentLayer(key.LayerIndex))
+                if (_keyLayer.IsCurrent(key.LayerIndex))
                 {
-                    animator.Turn();
-
                     List<Lockbox> activeLockboxes = _lockboxRegistry.GetActive();
                     Lockbox matchingLockbox = activeLockboxes.FirstOrDefault(lockbox => lockbox.Color == key.Color);
 
                     if (matchingLockbox != null)
                     {
-                        StartCoroutine(CollectKey(key));
-                        _keyLayer.Unregister(key.LayerIndex, key);
+                        key.UseActive();
                         matchingLockbox.AddKey();
                     }
                     else
                     {
-                        StartCoroutine(CollectKey(key));
                         _inventory.AddKey(key);
                     }
+
+                    _keyLayer.Unregister(key.LayerIndex, key);
+
                 }
                 else
                 {
-                    animator.TryTurn();
+                    key.UseInactive();
                 }
             }
         }
-    }
-
-    private IEnumerator CollectKey(Key key)
-    {
-        float animationDuration = 1f;
-
-        yield return new WaitForSeconds(animationDuration);
-
-        Instantiate(_removeKey, key.transform.position, Quaternion.identity);
-        key.gameObject.SetActive(false);
     }
 }

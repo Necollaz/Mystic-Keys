@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 5252140097278161939}
   - component: {fileID: 5458693670994782700}
   - component: {fileID: 4198464618134779737}
+  - component: {fileID: 3986204238290814372}
   m_Layer: 0
   m_Name: Padlock
   m_TagString: Untagged
@@ -195,7 +196,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 8}
+  m_LocalScale: {x: 6, y: 6, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3350863170473944768}
@@ -232,5 +233,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 99a34033187a64391a597f8015e18351, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3986204238290814372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5252140097278453811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c0b5f32802e84e72b1e073cc0225540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
