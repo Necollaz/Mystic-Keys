@@ -39,10 +39,15 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
 
     private void CreateInitial()
     {
+        _colorKeyCounter.UpdateKeyCounts();
+
+        if (_colorKeyCounter.HasKeys() == false)
+        {
+            return;
+        }
+
         List<Transform> activeSpawnPoints = _spawnPointAvailability.GetActive();
         List<Transform> inactiveSpawnPoints = _spawnPointAvailability.GetInactive();
-
-        _colorKeyCounter.UpdateKeyCounts();
 
         Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.GetPerColor();
         Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCounts);
@@ -86,7 +91,6 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
         yield return null;
     }
 
-
     private void CreateNew(Transform spawnPoint)
     {
         _colorKeyCounter.UpdateKeyCounts();
@@ -94,8 +98,12 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
         Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.GetPerColor();
         Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCounts);
         BaseColor newColor = _lockboxColorPicker.GetSingleColor(lockboxesPerColor);
+        bool reserved = _colorKeyCounter.Reserve(newColor, _lockboxCalculator.KeysPerLockbox);
 
-        Create(spawnPoint, newColor);
+        if (reserved)
+        {
+            Create(spawnPoint, newColor);
+        }
     }
 
     private void Create(Transform spawnPoint, BaseColor color)

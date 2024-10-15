@@ -55,6 +55,7 @@ public class Lockbox : MonoBehaviour
             if (IsFull())
             {
                 StartCoroutine(CloseAndNotify());
+                _keyVisualizer.Clear();
             }
         }
     }
