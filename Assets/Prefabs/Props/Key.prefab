@@ -79,7 +79,7 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: f26d6ae9129bc4f0caf49da41b536d6b, type: 2}
   - color: 3
     material: {fileID: 2100000, guid: c1fc76508aedd4754874452f322b80d1, type: 2}
-  _removeKey: {fileID: 198327332609706768, guid: 98497c01c529a9445a0e927162dbfd51, type: 3}
+  _keySprite: {fileID: 21300000, guid: 691fb217518cd6541991330f21ca88d5, type: 3}
 --- !u!114 &3915669692876223203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e1d85d4c811b42beb1c319359e62885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _removeKey: {fileID: 1997748929282970941, guid: 9d549d47a364cf44ca7237c1d32bf45c, type: 3}
 --- !u!114 &1169506519346080981
 MonoBehaviour:
   m_ObjectHideFlags: 0

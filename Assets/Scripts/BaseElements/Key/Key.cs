@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(KeyAnimator))]
@@ -6,11 +7,13 @@ using UnityEngine;
 public class Key : MonoBehaviour
 {
     [SerializeField] private ColorMaterialPair[] _colorMaterials;
-    [SerializeField] private ParticleSystem _removeKey;
+    [SerializeField] private Sprite _keySprite;
 
     private Renderer _renderer;
+    private Collider _collider;
     private KeyAnimator _animator;
     private ApplyColorService _applyColorService;
+    private bool _isPickedUp = false;
 
     public BaseColor Color { get; private set; }
     public int LayerIndex { get; set; }
@@ -20,23 +23,34 @@ public class Key : MonoBehaviour
     private void Awake()
     {
         _animator = GetComponent<KeyAnimator>();
+        _collider = GetComponent<Collider>();
         _renderer = GetComponentInChildren<Renderer>();
         _applyColorService = new ApplyColorService { ColorMaterials = _colorMaterials };
     }
 
+    public Sprite Get()
+    {
+        return _keySprite;
+    }
+
     public void UseActive()
     {
-        _animator.Turn(true);
-        _removeKey.Play();
-        _animator.Turn(false);
-        gameObject.SetActive(false);
+        if(_isPickedUp == false)
+        {
+            _isPickedUp = true;
 
-        KeyCollected?.Invoke(this);
+            if(_collider != null)
+            {
+                _collider.enabled = false;
+            }
+
+            StartCoroutine(UseActiveCoroutine());
+        }
     }
 
     public void UseInactive()
     {
-        _animator.TryTurn(true);
+        StartCoroutine(UseInactiveCoroutine());
     }
 
     public void Initialize(BaseColor color)
@@ -44,5 +58,18 @@ public class Key : MonoBehaviour
         Color = color;
 
         _applyColorService.Apply(_renderer, color);
+    }
+
+    private IEnumerator UseActiveCoroutine()
+    {
+        yield return StartCoroutine(_animator.Turn());
+
+        gameObject.SetActive(false);
+        KeyCollected?.Invoke(this);
+    }
+
+    private IEnumerator UseInactiveCoroutine()
+    {
+        yield return StartCoroutine(_animator.TryTurn());
     }
 }

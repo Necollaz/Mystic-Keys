@@ -36,14 +36,18 @@ public class PlayerInput : MonoBehaviour
                     {
                         key.UseActive();
                         matchingLockbox.AddKey();
+                        _keyLayer.Unregister(key.LayerIndex, key);
+                    }
+                    else if(_inventory.HasSpace())
+                    {
+                        key.UseActive();
+                        _inventory.AddKey(key);
+                        _keyLayer.Unregister(key.LayerIndex, key);
                     }
                     else
                     {
-                        _inventory.AddKey(key);
+                        key.UseInactive();
                     }
-
-                    _keyLayer.Unregister(key.LayerIndex, key);
-
                 }
                 else
                 {

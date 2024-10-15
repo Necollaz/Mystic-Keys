@@ -3801,18 +3801,21 @@ MonoBehaviour:
   _spawnSlots:
     _slots:
     - Transform: {fileID: 629327662}
-      IsActive: 1
       InactiveSlot: {fileID: 198525124884619758, guid: c77214461b62ac74fa2adeade9783c1a, type: 3}
+      IsActive: 1
     - Transform: {fileID: 1227923872}
+      InactiveSlot: {fileID: 198525124884619758, guid: c77214461b62ac74fa2adeade9783c1a, type: 3}
       IsActive: 1
-      InactiveSlot: {fileID: 198525124884619758, guid: c77214461b62ac74fa2adeade9783c1a, type: 3}
     - Transform: {fileID: 1259410071}
-      IsActive: 0
       InactiveSlot: {fileID: 198525124884619758, guid: c77214461b62ac74fa2adeade9783c1a, type: 3}
+      IsActive: 0
     - Transform: {fileID: 666138892}
-      IsActive: 0
       InactiveSlot: {fileID: 198525124884619758, guid: c77214461b62ac74fa2adeade9783c1a, type: 3}
+      IsActive: 0
   _lockboxRegistry: {fileID: 714553898}
+  _moveToSlotEffect: {fileID: 0}
+  _moveToLockboxEffect: {fileID: 0}
+  _keyImage: {fileID: 0}
 --- !u!1 &1552055200
 GameObject:
   m_ObjectHideFlags: 0

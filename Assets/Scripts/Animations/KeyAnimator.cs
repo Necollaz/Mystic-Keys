@@ -1,8 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(ControllerAnimations))]
 public class KeyAnimator : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem _removeKey;
+
     private ControllerAnimations _animationController;
 
     private void Awake()
@@ -10,18 +13,29 @@ public class KeyAnimator : MonoBehaviour
         _animationController = GetComponent<ControllerAnimations>();
     }
 
-    public void Rotate(bool isRotate)
+    public IEnumerator TryTurn()
     {
-        _animationController.RotateKey(isRotate);
+        _animationController.TryTurnKey(true);
+        yield return null;
+
+        float animationLength = _animationController.GetAnimationLength();
+        yield return new WaitForSeconds(animationLength);
+
+        _animationController.TryTurnKey(false);
     }
 
-    public void Turn(bool isActive)
+    public IEnumerator Turn()
     {
-        _animationController.TurnKey(isActive);
-    }
+        _animationController.TurnKey(true);
+        yield return null;
 
-    public void TryTurn(bool isActive)
-    {
-        _animationController.TryTurnKey(isActive);
+        float animationLength = _animationController.GetAnimationLength();
+        yield return new WaitForSeconds(animationLength);
+
+        _animationController.TurnKey(false);
+        ParticleSystem removeKeyParticle = Instantiate(_removeKey, transform.position, Quaternion.identity);
+
+        removeKeyParticle.Play();
+        yield return new WaitForSeconds(_removeKey.main.duration);
     }
 }

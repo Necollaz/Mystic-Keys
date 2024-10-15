@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -53,8 +54,7 @@ public class Lockbox : MonoBehaviour
 
             if (IsFull())
             {
-                Filled?.Invoke(this);
-                StartCoroutine(_animator.Close());
+                StartCoroutine(CloseAndNotify());
             }
         }
     }
@@ -62,5 +62,11 @@ public class Lockbox : MonoBehaviour
     public bool IsFull()
     {
         return _currentKeys >= _requiredKeys;
+    }
+
+    private IEnumerator CloseAndNotify()
+    {
+        yield return StartCoroutine(_animator.Close());
+        Filled?.Invoke(this);
     }
 }

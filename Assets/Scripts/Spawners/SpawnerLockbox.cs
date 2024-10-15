@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -43,14 +44,14 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
 
         _colorKeyCounter.UpdateKeyCounts();
 
-        Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.GetKeysPerColor();
+        Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.GetPerColor();
         Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCounts);
         List<BaseColor> lockboxColors = _lockboxColorPicker.GetColors(lockboxesPerColor, activeSpawnPoints.Count);
 
         for (int i = 0; i < lockboxColors.Count; i++)
         {
             BaseColor color = lockboxColors[i];
-            bool reserved = _colorKeyCounter.ReserveKeys(color, _lockboxCalculator.KeysPerLockbox);
+            bool reserved = _colorKeyCounter.Reserve(color, _lockboxCalculator.KeysPerLockbox);
 
             if (reserved)
             {
@@ -67,24 +68,30 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
 
     private void OnFilled(Lockbox filledLockbox)
     {
-        if (filledLockbox.IsFull())
-        {
-            _lockboxRegistry.Unregister(filledLockbox);
-            Pool.Return(filledLockbox);
-            _colorKeyCounter.UpdateKeyCounts();
-
-            if (_colorKeyCounter.HasKeys())
-            {
-                CreateNew(filledLockbox.transform);
-            }
-        }
+        StartCoroutine(HandleFilled(filledLockbox));
     }
+
+    private IEnumerator HandleFilled(Lockbox filledLockbox)
+    {
+        _lockboxRegistry.Unregister(filledLockbox);
+        Pool.Return(filledLockbox);
+        _colorKeyCounter.UpdateKeyCounts();
+
+        if (_colorKeyCounter.HasKeys())
+        {
+            Transform spawnPoint = filledLockbox.transform;
+            CreateNew(spawnPoint);
+        }
+
+        yield return null;
+    }
+
 
     private void CreateNew(Transform spawnPoint)
     {
         _colorKeyCounter.UpdateKeyCounts();
 
-        Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.GetKeysPerColor();
+        Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.GetPerColor();
         Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCounts);
         BaseColor newColor = _lockboxColorPicker.GetSingleColor(lockboxesPerColor);
 

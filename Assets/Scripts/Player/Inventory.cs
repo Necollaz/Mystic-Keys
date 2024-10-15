@@ -6,6 +6,8 @@ public class Inventory : MonoBehaviour
 {
     [SerializeField] private InventorySpawnSlots _spawnSlots;
     [SerializeField] private LockboxRegistry _lockboxRegistry;
+    [SerializeField] private ParticleSystem _moveToSlotEffect;
+    [SerializeField] private ParticleSystem _moveToLockboxEffect;
 
     private List<Slot> _activeSlots;
     private List<Slot> _inactiveSlots;
@@ -34,9 +36,14 @@ public class Inventory : MonoBehaviour
             {
                 _activeKeys[slot] = key;
 
-                key.transform.SetParent(slot.Transform);
-                key.transform.localPosition = Vector3.zero;
-                key.transform.localRotation = Quaternion.identity;
+                if(slot.SlotImage != null)
+                {
+                    slot.SlotImage.sprite = key.Get();
+                    //slot.SlotImage.color = key.Color;
+                }
+
+                PlayEffect(slot);
+                key.gameObject.SetActive(false);
 
                 return true;
             }
@@ -51,14 +58,37 @@ public class Inventory : MonoBehaviour
         UpdateSlotLists();
     }
 
+    public bool HasSpace()
+    {
+        foreach (Slot slot in _activeSlots)
+        {
+            if (!_activeKeys.ContainsKey(slot))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void PlayEffect(Slot slot)
+    {
+        ParticleSystem effectInstance = Instantiate(_moveToLockboxEffect, slot.Transform.position, Quaternion.identity);
+        effectInstance.Play();
+    }
+
     private void RemoveKey(Slot slot)
     {
         if (_activeKeys.ContainsKey(slot))
         {
             Key key = _activeKeys[slot];
-            key.transform.SetParent(null);
-            key.gameObject.SetActive(false);
             _activeKeys.Remove(slot);
+
+            slot.SlotImage.sprite = slot.DefaultSprite;
+            slot.SlotImage.color = slot.DefaultColor;
+
+            PlayEffect(slot);
+
+            key.gameObject.SetActive(false);
         }
     }
 
@@ -87,6 +117,9 @@ public class Inventory : MonoBehaviour
             {
                 Instantiate(slot.InactiveSlot, slot.Transform.position, Quaternion.identity, slot.Transform);
             }
+
+            slot.SlotImage.sprite = slot.DefaultSprite;
+            slot.SlotImage.color = slot.DefaultColor;
         }
     }
 }

@@ -64,4 +64,10 @@ public class ControllerAnimations : MonoBehaviour
     {
         _animator.SetBool(AnimationData.Params.IdleOpenLockbox, isIdleOpening);
     }
+
+    public float GetAnimationLength()
+    {
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        return stateInfo.length;
+    }
 }

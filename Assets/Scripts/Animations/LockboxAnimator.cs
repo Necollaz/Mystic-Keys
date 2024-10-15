@@ -5,7 +5,6 @@ using UnityEngine;
 public class LockboxAnimator : MonoBehaviour
 {
     private ControllerAnimations _animationController;
-    private float _waitTime = 1f;
 
     private void Awake()
     {
@@ -34,6 +33,8 @@ public class LockboxAnimator : MonoBehaviour
 
         _animationController.CloseLockbox(false);
         _animationController.DisappearanceLockbox(true);
+
+        yield return Wait();
     }
 
     public void Appearance()
@@ -48,6 +49,8 @@ public class LockboxAnimator : MonoBehaviour
 
     private WaitForSeconds Wait()
     {
-        return new WaitForSeconds(_waitTime);
+        float animationLength = _animationController.GetAnimationLength();
+
+        return new WaitForSeconds(animationLength);
     }
 }

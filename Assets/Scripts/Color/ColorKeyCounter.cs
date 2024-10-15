@@ -17,7 +17,7 @@ public class ColorKeyCounter
         _availableKeys = _keysSpawner.GetActive();
     }
 
-    public bool ReserveKeys(BaseColor color, int count)
+    public bool Reserve(BaseColor color, int count)
     {
         if (_availableKeys.ContainsKey(color) && _availableKeys[color] >= count)
         {
@@ -27,7 +27,7 @@ public class ColorKeyCounter
         return false;
     }
 
-    public Dictionary<BaseColor, int> GetKeysPerColor()
+    public Dictionary<BaseColor, int> GetPerColor()
     {
         return new Dictionary<BaseColor, int>(_availableKeys);
     }
