@@ -28,7 +28,7 @@ public class Key : MonoBehaviour
         _applyColorService = new ApplyColorService { ColorMaterials = _colorMaterials };
     }
 
-    public Sprite Get()
+    public Sprite GetSprite()
     {
         return _keySprite;
     }

@@ -23,7 +23,7 @@ public class LockboxKeyVisualizer
         if (currentKeyCount <= _keySlots.Count)
         {
             Transform slot = _keySlots[currentKeyCount - 1];
-            Key keyVisual = Key.Instantiate(_keyVisualPrefab, slot.position, slot.rotation, slot);
+            Key keyVisual = GameObject.Instantiate(_keyVisualPrefab, slot.position, slot.rotation, slot);
             keyVisual.Initialize(color);
             _collectedKeyVisuals.Add(keyVisual);
         }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LockboxAnimator))]
-[RequireComponent(typeof(LockboxKeyVisualizer))]
 public class Lockbox : MonoBehaviour
 {
     [SerializeField] private ColorMaterialPair[] _colorMaterials;
@@ -20,6 +19,7 @@ public class Lockbox : MonoBehaviour
 
     public BaseColor Color { get; private set; }
     public int CurrentKeyCount => _currentKeys;
+    public int RequiredKeys => _requiredKeys;
 
     public event Action<Lockbox, int> KeyAdded;
     public event Action<Lockbox> Filled;
@@ -63,6 +63,11 @@ public class Lockbox : MonoBehaviour
     public bool IsFull()
     {
         return _currentKeys >= _requiredKeys;
+    }
+
+    public Transform GetAvailableSlot()
+    {
+        return _keySlots[_currentKeys];
     }
 
     private IEnumerator CloseAndNotify()

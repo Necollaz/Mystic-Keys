@@ -1,125 +1,49 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(LockboxInteractor))]
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private InventorySpawnSlots _spawnSlots;
     [SerializeField] private LockboxRegistry _lockboxRegistry;
-    [SerializeField] private ParticleSystem _moveToSlotEffect;
-    [SerializeField] private ParticleSystem _moveToLockboxEffect;
+    [SerializeField] private ParticlePool _particlePool;
 
-    private List<Slot> _activeSlots;
-    private List<Slot> _inactiveSlots;
-    private Dictionary<Slot, Key> _activeKeys = new Dictionary<Slot, Key>();
+    private SlotOrganizer _slotOrganizer;
+    private KeyInventory _keyInventory;
+    private Effects _effects;
+    private LockboxInteractor _lockboxInteractor;
 
     private void Awake()
     {
-        UpdateSlotLists();
+        _effects = new Effects(_particlePool, this);
+        _slotOrganizer = new SlotOrganizer(_spawnSlots);
+        _keyInventory = new KeyInventory(_effects);
+
+        _lockboxInteractor = GetComponent<LockboxInteractor>();
+        _lockboxInteractor.Initialize(_keyInventory, _effects);
     }
 
     private void OnEnable()
     {
-        _lockboxRegistry.LockboxCreated += OnMoveToLockbox;
+        _lockboxRegistry.LockboxCreated += _lockboxInteractor.Move;
     }
 
     private void OnDisable()
     {
-        _lockboxRegistry.LockboxCreated -= OnMoveToLockbox;
+        _lockboxRegistry.LockboxCreated -= _lockboxInteractor.Move;
     }
-    
+
     public bool AddKey(Key key)
     {
-        foreach (Slot slot in _activeSlots)
-        {
-            if (_activeKeys.ContainsKey(slot) == false)
-            {
-                _activeKeys[slot] = key;
-
-                if(slot.SlotImage != null)
-                {
-                    slot.SlotImage.sprite = key.Get();
-                    //slot.SlotImage.color = key.Color;
-                }
-
-                PlayEffect(slot);
-                key.gameObject.SetActive(false);
-
-                return true;
-            }
-        }
-
-        return false;
+        return _keyInventory.Add(_slotOrganizer.GetActiveSlots(), key);
     }
-     
+
     public void PurchaseSlot(int index)
     {
-        _spawnSlots.Purchase(index);
-        UpdateSlotLists();
+        _slotOrganizer.PurchaseSlot(index);
     }
 
     public bool HasSpace()
     {
-        foreach (Slot slot in _activeSlots)
-        {
-            if (!_activeKeys.ContainsKey(slot))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void PlayEffect(Slot slot)
-    {
-        ParticleSystem effectInstance = Instantiate(_moveToLockboxEffect, slot.Transform.position, Quaternion.identity);
-        effectInstance.Play();
-    }
-
-    private void RemoveKey(Slot slot)
-    {
-        if (_activeKeys.ContainsKey(slot))
-        {
-            Key key = _activeKeys[slot];
-            _activeKeys.Remove(slot);
-
-            slot.SlotImage.sprite = slot.DefaultSprite;
-            slot.SlotImage.color = slot.DefaultColor;
-
-            PlayEffect(slot);
-
-            key.gameObject.SetActive(false);
-        }
-    }
-
-    private void OnMoveToLockbox(Lockbox lockbox)
-    {
-        var keysToMove = _activeKeys
-        .Where(pair => pair.Value.Color == lockbox.Color)
-        .ToList();
-
-        foreach (var pair in keysToMove)
-        {
-            RemoveKey(pair.Key);
-            lockbox.AddKey();
-        }
-
-    }
-
-    private void UpdateSlotLists()
-    {
-        _activeSlots = _spawnSlots.GetActive();
-        _inactiveSlots = _spawnSlots.GetInactive();
-
-        foreach (Slot slot in _inactiveSlots)
-        {
-            if (slot.InactiveSlot != null)
-            {
-                Instantiate(slot.InactiveSlot, slot.Transform.position, Quaternion.identity, slot.Transform);
-            }
-
-            slot.SlotImage.sprite = slot.DefaultSprite;
-            slot.SlotImage.color = slot.DefaultColor;
-        }
+        return _keyInventory.HasSpace(_slotOrganizer.GetActiveSlots());
     }
 }
