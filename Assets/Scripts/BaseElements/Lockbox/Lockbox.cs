@@ -23,6 +23,7 @@ public class Lockbox : MonoBehaviour
 
     public event Action<Lockbox, int> KeyAdded;
     public event Action<Lockbox> Filled;
+    public event Action<Lockbox> Opened;
 
     private void Awake()
     {
@@ -38,10 +39,9 @@ public class Lockbox : MonoBehaviour
         _currentKeys = 0;
 
         _applyColorService.Apply(_renderer, Color);
-        _animator.Appearance();
-        _keyVisualizer.Initialize();
+        _keyVisualizer.Clear();
 
-        StartCoroutine(_animator.Open());
+        StartCoroutine(Initialize());
     }
 
     public void AddKey()
@@ -49,14 +49,14 @@ public class Lockbox : MonoBehaviour
         if (_currentKeys < _requiredKeys)
         {
             _currentKeys++;
-            KeyAdded?.Invoke(this, _currentKeys);
             _keyVisualizer.UpdateVisual(_currentKeys, Color);
 
             if (IsFull())
             {
-                StartCoroutine(CloseAndNotify());
-                _keyVisualizer.Clear();
+                StartCoroutine(Fill());
             }
+
+            KeyAdded?.Invoke(this, _currentKeys);
         }
     }
 
@@ -70,9 +70,18 @@ public class Lockbox : MonoBehaviour
         return _keySlots[_currentKeys];
     }
 
-    private IEnumerator CloseAndNotify()
+    private IEnumerator Fill()
     {
+        _keyVisualizer.Clear();
+
         yield return StartCoroutine(_animator.Close());
         Filled?.Invoke(this);
+    }
+
+    private IEnumerator Initialize()
+    {
+        yield return StartCoroutine(_animator.Appearance());
+        yield return StartCoroutine(_animator.Open());
+        Opened?.Invoke(this);
     }
 }

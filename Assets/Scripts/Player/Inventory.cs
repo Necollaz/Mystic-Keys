@@ -1,49 +1,51 @@
 using UnityEngine;
 
-[RequireComponent(typeof(LockboxInteractor))]
+[RequireComponent(typeof(MovemingKeys))]
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private InventorySpawnSlots _spawnSlots;
     [SerializeField] private LockboxRegistry _lockboxRegistry;
-    [SerializeField] private ParticlePool _particlePool;
 
     private SlotOrganizer _slotOrganizer;
     private KeyInventory _keyInventory;
-    private Effects _effects;
-    private LockboxInteractor _lockboxInteractor;
+    private MovemingKeys _movemingKeys;
 
     private void Awake()
     {
-        _effects = new Effects(_particlePool, this);
         _slotOrganizer = new SlotOrganizer(_spawnSlots);
-        _keyInventory = new KeyInventory(_effects);
+        _keyInventory = new KeyInventory();
 
-        _lockboxInteractor = GetComponent<LockboxInteractor>();
-        _lockboxInteractor.Initialize(_keyInventory, _effects);
+        _movemingKeys = GetComponent<MovemingKeys>();
+        _movemingKeys.Initialize(_keyInventory);
     }
 
     private void OnEnable()
     {
-        _lockboxRegistry.LockboxCreated += _lockboxInteractor.Move;
+        _lockboxRegistry.LockboxCreated += HandleLockboxCreated;
     }
 
     private void OnDisable()
     {
-        _lockboxRegistry.LockboxCreated -= _lockboxInteractor.Move;
+        _lockboxRegistry.LockboxCreated -= HandleLockboxCreated;
     }
 
     public bool AddKey(Key key)
     {
-        return _keyInventory.Add(_slotOrganizer.GetActiveSlots(), key);
+        return _keyInventory.Add(_slotOrganizer.GetActive(), key);
     }
 
     public void PurchaseSlot(int index)
     {
-        _slotOrganizer.PurchaseSlot(index);
+        _slotOrganizer.Purchase(index);
     }
 
     public bool HasSpace()
     {
-        return _keyInventory.HasSpace(_slotOrganizer.GetActiveSlots());
+        return _keyInventory.HasSpace(_slotOrganizer.GetActive());
+    }
+
+    private void HandleLockboxCreated(Lockbox lockbox)
+    {
+        lockbox.Opened += _movemingKeys.LockboxOpened;
     }
 }

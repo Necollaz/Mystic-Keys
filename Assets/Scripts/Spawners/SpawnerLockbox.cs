@@ -122,13 +122,13 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
     private void Create(Transform spawnPoint, BaseColor color)
     {
         Lockbox lockbox = Pool.Get();
+        lockbox.Initialize(color);
         _lockboxRegistry.Register(lockbox);
         SetInstanceTransform(lockbox, spawnPoint);
-        lockbox.Initialize(color);
     }
 
     private void CreateInactiveMarker(Transform spawnPoint)
     {
-        _inactivePrefab = Instantiate(_inactivePrefab, spawnPoint.position, spawnPoint.rotation);
+        Instantiate(_inactivePrefab, spawnPoint.position, spawnPoint.rotation);
     }
 }

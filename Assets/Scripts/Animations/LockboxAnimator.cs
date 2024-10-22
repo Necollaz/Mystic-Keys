@@ -13,9 +13,6 @@ public class LockboxAnimator : MonoBehaviour
 
     public IEnumerator Open()
     {
-        yield return Wait();
-
-        _animationController.AppearanceLockbox(false);
         _animationController.OpenLockbox(true);
 
         yield return Wait();
@@ -35,11 +32,15 @@ public class LockboxAnimator : MonoBehaviour
         _animationController.DisappearanceLockbox(true);
 
         yield return Wait();
+
+        _animationController.DisappearanceLockbox(false);
     }
 
-    public void Appearance()
+    public IEnumerator Appearance()
     {
         _animationController.AppearanceLockbox(true);
+        yield return Wait();
+        _animationController.AppearanceLockbox(false);
     }
 
     public void IdleOpen(bool isIdle)

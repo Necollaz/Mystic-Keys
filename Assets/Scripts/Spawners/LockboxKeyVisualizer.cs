@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class LockboxKeyVisualizer
 {
-    private List<Transform> _keySlots;
     private Key _keyVisualPrefab;
+    private List<Transform> _keySlots;
     private List<Key> _collectedKeyVisuals = new List<Key>();
 
     public LockboxKeyVisualizer(List<Transform> keySlots, Key keyVisualPrefab)
@@ -13,17 +13,12 @@ public class LockboxKeyVisualizer
         _keyVisualPrefab = keyVisualPrefab;
     }
 
-    public void Initialize()
-    {
-        Clear();
-    }
-
     public void UpdateVisual(int currentKeyCount, BaseColor color)
     {
         if (currentKeyCount <= _keySlots.Count)
         {
             Transform slot = _keySlots[currentKeyCount - 1];
-            Key keyVisual = GameObject.Instantiate(_keyVisualPrefab, slot.position, slot.rotation, slot);
+            Key keyVisual = Key.Instantiate(_keyVisualPrefab, slot.position, slot.rotation, slot);
             keyVisual.Initialize(color);
             _collectedKeyVisuals.Add(keyVisual);
         }

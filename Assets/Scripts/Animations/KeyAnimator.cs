@@ -4,8 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(ControllerAnimations))]
 public class KeyAnimator : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem _removeKey;
-
     private ControllerAnimations _animationController;
 
     private void Awake()
@@ -33,9 +31,5 @@ public class KeyAnimator : MonoBehaviour
         yield return new WaitForSeconds(animationLength);
 
         _animationController.TurnKey(false);
-        ParticleSystem removeKeyParticle = Instantiate(_removeKey, transform.position, Quaternion.identity);
-
-        removeKeyParticle.Play();
-        yield return new WaitForSeconds(_removeKey.main.duration);
     }
 }
