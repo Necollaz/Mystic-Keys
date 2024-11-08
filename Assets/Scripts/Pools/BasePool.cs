@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasePool<T> where T : MonoBehaviour
+public class BasePool<T> where T : Component
 {
     private T _prefab;
     private Transform _parent;

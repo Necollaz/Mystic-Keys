@@ -17,13 +17,13 @@ public class Lockbox : MonoBehaviour
     private ApplyColorService _applyColorService;
     private LockboxKeyVisualizer _keyVisualizer;
 
-    public BaseColor Color { get; private set; }
-    public int CurrentKeyCount => _currentKeys;
-    public int RequiredKeys => _requiredKeys;
-
     public event Action<Lockbox, int> KeyAdded;
     public event Action<Lockbox> Filled;
     public event Action<Lockbox> Opened;
+
+    public BaseColor Color { get; private set; }
+    public int CurrentKeyCount => _currentKeys;
+    public int RequiredKeys => _requiredKeys;
 
     private void Awake()
     {

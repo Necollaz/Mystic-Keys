@@ -7,6 +7,7 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
     [SerializeField] private LockboxRegistry _lockboxRegistry;
     [SerializeField] private SpawnerKeys _keysSpawner;
     [SerializeField] private ParticleSystem _inactivePrefab;
+    [SerializeField] private LockboxSpawnPoints _points;
 
     private LockboxSpawnPointsAvailability _spawnPointAvailability;
     private LockboxCalculator _lockboxCalculator;
@@ -19,7 +20,7 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
         _colorKeyCounter = new ColorKeyCounter(_keysSpawner);
         _lockboxCalculator = new LockboxCalculator();
         _lockboxColorPicker = new LockboxColorPicker();
-        _spawnPointAvailability = new LockboxSpawnPointsAvailability(SpawnPoints);
+        _spawnPointAvailability = new LockboxSpawnPointsAvailability(SpawnPoints, _points.InitialActivePoints);
     }
 
     private void OnEnable()
@@ -32,7 +33,7 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
         _lockboxRegistry.LockboxFilled -= OnFilled;
     }
 
-    public override void Spawn()
+    public override void Create()
     {
         CreateInitial();
     }
@@ -124,7 +125,7 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
         Lockbox lockbox = Pool.Get();
         lockbox.Initialize(color);
         _lockboxRegistry.Register(lockbox);
-        SetInstanceTransform(lockbox, spawnPoint);
+        SetTransform(lockbox, spawnPoint);
     }
 
     private void CreateInactiveMarker(Transform spawnPoint)

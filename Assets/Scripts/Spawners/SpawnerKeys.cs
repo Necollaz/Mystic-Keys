@@ -1,14 +1,18 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class SpawnerKeys : BaseSpawner<Key>
 {
+    [Header("Spawn by layer points")]
     [SerializeField] private KeyLayer _keyLayer;
     [SerializeField] private ColorKeyCount[] _keyCounts;
+    [SerializeField] private SpawnGroupLocator _groups;
 
     private Dictionary<BaseColor, int> _remainingColorCounts;
-    private List<Key> _activeKeys = new List<Key>();
+
+    public event Action<Key> KeyCreated;
 
     public override void Awake()
     {
@@ -19,16 +23,16 @@ public class SpawnerKeys : BaseSpawner<Key>
             );
     }
 
-    public override void Spawn()
+    public override void Create()
     {
-        Create();
+        CreateObject();
     }
 
     public Dictionary<BaseColor, int> GetActive()
     {
         Dictionary<BaseColor, int> keysPerColor = new Dictionary<BaseColor, int>();
 
-        foreach (Key key in _activeKeys)
+        foreach (Key key in SpawnedInstances)
         {
             BaseColor color = key.Color;
 
@@ -45,7 +49,7 @@ public class SpawnerKeys : BaseSpawner<Key>
         return keysPerColor;
     }
 
-    private void Create()
+    private void CreateObject()
     {
         for (int layerIndex = 0; layerIndex < _keyLayer.Layers.Length; layerIndex++)
         {
@@ -87,19 +91,24 @@ public class SpawnerKeys : BaseSpawner<Key>
                 break;
             }
 
-            int randomIndex = Random.Range(0, availableSpawnIndices.Count);
+            int randomIndex = UnityEngine.Random.Range(0, availableSpawnIndices.Count);
             int spawnIndex = availableSpawnIndices[randomIndex];
             availableSpawnIndices.RemoveAt(randomIndex);
 
             Key key = Pool.Get();
             Transform spawnPoint = spawnPoints[spawnIndex];
 
-            SetInstanceTransform(key, spawnPoint);
+            SetTransform(key, spawnPoint);
 
             key.Initialize(color);
             key.LayerIndex = layerIndex;
             _keyLayer.Register(layerIndex, key);
-            _activeKeys.Add(key);
+            SpawnedInstances.Add(key);
+
+            int groupIndex = _groups.FindGroupIndex(spawnPoint);
+            key.GroupIndex = groupIndex;
+
+            KeyCreated?.Invoke(key);
         }
     }
 }

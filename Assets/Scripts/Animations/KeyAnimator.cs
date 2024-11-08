@@ -1,35 +1,47 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(ControllerAnimations))]
-public class KeyAnimator : MonoBehaviour
+public class KeyAnimator : BaseAnimator
 {
-    private ControllerAnimations _animationController;
+    private float _scaleDuration = 0.7f;
 
-    private void Awake()
-    {
-        _animationController = GetComponent<ControllerAnimations>();
-    }
+    public event Action CollectedComplete;
 
     public IEnumerator TryTurn()
     {
-        _animationController.TryTurnKey(true);
+        ControllerAnimations.TryTurnKey(true);
         yield return null;
 
-        float animationLength = _animationController.GetAnimationLength();
+        float animationLength = ControllerAnimations.GetAnimationLength();
         yield return new WaitForSeconds(animationLength);
 
-        _animationController.TryTurnKey(false);
+        ControllerAnimations.TryTurnKey(false);
     }
-
+        
     public IEnumerator Turn()
     {
-        _animationController.TurnKey(true);
+        ControllerAnimations.TurnKey(true);
         yield return null;
 
-        float animationLength = _animationController.GetAnimationLength();
+        float animationLength = ControllerAnimations.GetAnimationLength();
         yield return new WaitForSeconds(animationLength);
 
-        _animationController.TurnKey(false);
+        ControllerAnimations.TurnKey(false);
+    }
+
+    public override void TriggerAnimation()
+    {
+        StartCoroutine(Turn());
+    }
+
+    public override float GetScaleDuration()
+    {
+        return _scaleDuration;
+    }
+
+    public override void OnAnimationComplete()
+    {
+        CollectedComplete?.Invoke();
     }
 }

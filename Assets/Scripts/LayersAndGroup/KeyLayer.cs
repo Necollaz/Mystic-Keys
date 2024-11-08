@@ -34,18 +34,13 @@ public class KeyLayer : MonoBehaviour
             if (_activeKeysPerLayer[layerIndex].Count == 0)
             {
                 _activeKeysPerLayer.Remove(layerIndex);
-                AdvanceToNext();
+                _currentLayerIndex++;
             }
         }
     }
 
-    public bool IsCleared(int layerIndex)
-    {
-        return _activeKeysPerLayer.ContainsKey(layerIndex) == false || _activeKeysPerLayer[layerIndex].Count == 0;
-    }
-
-    private void AdvanceToNext()
-    {
-        _currentLayerIndex++;
-    }
+    //public bool IsCleared(int layerIndex)
+    //{
+        //return _activeKeysPerLayer.ContainsKey(layerIndex) == false || _activeKeysPerLayer[layerIndex].Count == 0;
+    //}
 }

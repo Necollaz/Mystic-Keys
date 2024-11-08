@@ -12,6 +12,9 @@ GameObject:
   - component: {fileID: 803328848743248523}
   - component: {fileID: 1726356725647943879}
   - component: {fileID: 3468896428495506631}
+  - component: {fileID: 5480726210795567895}
+  - component: {fileID: 7094495421429151216}
+  - component: {fileID: -1810103900623466222}
   m_Layer: 0
   m_Name: Chisel
   m_TagString: Untagged
@@ -80,6 +83,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0b5f32802e84e72b1e073cc0225540, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5480726210795567895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3874362671064736530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4ad243af33c4427e88917881c3fdce4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _prefab: {fileID: 8771972552311404798, guid: bbf9e36a48d6c5648a13889afab076fd, type: 3}
+  ControllerAnimations: {fileID: 3468896428495506631}
+--- !u!54 &7094495421429151216
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3874362671064736530}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &-1810103900623466222
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3874362671064736530}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.061727386, y: 0.05227667, z: 0.28684926}
+  m_Center: {x: 0.00007368624, y: 0.0019522458, z: 0.0007224878}
 --- !u!1 &5467020661056354202
 GameObject:
   m_ObjectHideFlags: 0

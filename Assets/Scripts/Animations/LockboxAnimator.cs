@@ -34,6 +34,8 @@ public class LockboxAnimator : MonoBehaviour
         yield return Wait();
 
         _animationController.DisappearanceLockbox(false);
+
+        yield return Wait();
     }
 
     public IEnumerator Appearance()

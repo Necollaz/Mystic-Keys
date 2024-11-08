@@ -19,7 +19,7 @@ public class KeyInventory
                     slot.SlotImage.sprite = key.GetSprite();
                 }
 
-                GameObject.Instantiate(slot.KeyAddedEffect, slot.Transform.position, Quaternion.identity, slot.Transform);
+                PlayEffect(slot);
                 return true;
             }
         }
@@ -39,7 +39,7 @@ public class KeyInventory
                 slot.SlotImage.color = slot.DefaultColor;
             }
 
-            GameObject.Instantiate(slot.KeyRemovedEffect, slot.Transform.position, Quaternion.identity, slot.Transform);
+            PlayEffect(slot);
         }
     }
 
@@ -61,5 +61,10 @@ public class KeyInventory
         return _activeKeys
             .Where(key => key.Value.Color == color)
             .ToList();
+    }
+
+    private void PlayEffect(Slot slot)
+    {
+        GameObject.Instantiate(slot.KeyRemovedEffect, slot.Transform.position, Quaternion.identity, slot.Transform);
     }
 }

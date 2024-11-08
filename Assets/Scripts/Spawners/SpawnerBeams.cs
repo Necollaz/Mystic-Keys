@@ -1,7 +1,12 @@
 public class SpawnerBeams : BaseSpawner<Beam>
 {
-    public override void Spawn()
+    public override void Awake()
     {
-        SpawnByPoints();
+        base.Awake();
+    }
+
+    public override void Create()
+    {
+        CreateByPoints();
     }
 }

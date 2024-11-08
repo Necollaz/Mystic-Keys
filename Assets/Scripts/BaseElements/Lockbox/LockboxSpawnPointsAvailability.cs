@@ -4,11 +4,13 @@ using UnityEngine;
 public class LockboxSpawnPointsAvailability
 {
     private Transform[] _spawnPoints;
+    private int _initialActivePoints;
     private List<int> _activeSpawnPointIndexes = new List<int>();
 
-    public LockboxSpawnPointsAvailability(Transform[] spawnPoints)
+    public LockboxSpawnPointsAvailability(Transform[] spawnPoints, int initialActivePoints)
     {
         _spawnPoints = spawnPoints;
+        _initialActivePoints = initialActivePoints;
         Initialize();
     }
 
@@ -49,9 +51,16 @@ public class LockboxSpawnPointsAvailability
 
     private void Initialize()
     {
+        _activeSpawnPointIndexes.Clear();
+
         if (_spawnPoints.Length > 0)
         {
-            _activeSpawnPointIndexes.Add(0);
+            int activeCount = Mathf.Clamp(_initialActivePoints, 1, _spawnPoints.Length);
+
+            for (int i = 0; i < activeCount; i++)
+            {
+                _activeSpawnPointIndexes.Add(i);
+            }
         }
     }
 }

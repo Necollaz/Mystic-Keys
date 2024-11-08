@@ -1,22 +1,43 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(ControllerAnimations))]
+[RequireComponent(typeof(PadlockAnimator))]
 public class Padlock : MonoBehaviour
 {
-    private ControllerAnimations _animator;
-
-    public event Action<Padlock> OnUnlocked;
+    private PadlockAnimator _padlockAnimator;
 
     public bool IsUnlocked { get; private set; }
+    public int GroupIndex { get; set; }
+
+    public event Action<Padlock> UnlockCompleted;
+
+    private void Awake()
+    {
+        _padlockAnimator = GetComponent<PadlockAnimator>();
+        _padlockAnimator.UnlockComplete += OnUnlockComplete;
+    }
+
+    private void OnDisable()
+    {
+        _padlockAnimator.UnlockComplete -= OnUnlockComplete;
+    }
+
+    public void Reset()
+    {
+        IsUnlocked = false;
+    }
 
     public void Unlock()
     {
-        if (!IsUnlocked)
+        if (IsUnlocked == false)
         {
             IsUnlocked = true;
-            _animator.UnlockPadlock(true);
-            OnUnlocked?.Invoke(this);
+            _padlockAnimator.PlayAnimation();
         }
+    }
+
+    private void OnUnlockComplete()
+    {
+        UnlockCompleted?.Invoke(this);
     }
 }

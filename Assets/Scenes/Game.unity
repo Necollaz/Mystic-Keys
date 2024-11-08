@@ -364,13 +364,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 42979672}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.8433915, z: -0, w: 0.53729963}
-  m_LocalPosition: {x: 9.800001, y: -5, z: -15.5}
+  m_LocalRotation: {x: 0, y: 0.9396927, z: 0, w: 0.34202018}
+  m_LocalPosition: {x: 5.7, y: -6.41, z: -10.84}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1013259949}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 140, z: 0}
 --- !u!1 &54267078
 GameObject:
   m_ObjectHideFlags: 0
@@ -381,7 +381,7 @@ GameObject:
   m_Component:
   - component: {fileID: 54267079}
   m_Layer: 0
-  m_Name: SpawnPoint6
+  m_Name: ChiselSP2
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -494,7 +494,7 @@ GameObject:
   m_Component:
   - component: {fileID: 86265458}
   m_Layer: 6
-  m_Name: SpawnPoint3
+  m_Name: BeamSP3
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -610,6 +610,8 @@ MonoBehaviour:
   _lockboxRegistry: {fileID: 714553898}
   _keysSpawner: {fileID: 134956013}
   _inactivePrefab: {fileID: 198537352720002792, guid: b1ddb704722ed694fa4b3b8d07d40583, type: 3}
+  _points:
+    InitialActivePoints: 1
 --- !u!1 &118656471
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,6 +746,7 @@ MonoBehaviour:
     Count: 3
   - Color: 1
     Count: 3
+  _groups: {fileID: 1069006661}
 --- !u!1 &198533462
 GameObject:
   m_ObjectHideFlags: 0
@@ -1055,13 +1058,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 274052849}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9396927, z: -0, w: 0.34202018}
-  m_LocalPosition: {x: 12.6, y: -5, z: -12.4}
+  m_LocalRotation: {x: 0, y: 0.9396927, z: 0, w: 0.34202018}
+  m_LocalPosition: {x: 8.513998, y: -6.41, z: -8.5130005}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1013259949}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 140, z: 0}
 --- !u!1 &312936772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1072,7 +1075,7 @@ GameObject:
   m_Component:
   - component: {fileID: 312936773}
   m_Layer: 0
-  m_Name: SpawnPoint6
+  m_Name: PadlockSP6
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1117,13 +1120,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 314572187}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.9848078, z: -0, w: 0.17364825}
-  m_LocalPosition: {x: 14.500002, y: -5, z: -11.4}
+  m_LocalRotation: {x: 0, y: 0.9396927, z: 0, w: 0.34202018}
+  m_LocalPosition: {x: 9.969997, y: -6.41, z: -7.2980003}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1013259949}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 140, z: 0}
 --- !u!1 &363014533
 GameObject:
   m_ObjectHideFlags: 0
@@ -1266,7 +1269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 399212942}
   m_Layer: 0
-  m_Name: SpawnPoint2
+  m_Name: ChiselSP3
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1347,7 +1350,7 @@ GameObject:
   m_Component:
   - component: {fileID: 472767463}
   m_Layer: 0
-  m_Name: SpawnPoint5
+  m_Name: KeySP5
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1676,11 +1679,11 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1222592676}
+  - {fileID: 54267079}
   - {fileID: 399212942}
   - {fileID: 1962080746}
   - {fileID: 875673055}
   - {fileID: 915220680}
-  - {fileID: 54267079}
   m_Father: {fileID: 1058307853}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &608995834
@@ -1704,6 +1707,8 @@ MonoBehaviour:
   - {fileID: 915220680}
   - {fileID: 54267079}
   SizePool: 6
+  _groups: {fileID: 1069006661}
+  _keySpawner: {fileID: 134956013}
 --- !u!1 &629276886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1714,7 +1719,7 @@ GameObject:
   m_Component:
   - component: {fileID: 629276887}
   m_Layer: 6
-  m_Name: SpawnPoint2
+  m_Name: BeamSP2
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1807,7 +1812,7 @@ GameObject:
   m_Component:
   - component: {fileID: 674581244}
   m_Layer: 0
-  m_Name: SpawnPoint4
+  m_Name: KeySP4
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1838,7 +1843,7 @@ GameObject:
   m_Component:
   - component: {fileID: 685071742}
   m_Layer: 6
-  m_Name: SpawnPoint1
+  m_Name: BeamSP1
   m_TagString: Untagged
   m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2221,7 +2226,7 @@ GameObject:
   m_Component:
   - component: {fileID: 753059283}
   m_Layer: 0
-  m_Name: SpawnPoint6
+  m_Name: KeySP6
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2391,6 +2396,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 229b8d9283cfc43e7ab4e0c692a3ca98, type: 3}
+--- !u!1 &808261223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 808261225}
+  m_Layer: 0
+  m_Name: EventDispatcher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &808261225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808261223}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 26.326996, y: 26.23277, z: -23.26819}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &839239625
 GameObject:
   m_ObjectHideFlags: 0
@@ -2401,7 +2437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 839239626}
   m_Layer: 0
-  m_Name: SpawnPoint1
+  m_Name: KeySP1
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2547,7 +2583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 875673055}
   m_Layer: 0
-  m_Name: SpawnPoint4
+  m_Name: ChiselSP5
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2631,7 +2667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 915220680}
   m_Layer: 0
-  m_Name: SpawnPoint5
+  m_Name: ChiselSP6
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -2812,8 +2848,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.06820294, y: -0.34993872, z: 0.025554392, w: 0.93393695}
-  m_LocalPosition: {x: 40.729378, y: 26.24, z: -33.17}
+  m_LocalRotation: {x: 0.057182442, y: -0.34955412, z: 0.021379635, w: 0.9349252}
+  m_LocalPosition: {x: 38.29, y: 26.91, z: -30.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3006,13 +3042,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 998080247}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.8991763, z: -0, w: 0.43758664}
+  m_LocalRotation: {x: 0, y: -0.9063079, z: 0, w: 0.42261827}
   m_LocalPosition: {x: 3.1002502, y: -7.538378, z: -3.571272}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 198533463}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -130, z: 0}
 --- !u!1 &1013259948
 GameObject:
   m_ObjectHideFlags: 0
@@ -3078,6 +3114,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1069006662}
   - {fileID: 198533463}
   - {fileID: 116322777}
   - {fileID: 134956012}
@@ -3104,6 +3141,75 @@ MonoBehaviour:
   _chiselsSpawner: {fileID: 608995834}
   _beamsSpawner: {fileID: 888609885}
   _doorSpawner: {fileID: 198533464}
+--- !u!1 &1069006660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1069006662}
+  - component: {fileID: 1069006661}
+  m_Layer: 0
+  m_Name: Groups
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1069006661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069006660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bada880633dea4943baad71f7529ec17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SubGroup:
+  - NameGroup: Group1
+    KeySpawnPoint: {fileID: 839239626}
+    PadlockSpawnPoint: {fileID: 2094599847}
+    ChiselSpawnPoint: {fileID: 1222592676}
+  - NameGroup: Group2
+    KeySpawnPoint: {fileID: 1082509013}
+    PadlockSpawnPoint: {fileID: 2094634205}
+    ChiselSpawnPoint: {fileID: 54267079}
+  - NameGroup: Group3
+    KeySpawnPoint: {fileID: 2062766094}
+    PadlockSpawnPoint: {fileID: 1453214307}
+    ChiselSpawnPoint: {fileID: 399212942}
+  - NameGroup: Group4
+    KeySpawnPoint: {fileID: 674581244}
+    PadlockSpawnPoint: {fileID: 1803809971}
+    ChiselSpawnPoint: {fileID: 1962080746}
+  - NameGroup: Group5
+    KeySpawnPoint: {fileID: 472767463}
+    PadlockSpawnPoint: {fileID: 1504392565}
+    ChiselSpawnPoint: {fileID: 875673055}
+  - NameGroup: Group6
+    KeySpawnPoint: {fileID: 753059283}
+    PadlockSpawnPoint: {fileID: 312936773}
+    ChiselSpawnPoint: {fileID: 915220680}
+--- !u!4 &1069006662
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069006660}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -407.24344, y: 62.881905, z: 53.038353}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1058307853}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1082509012
 GameObject:
   m_ObjectHideFlags: 0
@@ -3114,7 +3220,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1082509013}
   m_Layer: 0
-  m_Name: SpawnPoint2
+  m_Name: KeySP2
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -3182,7 +3288,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1222592676}
   m_Layer: 0
-  m_Name: SpawnPoint1
+  m_Name: ChiselSP1
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -3457,7 +3563,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1453214307}
   m_Layer: 0
-  m_Name: SpawnPoint3
+  m_Name: PadlockSP3
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -3697,7 +3803,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1504392565}
   m_Layer: 0
-  m_Name: SpawnPoint5
+  m_Name: PadlockSP5
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -4586,6 +4692,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1760022883}
   m_CullTransparentMesh: 1
+--- !u!1 &1768056620 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: df3b9d3cc44b68d44a23bf2de669a308, type: 3}
+  m_PrefabInstance: {fileID: 462082245350476554}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1768056623
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768056620}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3036771940814626570, guid: df3b9d3cc44b68d44a23bf2de669a308, type: 3}
 --- !u!1 &1782954261
 GameObject:
   m_ObjectHideFlags: 0
@@ -4724,7 +4857,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1803809971}
   m_Layer: 0
-  m_Name: SpawnPoint4
+  m_Name: PadlockSP4
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -4769,13 +4902,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1817526106}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.92387956, z: -0, w: 0.38268343}
-  m_LocalPosition: {x: 11, y: -5, z: -13.800001}
+  m_LocalRotation: {x: 0, y: 0.9396927, z: 0, w: 0.34202018}
+  m_LocalPosition: {x: 7.1099977, y: -6.41, z: -9.668}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1013259949}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 140, z: 0}
 --- !u!1 &1889173155
 GameObject:
   m_ObjectHideFlags: 0
@@ -4941,6 +5074,8 @@ MonoBehaviour:
   - {fileID: 1504392565}
   - {fileID: 312936773}
   SizePool: 6
+  _groups: {fileID: 1069006661}
+  _keySpawner: {fileID: 134956013}
 --- !u!1 &1962080745
 GameObject:
   m_ObjectHideFlags: 0
@@ -4951,7 +5086,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1962080746}
   m_Layer: 0
-  m_Name: SpawnPoint3
+  m_Name: ChiselSP4
   m_TagString: Untagged
   m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -5113,7 +5248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2062766094}
   m_Layer: 0
-  m_Name: SpawnPoint3
+  m_Name: KeySP3
   m_TagString: Untagged
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -5144,7 +5279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2094599847}
   m_Layer: 0
-  m_Name: SpawnPoint1
+  m_Name: PadlockSP1
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -5175,7 +5310,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2094634205}
   m_Layer: 0
-  m_Name: SpawnPoint2
+  m_Name: PadlockSP2
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -5263,7 +5398,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: df3b9d3cc44b68d44a23bf2de669a308, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1768056623}
   m_SourcePrefab: {fileID: 100100000, guid: df3b9d3cc44b68d44a23bf2de669a308, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -5277,5 +5415,6 @@ SceneRoots:
   - {fileID: 739774419}
   - {fileID: 1632211696}
   - {fileID: 73845375}
+  - {fileID: 808261225}
   - {fileID: 1058307853}
   - {fileID: 970428632}

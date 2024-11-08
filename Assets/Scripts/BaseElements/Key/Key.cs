@@ -8,7 +8,6 @@ public class Key : MonoBehaviour
 {
     [SerializeField] private ColorMaterialPair[] _colorMaterials;
     [SerializeField] private Sprite _keySprite;
-    [SerializeField] private ParticleSystem _pickupParticleSystem;
 
     private Renderer _renderer;
     private Collider _collider;
@@ -18,8 +17,9 @@ public class Key : MonoBehaviour
 
     public BaseColor Color { get; private set; }
     public int LayerIndex { get; set; }
+    public int GroupIndex { get; set; }
 
-    public event Action<Key> KeyCollected;
+    public event Action<Key> Collected;
 
     private void Awake()
     {
@@ -32,7 +32,6 @@ public class Key : MonoBehaviour
     public void Initialize(BaseColor color)
     {
         Color = color;
-
         _applyColorService.Apply(_renderer, color);
     }
 
@@ -52,23 +51,14 @@ public class Key : MonoBehaviour
                 _collider.enabled = false;
             }
 
-            StartCoroutine(UseActiveCoroutine());
+            _animator.PlayAnimation();
+            Collected?.Invoke(this);
         }
     }
 
     public void UseInactive()
     {
         StartCoroutine(UseInactiveCoroutine());
-    }
-
-    private IEnumerator UseActiveCoroutine()
-    {
-        yield return StartCoroutine(_animator.Turn());
-
-        ParticleSystem removeKeyParticle = Instantiate(_pickupParticleSystem, transform.position, Quaternion.identity);
-
-        gameObject.SetActive(false);
-        KeyCollected?.Invoke(this);
     }
 
     private IEnumerator UseInactiveCoroutine()
