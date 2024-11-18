@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public class SlotOrganizer
 {
@@ -20,15 +19,7 @@ public class SlotOrganizer
 
         foreach (Slot slot in _inactiveSlots)
         {
-            if (slot.InactiveSlot != null)
-            {
-                GameObject.Instantiate(slot.InactiveSlot, slot.Transform.position, Quaternion.identity, slot.Transform);
-            }
-            if (slot.SlotImage != null)
-            {
-                slot.SlotImage.sprite = slot.DefaultSprite;
-                slot.SlotImage.color = slot.DefaultColor;
-            }
+            slot.DeactivateSlot();
         }
     }
 

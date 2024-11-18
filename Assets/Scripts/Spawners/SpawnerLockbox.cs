@@ -1,23 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class SpawnerLockbox : BaseSpawner<Lockbox>
 {
     [SerializeField] private LockboxRegistry _lockboxRegistry;
-    [SerializeField] private SpawnerKeys _keysSpawner;
     [SerializeField] private ParticleSystem _inactivePrefab;
     [SerializeField] private LockboxSpawnPoints _points;
 
+    private SpawnerKeys _keysSpawner;
+    private SignalBus _signalBus;
     private LockboxSpawnPointsAvailability _spawnPointAvailability;
     private LockboxCalculator _lockboxCalculator;
     private LockboxColorPicker _lockboxColorPicker;
     private ColorKeyCounter _colorKeyCounter;
+    private KeyInventory _keyInventory;
+
+    [Inject]
+    public void Construct(SignalBus signalBus)
+    {
+        _signalBus = signalBus;
+        _signalBus.Subscribe<SpawnerKeysCreatedSignal>(OnSpawnerKeysCreated);
+    }
 
     public override void Awake()
     {
         base.Awake();
-        _colorKeyCounter = new ColorKeyCounter(_keysSpawner);
         _lockboxCalculator = new LockboxCalculator();
         _lockboxColorPicker = new LockboxColorPicker();
         _spawnPointAvailability = new LockboxSpawnPointsAvailability(SpawnPoints, _points.InitialActivePoints);
@@ -33,9 +42,25 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
         _lockboxRegistry.LockboxFilled -= OnFilled;
     }
 
+    private void OnDestroy()
+    {
+        _signalBus.Unsubscribe<SpawnerKeysCreatedSignal>(OnSpawnerKeysCreated);
+    }
+
     public override void Create()
     {
         CreateInitial();
+    }
+
+    public void Initialize(KeyInventory keyInventory)
+    {
+        _keyInventory = keyInventory;
+    }
+
+    private void OnSpawnerKeysCreated(SpawnerKeysCreatedSignal signal)
+    {
+        _keysSpawner = signal.SpawnerKeys;
+        _colorKeyCounter = new ColorKeyCounter(_keysSpawner, _keyInventory);
     }
 
     private void CreateInitial()
@@ -44,6 +69,7 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
         List<Transform> inactiveSpawnPoints = _spawnPointAvailability.GetInactive();
 
         _colorKeyCounter.UpdateKeyCounts();
+
         Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.GetPerColor();
 
         if (_colorKeyCounter.HasKeys())
@@ -110,8 +136,15 @@ public class SpawnerLockbox : BaseSpawner<Lockbox>
         _colorKeyCounter.UpdateKeyCounts();
 
         Dictionary<BaseColor, int> colorKeyCounts = _colorKeyCounter.GetPerColor();
+
+        if (colorKeyCounts == null || colorKeyCounts.Count == 0)
+        {
+            return;
+        }
+
         Dictionary<BaseColor, int> lockboxesPerColor = _lockboxCalculator.CalculatePerColor(colorKeyCounts);
         BaseColor newColor = _lockboxColorPicker.GetSingleColor(lockboxesPerColor);
+
         bool reserved = _colorKeyCounter.Reserve(newColor, _lockboxCalculator.KeysPerLockbox);
 
         if (reserved)

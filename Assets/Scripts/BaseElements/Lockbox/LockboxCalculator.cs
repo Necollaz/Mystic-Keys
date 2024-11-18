@@ -2,18 +2,16 @@ using System.Collections.Generic;
 
 public class LockboxCalculator
 {
-    private int _keysPerLockbox = 3;
-
-    public int KeysPerLockbox => _keysPerLockbox;
+    public int KeysPerLockbox { get; private set; } = 3;
 
     public Dictionary<BaseColor, int> CalculatePerColor(Dictionary<BaseColor, int> colorKeyCounts)
     {
         Dictionary<BaseColor, int> lockboxesPerColor = new Dictionary<BaseColor, int>();
 
-        foreach (var colorKeyCount in colorKeyCounts)
+        foreach (KeyValuePair<BaseColor, int> colorKeyCount in colorKeyCounts)
         {
             int colorCount = colorKeyCount.Value;
-            int lockboxesNeeded = colorCount / _keysPerLockbox;
+            int lockboxesNeeded = colorCount / KeysPerLockbox;
 
             if (lockboxesNeeded > 0)
             {

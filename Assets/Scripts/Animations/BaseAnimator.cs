@@ -9,6 +9,7 @@ public abstract class BaseAnimator : MonoBehaviour
     private ControllerAnimations _controllerAnimations;
     private ScaleCorotine _scaleCoroutine;
     private ParticleSystemPool _particlePool;
+    private int _poolSize = 5;
 
     public ControllerAnimations ControllerAnimations => _controllerAnimations;
 
@@ -21,7 +22,7 @@ public abstract class BaseAnimator : MonoBehaviour
 
     public virtual void InitializeParticlePool()
     {
-        _particlePool = new ParticleSystemPool(_prefab, 5, transform.parent);
+        _particlePool = new ParticleSystemPool(_prefab, _poolSize);
     }
 
     public abstract void TriggerAnimation();
@@ -50,25 +51,17 @@ public abstract class BaseAnimator : MonoBehaviour
         yield return StartCoroutine(_scaleCoroutine.ScaleOverTime(originalScale, increasedScale, scaleDuration));
         yield return StartCoroutine(_scaleCoroutine.ScaleOverTime(increasedScale, originalScale, scaleDuration));
 
-        PlayParticleEffect();
-        OnAnimationComplete();
-    }
-
-    private void PlayParticleEffect()
-    {
         ParticleSystem particle = _particlePool.Get();
         particle.transform.position = transform.position;
         particle.gameObject.SetActive(true);
         particle.Play();
-        StartCoroutine(Return(particle));
-    }
 
-    private IEnumerator Return(ParticleSystem particle)
-    {
         yield return new WaitUntil(() => !particle.IsAlive(true));
 
         particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         particle.gameObject.SetActive(false);
         _particlePool.Return(particle);
+
+        OnAnimationComplete();
     }
 }

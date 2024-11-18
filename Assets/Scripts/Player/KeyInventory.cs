@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class KeyInventory
 {
@@ -13,13 +12,7 @@ public class KeyInventory
             if (_activeKeys.ContainsKey(slot) == false)
             {
                 _activeKeys[slot] = key;
-
-                if (slot.SlotImage != null)
-                {
-                    slot.SlotImage.sprite = key.GetSprite();
-                }
-
-                PlayEffect(slot);
+                slot.SetKeySprite(key.GetSprite());
                 return true;
             }
         }
@@ -32,14 +25,7 @@ public class KeyInventory
         if (_activeKeys.ContainsKey(slot))
         {
             _activeKeys.Remove(slot);
-
-            if (slot.SlotImage != null)
-            {
-                slot.SlotImage.sprite = slot.DefaultSprite;
-                slot.SlotImage.color = slot.DefaultColor;
-            }
-
-            PlayEffect(slot);
+            slot.ResetSprite();
         }
     }
 
@@ -63,8 +49,22 @@ public class KeyInventory
             .ToList();
     }
 
-    private void PlayEffect(Slot slot)
+    public Dictionary<BaseColor, int> GetKeyCounts()
     {
-        GameObject.Instantiate(slot.KeyRemovedEffect, slot.Transform.position, Quaternion.identity, slot.Transform);
+        Dictionary<BaseColor, int> colorCounts = new Dictionary<BaseColor, int>();
+
+        foreach (var kvp in _activeKeys)
+        {
+            BaseColor color = kvp.Value.Color;
+
+            if (!colorCounts.ContainsKey(color))
+            {
+                colorCounts[color] = 0;
+            }
+
+            colorCounts[color]++;
+        }
+
+        return colorCounts;
     }
 }

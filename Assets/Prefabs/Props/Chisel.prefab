@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 3468896428495506631}
   - component: {fileID: 5480726210795567895}
   - component: {fileID: 7094495421429151216}
-  - component: {fileID: -1810103900623466222}
   m_Layer: 0
   m_Name: Chisel
   m_TagString: Untagged
@@ -32,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 6, y: 6, z: 6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4246600657236740981}
@@ -96,7 +95,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefab: {fileID: 8771972552311404798, guid: bbf9e36a48d6c5648a13889afab076fd, type: 3}
-  ControllerAnimations: {fileID: 3468896428495506631}
 --- !u!54 &7094495421429151216
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -120,31 +118,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &-1810103900623466222
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3874362671064736530}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.061727386, y: 0.05227667, z: 0.28684926}
-  m_Center: {x: 0.00007368624, y: 0.0019522458, z: 0.0007224878}
 --- !u!1 &5467020661056354202
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,6 +133,7 @@ GameObject:
   - component: {fileID: 4246600657236740981}
   - component: {fileID: 6951542204573187519}
   - component: {fileID: 3259970544765274561}
+  - component: {fileID: 9147508764546934687}
   m_Layer: 0
   m_Name: ChiselModel
   m_TagString: Untagged
@@ -173,7 +151,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 6, y: 6, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4507910807789025704}
@@ -228,3 +206,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &9147508764546934687
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5467020661056354202}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0565802, y: 0.049765885, z: 0.28075975}
+  m_Center: {x: -0.00000030454248, y: -0.0000000027939677, z: 0.0000003799796}

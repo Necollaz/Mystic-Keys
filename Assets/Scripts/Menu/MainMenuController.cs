@@ -19,11 +19,13 @@ public class MainMenuController : MonoBehaviour
     public void ShowOptionsMenu()
     {
         _optionsMenu.OpenWindow();
+
         _optionsMenu.SetBackButtonAction(() =>
         {
             _optionsMenu.CloseWindow();
             ShowMainMenu();
         });
+
         _mainMenu.gameObject.SetActive(false);
     }
 }

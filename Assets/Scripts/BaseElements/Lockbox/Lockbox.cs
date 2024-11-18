@@ -11,11 +11,11 @@ public class Lockbox : MonoBehaviour
     [SerializeField] private Key _keyVisualPrefab;
     [SerializeField] private int _requiredKeys = 3;
 
-    private int _currentKeys = 0;
     private Renderer _renderer;
     private LockboxAnimator _animator;
     private ApplyColorService _applyColorService;
     private LockboxKeyVisualizer _keyVisualizer;
+    private int _currentKeys = 0;
 
     public event Action<Lockbox, int> KeyAdded;
     public event Action<Lockbox> Filled;

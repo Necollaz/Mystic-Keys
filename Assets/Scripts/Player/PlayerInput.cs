@@ -7,7 +7,6 @@ public class PlayerInput : MonoBehaviour
     private const int GetMouseButtonDown = 0;
 
     [SerializeField] private Camera _mainCamera;
-    [SerializeField] private KeyLayer _keyLayer;
     [SerializeField] private Inventory _inventory;
     [SerializeField] private LockboxRegistry _lockboxRegistry;
 
@@ -27,7 +26,7 @@ public class PlayerInput : MonoBehaviour
         {
             if(hit.collider.TryGetComponent(out Key key))
             {
-                if (_keyLayer.IsCurrent(key.LayerIndex))
+                if (key.IsInteractive)
                 {
                     List<Lockbox> activeLockboxes = _lockboxRegistry.GetActive();
                     Lockbox matchingLockbox = activeLockboxes.FirstOrDefault(lockbox => lockbox.Color == key.Color);
@@ -36,13 +35,11 @@ public class PlayerInput : MonoBehaviour
                     {
                         key.UseActive();
                         matchingLockbox.AddKey();
-                        _keyLayer.Unregister(key.LayerIndex, key);
                     }
                     else if(_inventory.HasSpace())
                     {
                         key.UseActive();
                         _inventory.AddKey(key);
-                        _keyLayer.Unregister(key.LayerIndex, key);
                     }
                     else
                     {

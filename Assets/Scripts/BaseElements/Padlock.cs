@@ -17,11 +17,6 @@ public class Padlock : MonoBehaviour
         _padlockAnimator.UnlockComplete += OnUnlockComplete;
     }
 
-    private void OnDisable()
-    {
-        _padlockAnimator.UnlockComplete -= OnUnlockComplete;
-    }
-
     public void Reset()
     {
         IsUnlocked = false;
@@ -38,6 +33,8 @@ public class Padlock : MonoBehaviour
 
     private void OnUnlockComplete()
     {
+        _padlockAnimator.UnlockComplete -= OnUnlockComplete;
+        gameObject.SetActive(false);
         UnlockCompleted?.Invoke(this);
     }
 }

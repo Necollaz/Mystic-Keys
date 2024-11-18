@@ -18,6 +18,7 @@ public class Key : MonoBehaviour
     public BaseColor Color { get; private set; }
     public int LayerIndex { get; set; }
     public int GroupIndex { get; set; }
+    public bool IsInteractive { get; private set; }
 
     public event Action<Key> Collected;
 
@@ -27,6 +28,7 @@ public class Key : MonoBehaviour
         _collider = GetComponent<Collider>();
         _renderer = GetComponentInChildren<Renderer>();
         _applyColorService = new ApplyColorService { ColorMaterials = _colorMaterials };
+        _animator.CollectedComplete += OnAnimationComplete;
     }
 
     public void Initialize(BaseColor color)
@@ -38,6 +40,12 @@ public class Key : MonoBehaviour
     public Sprite GetSprite()
     {
         return _keySprite;
+    }
+
+    public void SetInteractivity(bool isActive)
+    {
+        IsInteractive = isActive;
+        _collider.enabled = isActive;
     }
 
     public void UseActive()
@@ -52,7 +60,6 @@ public class Key : MonoBehaviour
             }
 
             _animator.PlayAnimation();
-            Collected?.Invoke(this);
         }
     }
 
@@ -64,5 +71,12 @@ public class Key : MonoBehaviour
     private IEnumerator UseInactiveCoroutine()
     {
         yield return StartCoroutine(_animator.TryTurn());
+    }
+
+    private void OnAnimationComplete()
+    {
+        _animator.CollectedComplete -= OnAnimationComplete;
+        gameObject.SetActive(false);
+        Collected?.Invoke(this);
     }
 }

@@ -20,11 +20,16 @@ public abstract class BaseSpawner<T> : MonoBehaviour where T : MonoBehaviour
 
     public virtual int GetGroupCount()
     {
-        return 0;
+        return SpawnPoints != null ? SpawnPoints.Length : 0;
     }
 
     public virtual Transform GetPoint(int index)
     {
+        if (SpawnPoints != null && index >= 0 && index < SpawnPoints.Length)
+        {
+            return SpawnPoints[index];
+        }
+
         return null;
     }
 
@@ -39,7 +44,23 @@ public abstract class BaseSpawner<T> : MonoBehaviour where T : MonoBehaviour
             T instance = Pool.Get();
             Transform spawnPoint = SpawnPoints[i];
 
-            SetTransform(instance, spawnPoint);
+            instance.transform.position = spawnPoint.position;
+            instance.transform.rotation = spawnPoint.rotation;
+
+            if (spawnPoint.TryGetComponent(out BeamSpawnPoint beamSpawnPoint))
+            {
+                if (beamSpawnPoint != null)
+                {
+                    Transform ModelTransform = instance.transform.Find("BeamModel");
+
+                    if (ModelTransform != null)
+                    {
+                        ModelTransform.localScale = beamSpawnPoint.beamModelSize;
+                        ModelTransform.localEulerAngles = beamSpawnPoint.beamModelEulerAngles;
+                    }
+                }
+            }
+
             SpawnedInstances.Add(instance);
         }
     }
@@ -63,7 +84,6 @@ public abstract class BaseSpawner<T> : MonoBehaviour where T : MonoBehaviour
     {
         instance.transform.position = spawnPoint.position;
         instance.transform.rotation = spawnPoint.rotation;
-        instance.transform.localScale = spawnPoint.localScale;
     }
 
     private void InitializePool()

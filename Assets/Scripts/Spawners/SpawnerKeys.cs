@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class SpawnerKeys : BaseSpawner<Key>
 {
@@ -11,8 +12,18 @@ public class SpawnerKeys : BaseSpawner<Key>
     [SerializeField] private SpawnGroupLocator _groups;
 
     private Dictionary<BaseColor, int> _remainingColorCounts;
+    private SignalBus _signalBus;
 
     public event Action<Key> KeyCreated;
+    public event Action AllKeysCollected;
+
+    public int TotalKeys { get; private set; }
+
+    [Inject]
+    public void Construct(SignalBus signalBus)
+    {
+        _signalBus = signalBus;
+    }
 
     public override void Awake()
     {
@@ -21,6 +32,9 @@ public class SpawnerKeys : BaseSpawner<Key>
             colorKeyCount => colorKeyCount.Color,
             colorKeyCount => colorKeyCount.Count
             );
+
+        _signalBus.Fire(new SpawnerKeysCreatedSignal(this));
+        TotalKeys = _keyCounts.Sum(keyCount => keyCount.Count);
     }
 
     public override void Create()
@@ -102,13 +116,37 @@ public class SpawnerKeys : BaseSpawner<Key>
 
             key.Initialize(color);
             key.LayerIndex = layerIndex;
+
+            bool isCurrentLayer = layerIndex == _keyLayer.CurrentLayerIndex;
+
+            key.SetInteractivity(isCurrentLayer);
             _keyLayer.Register(layerIndex, key);
             SpawnedInstances.Add(key);
 
             int groupIndex = _groups.FindGroupIndex(spawnPoint);
             key.GroupIndex = groupIndex;
 
+            key.Collected += OnKeyCollected;
+
             KeyCreated?.Invoke(key);
+        }
+    }
+
+    private void OnKeyCollected(Key key)
+    {
+        key.Collected -= OnKeyCollected;
+        key.gameObject.SetActive(false);
+        SpawnedInstances.Remove(key);
+        _keyLayer.Unregister(key.LayerIndex, key);
+        Pool.Return(key);
+
+        TotalKeys--;
+
+        if (TotalKeys <= 0)
+        {
+            Debug.Log("Все ключи собраны. Вызываем событие AllKeysCollected.");
+
+            AllKeysCollected?.Invoke();
         }
     }
 }

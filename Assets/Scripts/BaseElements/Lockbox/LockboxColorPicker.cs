@@ -10,12 +10,18 @@ public class LockboxColorPicker
     {
         List<BaseColor> colors = lockboxesPerColor.Keys.ToList();
         colors = colors.OrderBy(c => _random.Next()).ToList();
-        return colors.Take(maxCount).ToList();
 
+        return colors.Take(maxCount).ToList();
     }
 
     public BaseColor GetSingleColor(Dictionary<BaseColor, int> lockboxesPerColor)
     {
+        if (lockboxesPerColor == null || lockboxesPerColor.Count == 0)
+        {
+            throw new InvalidOperationException("Словарь пуст или имеет значение NULL.");
+        }
+
         return lockboxesPerColor.Keys.ElementAt(_random.Next(lockboxesPerColor.Count));
+
     }
 }

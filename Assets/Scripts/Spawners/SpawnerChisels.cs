@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -26,9 +27,10 @@ public class SpawnerChisels : SpawnerWithKey<Chisel>
     public override void OnKeyCollected(Key key)
     {
         int groupIndex = key.GroupIndex;
-        Chisel chisel = SpawnedInstances.FirstOrDefault(chisel => chisel.GroupIndex == groupIndex);
 
-        if (chisel != null)
+        List<Chisel> chiselsInGroup = SpawnedInstances.Where(chisel => chisel.GroupIndex == groupIndex).ToList();
+
+        foreach (Chisel chisel in chiselsInGroup)
         {
             chisel.PullOut();
         }

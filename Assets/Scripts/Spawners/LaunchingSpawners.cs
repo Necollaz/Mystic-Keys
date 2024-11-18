@@ -1,13 +1,21 @@
 using UnityEngine;
+using Zenject;
 
 public class LaunchingSpawners : MonoBehaviour
 {
     [SerializeField] private SpawnerKeys _keysSpawner;
-    [SerializeField] private SpawnerLockbox _lockboxSpawner;
     [SerializeField] private SpawnerPadlock _padlocksSpawner;
     [SerializeField] private SpawnerChisels _chiselsSpawner;
     [SerializeField] private SpawnerBeams _beamsSpawner;
     [SerializeField] private SpawnerDoor _doorSpawner;
+
+    private SpawnerLockbox _lockboxSpawner;
+
+    [Inject]
+    public void Construct(SpawnerLockbox lockboxSpawner)
+    {
+        _lockboxSpawner = lockboxSpawner;
+    }
 
     private void Start()
     {
