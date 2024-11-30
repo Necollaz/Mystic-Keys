@@ -5278,6 +5278,8 @@ MonoBehaviour:
       KeyEffect: {fileID: 198327332609706768, guid: bec0c868667ab4bdf8f9d89391cdecdd, type: 3}
       SlotImage: {fileID: 1402156714}
       DefaultSprite: {fileID: 21300018, guid: 72f7ab1b0affe344cbe14e7f911ff651, type: 3}
+  _lockboxRegistry: {fileID: 5657806036590019300}
+  _spawnerLockbox: {fileID: 2810604270619018101}
 --- !u!114 &843596523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6108,9 +6110,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levels:
-  - {fileID: 9182395535527894088, guid: 9e2acf306c44c4c9abedd1cc8d73ead4, type: 3}
-  - {fileID: -8844750544708953895, guid: dcd2a2ce869e945af9381c1185e652c2, type: 3}
-  - {fileID: 6017350476233408472, guid: 5477b035f954c4176b49a198912f33b6, type: 3}
   - {fileID: 2689245773907856723, guid: e993ac0f669ba410ea9a58e50984bd06, type: 3}
   _levelEndMenu: {fileID: 7029683451236516787}
   _levelSpawnPoint: {fileID: 994186577672886188}
@@ -6287,6 +6286,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 360617416837920359, guid: 633dc58aac3114149819fabddb9c5d01, type: 3}
   m_PrefabInstance: {fileID: 167460617}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1195629874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1195629876}
+  - component: {fileID: 1195629875}
+  m_Layer: 0
+  m_Name: Marker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1195629875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195629874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de7687cec9d66406c9f8d730015fc036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _inactivePrefab: {fileID: 198537352720002792, guid: b1ddb704722ed694fa4b3b8d07d40583, type: 3}
+--- !u!4 &1195629876
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195629874}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -14.294482, y: -4.9690266, z: 16.98939}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6283724859462269030}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1233235705
 GameObject:
   m_ObjectHideFlags: 0
@@ -8001,8 +8045,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lockboxRegistry: {fileID: 5657806036590019300}
   _spawnerLockbox: {fileID: 2810604270619018101}
-  _inventory: {fileID: 843596522}
-  _playerInput: {fileID: 73845376}
 --- !u!4 &1547922906
 Transform:
   m_ObjectHideFlags: 0
@@ -14083,9 +14125,9 @@ MonoBehaviour:
   - {fileID: 7501239715646618553}
   SizePool: 4
   _lockboxRegistry: {fileID: 5657806036590019300}
-  _inactivePrefab: {fileID: 198537352720002792, guid: b1ddb704722ed694fa4b3b8d07d40583, type: 3}
   _points:
     InitialActivePoints: 2
+  _inactiveMarkerSpawner: {fileID: 1195629875}
 --- !u!222 &2818867414178435589
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -19174,6 +19216,7 @@ Transform:
   m_Children:
   - {fileID: 1706735618354741358}
   - {fileID: 80966991897446572}
+  - {fileID: 1195629876}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &6291962005507795597

@@ -1,24 +1,16 @@
 using UnityEngine;
-using Zenject;
 
 [RequireComponent(typeof(MovemingKeys))]
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private InventorySpawnSlots _spawnSlots;
 
-    private LockboxRegistry _lockboxRegistry;
-    private SpawnerLockbox _spawnerLockbox;
+    [SerializeField] private LockboxRegistry _lockboxRegistry;
+    [SerializeField] private SpawnerLockbox _spawnerLockbox;
 
     private SlotOrganizer _slotOrganizer;
     private KeyInventory _keyInventory;
     private MovemingKeys _movemingKeys;
-
-    [Inject]
-    public void Construct(LockboxRegistry lockboxRegistry, SpawnerLockbox spawnerLockbox)
-    {
-        _lockboxRegistry = lockboxRegistry;
-        _spawnerLockbox = spawnerLockbox;
-    }
 
     private void Awake()
     {

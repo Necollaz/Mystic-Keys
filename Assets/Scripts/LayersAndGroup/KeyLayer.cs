@@ -15,6 +15,15 @@ public class KeyLayer : MonoBehaviour
         return layerIndex == CurrentLayerIndex;
     }
 
+    //public HashSet<Key> GetActiveKeys(int layerIndex)
+    //{
+    //    if (_activeKeysPerLayer.TryGetValue(layerIndex, out var keys))
+    //    {
+    //        return keys;
+    //    }
+    //    return new HashSet<Key>();
+    //}
+
     public void Register(int layerIndex, Key key)
     {
         if(_activeKeysPerLayer.ContainsKey(layerIndex) == false)
@@ -24,7 +33,6 @@ public class KeyLayer : MonoBehaviour
 
         _activeKeysPerLayer[layerIndex].Add(key);
         key.SetInteractivity(IsCurrent(layerIndex));
-        //Debug.Log($"Ключ зарегистрирован в слое {layerIndex}. Интерактивность: {IsCurrent(layerIndex)}");
     }
 
     public void Unregister(int layerIndex, Key key)
@@ -32,12 +40,12 @@ public class KeyLayer : MonoBehaviour
         if (_activeKeysPerLayer.ContainsKey(layerIndex))
         {
             _activeKeysPerLayer[layerIndex].Remove(key);
-            //Debug.Log($"Ключ удалён из слоя {layerIndex}. Осталось ключей: {_activeKeysPerLayer[layerIndex].Count}");
+
             if (_activeKeysPerLayer[layerIndex].Count == 0)
             {
                 _activeKeysPerLayer.Remove(layerIndex);
                 CurrentLayerIndex++;
-                //Debug.Log($"Переключение на слой {CurrentLayerIndex}");
+
                 EnableCurrentLayer();
             }
         }
@@ -52,17 +60,42 @@ public class KeyLayer : MonoBehaviour
                 foreach (Key key in newLayerKeys)
                 {
                     key.SetInteractivity(true);
-                    //Debug.Log($"Интерактивность ключа в слое {CurrentLayerIndex} установлена в true");
                 }
             }
-            else
+        }
+    }
+
+
+
+    public Dictionary<BaseColor, int> GetKeysForLayer(int layerIndex)
+    {
+        Dictionary<BaseColor, int> keyCounts = new Dictionary<BaseColor, int>();
+
+        for (int i = layerIndex; i < _layers.Length; i++)
+        {
+            if (_activeKeysPerLayer.TryGetValue(i, out HashSet<Key> keys))
             {
-                //Debug.LogWarning($"Нет ключей для слоя с индексом {CurrentLayerIndex}. Возможно, слой не был правильно зарегистрирован.");
+                foreach (Key key in keys)
+                {
+                    BaseColor color = key.Color;
+
+                    if (keyCounts.ContainsKey(color))
+                    {
+                        keyCounts[color]++;
+                    }
+                    else
+                    {
+                        keyCounts[color] = 1;
+                    }
+                }
+            }
+
+            if (keyCounts.Count > 0)
+            {
+                break;
             }
         }
-        else
-        {
-            //Debug.Log("Все слои пройдены. Игрок собрал все ключи.");
-        }
+
+        return keyCounts;
     }
 }

@@ -37,6 +37,11 @@ public class LevelLoader : MonoBehaviour
             Level levelPrefab = _levels[index];
             Vector3 spawnPosition = _levelSpawnPoint != null ? _levelSpawnPoint.position : Vector3.zero;
             _currentLevelInstance = _container.InstantiatePrefabForComponent<Level>(levelPrefab.gameObject, spawnPosition, Quaternion.identity, null);
+
+
+            _container.InjectGameObject(_currentLevelInstance.gameObject);
+
+
             _currentLevelInstance.Initialize(this);
 
             if (_levelInstances.Count <= index)
@@ -85,7 +90,6 @@ public class LevelLoader : MonoBehaviour
             message.gameObject.SetActive(false);
         }
     }
-
 
     private void UnsubscribeLevelEvents(Level level)
     {

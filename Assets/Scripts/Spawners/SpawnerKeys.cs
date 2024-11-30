@@ -25,6 +25,11 @@ public class SpawnerKeys : BaseSpawner<Key>
         _signalBus = signalBus;
     }
 
+    private void Start()
+    {
+        _signalBus.Fire(new SpawnerKeysCreatedSignal(this));
+    }
+
     public override void Awake()
     {
         base.Awake();
@@ -33,7 +38,6 @@ public class SpawnerKeys : BaseSpawner<Key>
             colorKeyCount => colorKeyCount.Count
             );
 
-        _signalBus.Fire(new SpawnerKeysCreatedSignal(this));
         TotalKeys = _keyCounts.Sum(keyCount => keyCount.Count);
     }
 
