@@ -1,67 +1,73 @@
 using System.Collections;
+using Pools;
 using UnityEngine;
 
-[RequireComponent(typeof(ControllerAnimations))]
-public abstract class BaseAnimator : MonoBehaviour
+namespace Animations
 {
-    [SerializeField] private ParticleSystem _prefab;
-
-    private ControllerAnimations _controllerAnimations;
-    private ScaleCorotine _scaleCoroutine;
-    private ParticleSystemPool _particlePool;
-    private int _poolSize = 5;
-
-    public ControllerAnimations ControllerAnimations => _controllerAnimations;
-
-    public virtual void Awake()
+    [RequireComponent(typeof(ControllerAnimations))]
+    public abstract class BaseAnimator : MonoBehaviour
     {
-        _controllerAnimations = GetComponent<ControllerAnimations>();
-        _scaleCoroutine = new ScaleCorotine(transform);
-        InitializeParticlePool();
-    }
+        [SerializeField] private ParticleSystem _prefab;
 
-    public virtual void InitializeParticlePool()
-    {
-        _particlePool = new ParticleSystemPool(_prefab, _poolSize);
-    }
+        private ControllerAnimations _controllerAnimations;
+        private ScaleCorotine _scaleCoroutine;
+        private ParticleSystemPool _particlePool;
 
-    public abstract void TriggerAnimation();
+        private int _poolSize = 5;
 
-    public abstract float GetScaleDuration();
+        public ControllerAnimations ControllerAnimations => _controllerAnimations;
 
-    public abstract void OnAnimationComplete();
+        public virtual void Awake()
+        {
+            _controllerAnimations = GetComponent<ControllerAnimations>();
+            _scaleCoroutine = new ScaleCorotine(transform);
 
-    public void PlayAnimation()
-    {
-        StartCoroutine(AnimationCoroutine());
-    }
+            InitializeParticlePool();
+        }
 
-    private IEnumerator AnimationCoroutine()
-    {
-        TriggerAnimation();
+        public virtual void InitializeParticlePool()
+        {
+            _particlePool = new ParticleSystemPool(_prefab, _poolSize);
+        }
 
-        float animationLength = _controllerAnimations.GetAnimationLength();
+        public abstract void TriggerAnimation();
 
-        yield return new WaitForSeconds(animationLength);
+        public abstract float GetScaleDuration();
 
-        Vector3 originalScale = transform.localScale;
-        Vector3 increasedScale = originalScale * 1.2f;
-        float scaleDuration = GetScaleDuration();
+        public abstract void OnAnimationComplete();
 
-        yield return StartCoroutine(_scaleCoroutine.ScaleOverTime(originalScale, increasedScale, scaleDuration));
-        yield return StartCoroutine(_scaleCoroutine.ScaleOverTime(increasedScale, originalScale, scaleDuration));
+        public void PlayAnimation()
+        {
+            StartCoroutine(AnimationCoroutine());
+        }
 
-        ParticleSystem particle = _particlePool.Get();
-        particle.transform.position = transform.position;
-        particle.gameObject.SetActive(true);
-        particle.Play();
+        private IEnumerator AnimationCoroutine()
+        {
+            TriggerAnimation();
 
-        yield return new WaitUntil(() => !particle.IsAlive(true));
+            float animationLength = _controllerAnimations.GetAnimationLength();
 
-        particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        particle.gameObject.SetActive(false);
-        _particlePool.Return(particle);
+            yield return new WaitForSeconds(animationLength);
 
-        OnAnimationComplete();
+            Vector3 originalScale = transform.localScale;
+            Vector3 increasedScale = originalScale * 1.2f;
+            float scaleDuration = GetScaleDuration();
+
+            yield return StartCoroutine(_scaleCoroutine.ScaleOverTime(originalScale, increasedScale, scaleDuration));
+            yield return StartCoroutine(_scaleCoroutine.ScaleOverTime(increasedScale, originalScale, scaleDuration));
+
+            ParticleSystem particle = _particlePool.Get();
+            particle.transform.position = transform.position;
+            particle.gameObject.SetActive(true);
+            particle.Play();
+
+            yield return new WaitUntil(() => !particle.IsAlive(true));
+
+            particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            particle.gameObject.SetActive(false);
+            _particlePool.Return(particle);
+
+            OnAnimationComplete();
+        }
     }
 }

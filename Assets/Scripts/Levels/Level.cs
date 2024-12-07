@@ -1,17 +1,16 @@
+using Spawners;
 using UnityEngine;
 
-[RequireComponent(typeof(LaunchingSpawners))]
-public class Level : MonoBehaviour
+namespace Levels
 {
-    private LevelLoader _levelLoader;
-    private LaunchingSpawners _launchingSpawners;
-
-    public SpawnerKeys SpawnerKeysInstance { get; private set; }
-
-    public void Initialize(LevelLoader loader)
+    [RequireComponent(typeof(LaunchingSpawners))]
+    public class Level : MonoBehaviour
     {
-        _levelLoader = loader;
-        _launchingSpawners = GetComponent<LaunchingSpawners>();
-        SpawnerKeysInstance = GetComponentInChildren<SpawnerKeys>();
+        public LaunchingSpawners LaunchingSpawners { get; private set; }
+
+        private void Awake()
+        {
+            LaunchingSpawners = GetComponent<LaunchingSpawners>();
+        }
     }
 }

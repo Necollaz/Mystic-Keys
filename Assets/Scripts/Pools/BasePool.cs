@@ -1,49 +1,52 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasePool<T> where T : Component
+namespace Pools
 {
-    private T _prefab;
-    private Transform _parent;
-    private Queue<T> _pool;
-
-    public BasePool(T prefab, int initialSize, Transform parent = null)
+    public class BasePool<T> where T : Component
     {
-        _prefab = prefab;
-        _parent = parent;
-        _pool = new Queue<T>();
+        private T _prefab;
+        private Transform _parent;
+        private Queue<T> _pool;
 
-        for (int i = 0; i < initialSize; i++)
+        public BasePool(T prefab, int initialSize, Transform parent = null)
         {
-            T instance = CreateInstance();
-            Return(instance);
+            _prefab = prefab;
+            _parent = parent;
+            _pool = new Queue<T>();
+
+            for (int i = 0; i < initialSize; i++)
+            {
+                T instance = CreateInstance();
+                Return(instance);
+            }
         }
-    }
 
-    public T Get()
-    {
-        if (_pool.Count > 0)
+        public T Get()
         {
-            T instance = _pool.Dequeue();
-            instance.gameObject.SetActive(true);
+            if (_pool.Count > 0)
+            {
+                T instance = _pool.Dequeue();
+                instance.gameObject.SetActive(true);
+                return instance;
+            }
+            else
+            {
+                return CreateInstance();
+            }
+        }
+
+        public void Return(T instance)
+        {
+            instance.gameObject.SetActive(false);
+            _pool.Enqueue(instance);
+        }
+
+        private T CreateInstance()
+        {
+            T instance = Object.Instantiate(_prefab, _parent);
+            instance.gameObject.SetActive(false);
             return instance;
         }
-        else
-        {
-            return CreateInstance();
-        }
-    }
-
-    public void Return(T instance)
-    {
-        instance.gameObject.SetActive(false);
-        _pool.Enqueue(instance);
-    }
-
-    private T CreateInstance()
-    {
-        T instance = Object.Instantiate(_prefab, _parent);
-        instance.gameObject.SetActive(false);
-        return instance;
     }
 }

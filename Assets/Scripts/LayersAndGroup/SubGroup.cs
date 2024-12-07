@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class SubGroup
+namespace LayersAndGroup
 {
-    public string NameGroup;
-    public Transform KeySpawnPoint;
-    public Transform PadlockSpawnPoint;
-    public Transform ChiselSpawnPoint;
+    [Serializable]
+    public class SubGroup
+    {
+        public string NameGroup;
+        public Transform KeySpawnPoint;
+        public Transform PadlockSpawnPoint;
+        public Transform ChiselSpawnPoint;
+    }
 }

@@ -2,26 +2,29 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+namespace Menu
 {
-    [SerializeField] private Button _startButton;
-    [SerializeField] private Button _settingsButton;
-    [SerializeField] private MainMenuController _uiManager;
-
-    private void Start()
+    public class MainMenu : MonoBehaviour
     {
-        _startButton.onClick.AddListener(StartGame);
-        _settingsButton.onClick.AddListener(OpenSettings);
-        _uiManager.ShowMainMenu();
-    }
+        [SerializeField] private Button _startButton;
+        [SerializeField] private Button _settingsButton;
+        [SerializeField] private MainMenuController _uiManager;
 
-    private void StartGame()
-    {
-        SceneManager.LoadScene("Game");
-    }
+        private void Start()
+        {
+            _startButton.onClick.AddListener(StartGame);
+            _settingsButton.onClick.AddListener(OpenSettings);
+            _uiManager.ShowMainMenu();
+        }
 
-    private void OpenSettings()
-    {
-        _uiManager.ShowOptionsMenu();
+        private void StartGame()
+        {
+            SceneManager.LoadScene("Game");
+        }
+
+        private void OpenSettings()
+        {
+            _uiManager.ShowOptionsMenu();
+        }
     }
 }

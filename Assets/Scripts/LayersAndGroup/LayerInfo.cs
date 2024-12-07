@@ -1,9 +1,12 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class LayerInfo
+namespace LayersAndGroup
 {
-    public string LayerName;
-    public Transform[] SpawnPoints;
+    [Serializable]
+    public class LayerInfo
+    {
+        public string LayerName;
+        public Transform[] SpawnPoints;
+    }
 }

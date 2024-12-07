@@ -1,54 +1,75 @@
 using System.Collections.Generic;
 using System.Linq;
+using BaseElements.FolderKey;
+using BaseElements.FolderLockbox;
+using Player.InventorySystem;
+using Spawners.SpawnerLockboxes;
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour
+namespace Player
 {
-    private const int GetMouseButtonDown = 0;
-
-    [SerializeField] private Camera _mainCamera;
-    [SerializeField] private Inventory _inventory;
-    [SerializeField] private LockboxRegistry _lockboxRegistry;
-
-    private void Update()
+    public class PlayerInput : MonoBehaviour
     {
-        if (Input.GetMouseButtonDown(GetMouseButtonDown))
-        {
-            TryPickupKey();
-        }    
-    }
+        private const int GetMouseButtonDown = 0;
 
-    private void TryPickupKey()
-    {
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        [SerializeField] private Camera _mainCamera;
+        [SerializeField] private Inventory _inventory;
+        [SerializeField] private LockboxRegistry _lockboxRegistry;
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        private void Update()
         {
-            if(hit.collider.TryGetComponent(out Key key))
+            if (Input.GetMouseButtonDown(GetMouseButtonDown))
             {
-                if (key.IsInteractive)
-                {
-                    List<Lockbox> activeLockboxes = _lockboxRegistry.GetActive();
-                    Lockbox matchingLockbox = activeLockboxes.FirstOrDefault(lockbox => lockbox.Color == key.Color);
+                TryPickupKey();
+            }    
+        }
 
-                    if (matchingLockbox != null)
+        private void TryPickupKey()
+        {
+            Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                if(hit.collider.TryGetComponent(out Key key))
+                {
+                    if (key.IsInteractive)
                     {
-                        key.UseActive();
-                        matchingLockbox.AddKey();
-                    }
-                    else if(_inventory.HasSpace())
-                    {
-                        key.UseActive();
-                        _inventory.AddKey(key);
+                        List<Lockbox> activeLockboxes = _lockboxRegistry.GetActive()
+                           .Where(lb => lb.Color == key.Color && lb.CurrentKeyCount < lb.RequiredKeys)
+                           .ToList();
+
+                        if (activeLockboxes.Any())
+                        {
+                            bool added = activeLockboxes.First().AddKey();
+
+                            if (added)
+                            {
+                                key.UseActive();
+                            }
+                            else if (_inventory.HasSpace())
+                            {
+                                key.UseActive();
+                                _inventory.AddKey(key);
+                            }
+                            else
+                            {
+                                key.UseInactive();
+                            }
+                        }
+                        else if (_inventory.HasSpace())
+                        {
+                            key.UseActive();
+                            _inventory.AddKey(key);
+                        }
+                        else
+                        {
+                            key.UseInactive();
+                        }
                     }
                     else
                     {
                         key.UseInactive();
                     }
-                }
-                else
-                {
-                    key.UseInactive();
                 }
             }
         }

@@ -1,31 +1,34 @@
 using UnityEngine;
 
-public class MainMenuController : MonoBehaviour
+namespace Menu
 {
-    [SerializeField] private MainMenu _mainMenu;
-    [SerializeField] private OptionsMenu _optionsMenu;
-
-    private void Start()
+    public class MainMenuController : MonoBehaviour
     {
-        ShowMainMenu();
-    }
+        [SerializeField] private MainMenu _mainMenu;
+        [SerializeField] private OptionsMenu _optionsMenu;
 
-    public void ShowMainMenu()
-    {
-        _mainMenu.gameObject.SetActive(true);
-        _optionsMenu.CloseWindow();
-    }
-
-    public void ShowOptionsMenu()
-    {
-        _optionsMenu.OpenWindow();
-
-        _optionsMenu.SetBackButtonAction(() =>
+        private void Start()
         {
-            _optionsMenu.CloseWindow();
             ShowMainMenu();
-        });
+        }
 
-        _mainMenu.gameObject.SetActive(false);
+        public void ShowMainMenu()
+        {
+            _mainMenu.gameObject.SetActive(true);
+            _optionsMenu.CloseWindow();
+        }
+
+        public void ShowOptionsMenu()
+        {
+            _optionsMenu.OpenWindow();
+
+            _optionsMenu.SetBackButtonAction(() =>
+            {
+                _optionsMenu.CloseWindow();
+                ShowMainMenu();
+            });
+
+            _mainMenu.gameObject.SetActive(false);
+        }
     }
 }

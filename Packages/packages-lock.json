@@ -17,6 +17,12 @@
       },
       "hash": "2b3cec69aceddbddf1c5307d28300c3328161ab4"
     },
+    "com.unity.2d.sprite": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
     "com.unity.collab-proxy": {
       "version": "2.5.1",
       "depth": 0,
@@ -33,7 +39,7 @@
     },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
-      "depth": 2,
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -62,8 +68,8 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.18",
-      "depth": 1,
+      "version": "2.0.22",
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.test-framework": "1.1.9"
@@ -109,7 +115,7 @@
     },
     "com.unity.test-framework": {
       "version": "1.1.33",
-      "depth": 1,
+      "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.ext.nunit": "1.0.6",
@@ -129,7 +135,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "3.0.6",
+      "version": "3.0.8",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -261,7 +267,7 @@
     },
     "com.unity.modules.subsystems": {
       "version": "1.0.0",
-      "depth": 1,
+      "depth": 0,
       "source": "builtin",
       "dependencies": {
         "com.unity.modules.jsonserialize": "1.0.0"

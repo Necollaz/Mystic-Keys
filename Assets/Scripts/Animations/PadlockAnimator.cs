@@ -1,23 +1,26 @@
 using System;
 
-public class PadlockAnimator : BaseAnimator
+namespace Animations
 {
-    private float _scaleDuration = 0.5f;
-
-    public event Action UnlockComplete;
-
-    public override void TriggerAnimation()
+    public class PadlockAnimator : BaseAnimator
     {
-        ControllerAnimations.UnlockPadlock(true);
-    }
+        private float _scaleDuration = 0.5f;
 
-    public override float GetScaleDuration()
-    {
-        return _scaleDuration;
-    }
+        public event Action UnlockComplete;
 
-    public override void OnAnimationComplete()
-    {
-        UnlockComplete?.Invoke();
+        public override void TriggerAnimation()
+        {
+            ControllerAnimations.SetBool(AnimationData.Params.UnlockPadlock, true);
+        }
+
+        public override float GetScaleDuration()
+        {
+            return _scaleDuration;
+        }
+
+        public override void OnAnimationComplete()
+        {
+            UnlockComplete?.Invoke();
+        }
     }
 }

@@ -1,7 +1,11 @@
+using BaseElements.FolderLockbox;
 using UnityEngine;
 
-public class PoolLockbox : BasePool<Lockbox>
+namespace Pools
 {
-    public PoolLockbox(Lockbox prefab, int initialSize, Transform parent = null)
-        : base(prefab, initialSize, parent) { }
+    public class PoolLockbox : BasePool<Lockbox>
+    {
+        public PoolLockbox(Lockbox prefab, int initialSize, Transform parent = null)
+            : base(prefab, initialSize, parent) { }
+    }
 }

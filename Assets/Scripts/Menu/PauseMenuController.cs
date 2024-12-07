@@ -1,47 +1,50 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PauseMenuController : MonoBehaviour
+namespace Menu
 {
-    [SerializeField] private PauseMenu _pauseMenu;
-    [SerializeField] private OptionsMenu _optionsMenu;
-    [SerializeField] private Button _menuButton;
-
-    private KeyCode _pauseKey = KeyCode.Escape;
-
-    private void Start()
+    public class PauseMenuController : MonoBehaviour
     {
-        _menuButton.onClick.AddListener(TogglePauseMenu);
-    }
+        [SerializeField] private PauseMenu _pauseMenu;
+        [SerializeField] private OptionsMenu _optionsMenu;
+        [SerializeField] private Button _menuButton;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(_pauseKey))
+        private KeyCode _pauseKey = KeyCode.Escape;
+
+        private void Start()
         {
-            TogglePauseMenu();
+            _menuButton.onClick.AddListener(TogglePauseMenu);
         }
-    }
 
-    private void TogglePauseMenu()
-    {
-        if (_pauseMenu.gameObject.activeSelf)
+        private void Update()
         {
-            HidePauseMenu();
+            if (Input.GetKeyDown(_pauseKey))
+            {
+                TogglePauseMenu();
+            }
         }
-        else
+
+        private void TogglePauseMenu()
         {
-            ShowPauseMenu();
+            if (_pauseMenu.gameObject.activeSelf)
+            {
+                HidePauseMenu();
+            }
+            else
+            {
+                ShowPauseMenu();
+            }
         }
-    }
 
-    private void ShowPauseMenu()
-    {
-        _pauseMenu.TogglePause();
-        _optionsMenu.CloseWindow();
-    }
+        private void ShowPauseMenu()
+        {
+            _pauseMenu.TogglePause();
+            _optionsMenu.CloseWindow();
+        }
 
-    private void HidePauseMenu()
-    {
-        _pauseMenu.TogglePause();
+        private void HidePauseMenu()
+        {
+            _pauseMenu.TogglePause();
+        }
     }
 }

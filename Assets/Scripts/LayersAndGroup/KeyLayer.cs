@@ -1,101 +1,96 @@
 using System.Collections.Generic;
+using BaseElements.FolderKey;
+using ColorService;
 using UnityEngine;
 
-public class KeyLayer : MonoBehaviour
+namespace LayersAndGroup
 {
-    [SerializeField] private LayerInfo[] _layers;
-
-    private Dictionary<int, HashSet<Key>> _activeKeysPerLayer = new Dictionary<int, HashSet<Key>>();
-
-    public LayerInfo[] Layers => _layers;
-    public int CurrentLayerIndex { get; private set; } = 0;
-
-    public bool IsCurrent(int layerIndex)
+    public class KeyLayer : MonoBehaviour
     {
-        return layerIndex == CurrentLayerIndex;
-    }
+        [SerializeField] private LayerInfo[] _layers;
 
-    //public HashSet<Key> GetActiveKeys(int layerIndex)
-    //{
-    //    if (_activeKeysPerLayer.TryGetValue(layerIndex, out var keys))
-    //    {
-    //        return keys;
-    //    }
-    //    return new HashSet<Key>();
-    //}
+        private Dictionary<int, HashSet<Key>> _activeKeysPerLayer = new Dictionary<int, HashSet<Key>>();
 
-    public void Register(int layerIndex, Key key)
-    {
-        if(_activeKeysPerLayer.ContainsKey(layerIndex) == false)
+        public LayerInfo[] Layers => _layers;
+
+        public int CurrentLayerIndex { get; private set; } = 0;
+
+        public bool IsCurrent(int layerIndex)
         {
-            _activeKeysPerLayer[layerIndex] = new HashSet<Key>();
+            return layerIndex == CurrentLayerIndex;
         }
 
-        _activeKeysPerLayer[layerIndex].Add(key);
-        key.SetInteractivity(IsCurrent(layerIndex));
-    }
-
-    public void Unregister(int layerIndex, Key key)
-    {
-        if (_activeKeysPerLayer.ContainsKey(layerIndex))
+        public void Register(int layerIndex, Key key)
         {
-            _activeKeysPerLayer[layerIndex].Remove(key);
-
-            if (_activeKeysPerLayer[layerIndex].Count == 0)
+            if(_activeKeysPerLayer.ContainsKey(layerIndex) == false)
             {
-                _activeKeysPerLayer.Remove(layerIndex);
-                CurrentLayerIndex++;
-
-                EnableCurrentLayer();
+                _activeKeysPerLayer[layerIndex] = new HashSet<Key>();
             }
-        }
-    }
 
-    private void EnableCurrentLayer()
-    {
-        if (CurrentLayerIndex < _layers.Length)
+            _activeKeysPerLayer[layerIndex].Add(key);
+            key.SetInteractivity(IsCurrent(layerIndex));
+        }
+
+        public void Unregister(int layerIndex, Key key)
         {
-            if (_activeKeysPerLayer.TryGetValue(CurrentLayerIndex, out HashSet<Key> newLayerKeys))
+            if (_activeKeysPerLayer.ContainsKey(layerIndex))
             {
-                foreach (Key key in newLayerKeys)
+                _activeKeysPerLayer[layerIndex].Remove(key);
+
+                if (_activeKeysPerLayer[layerIndex].Count == 0)
                 {
-                    key.SetInteractivity(true);
+                    _activeKeysPerLayer.Remove(layerIndex);
+                    CurrentLayerIndex++;
+
+                    EnableCurrentLayer();
                 }
             }
         }
-    }
 
-
-
-    public Dictionary<BaseColor, int> GetKeysForLayer(int layerIndex)
-    {
-        Dictionary<BaseColor, int> keyCounts = new Dictionary<BaseColor, int>();
-
-        for (int i = layerIndex; i < _layers.Length; i++)
+        public Dictionary<BaseColors, int> GetKeysForLayer(int layerIndex)
         {
-            if (_activeKeysPerLayer.TryGetValue(i, out HashSet<Key> keys))
-            {
-                foreach (Key key in keys)
-                {
-                    BaseColor color = key.Color;
+            Dictionary<BaseColors, int> keyCounts = new Dictionary<BaseColors, int>();
 
-                    if (keyCounts.ContainsKey(color))
+            for (int i = layerIndex; i < _layers.Length; i++)
+            {
+                if (_activeKeysPerLayer.TryGetValue(i, out HashSet<Key> keys))
+                {
+                    foreach (Key key in keys)
                     {
-                        keyCounts[color]++;
+                        BaseColors color = key.Color;
+
+                        if (keyCounts.ContainsKey(color))
+                        {
+                            keyCounts[color]++;
+                        }
+                        else
+                        {
+                            keyCounts[color] = 1;
+                        }
                     }
-                    else
-                    {
-                        keyCounts[color] = 1;
-                    }
+                }
+
+                if (keyCounts.Count > 0)
+                {
+                    break;
                 }
             }
 
-            if (keyCounts.Count > 0)
-            {
-                break;
-            }
+            return keyCounts;
         }
 
-        return keyCounts;
+        private void EnableCurrentLayer()
+        {
+            if (CurrentLayerIndex < _layers.Length)
+            {
+                if (_activeKeysPerLayer.TryGetValue(CurrentLayerIndex, out HashSet<Key> newLayerKeys))
+                {
+                    foreach (Key key in newLayerKeys)
+                    {
+                        key.SetInteractivity(true);
+                    }
+                }
+            }
+        }
     }
 }

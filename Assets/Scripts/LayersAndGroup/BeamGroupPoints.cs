@@ -1,9 +1,12 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class BeamGroupPoints
+namespace LayersAndGroup
 {
-    public Transform BeamSpawnPoint;
-    public Transform[] ChiselSpawnPoints;
+    [Serializable]
+    public class BeamGroupPoints
+    {
+        public Transform BeamSpawnPoint;
+        public Transform[] ChiselSpawnPoints;
+    }
 }

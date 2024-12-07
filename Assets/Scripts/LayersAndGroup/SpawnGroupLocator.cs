@@ -1,19 +1,22 @@
 using UnityEngine;
 
-public class SpawnGroupLocator : MonoBehaviour
+namespace LayersAndGroup
 {
-    public SubGroup[] SubGroup;
-
-    public int FindGroupIndex(Transform keySpawnPoint)
+    public class SpawnGroupLocator : MonoBehaviour
     {
-        for (int i = 0; i < SubGroup.Length; i++)
-        {
-            if (SubGroup[i].KeySpawnPoint == keySpawnPoint)
-            {
-                return i;
-            }
-        }
+        public SubGroup[] SubGroup;
 
-        return -1;
+        public int FindGroupIndex(Transform keySpawnPoint)
+        {
+            for (int i = 0; i < SubGroup.Length; i++)
+            {
+                if (SubGroup[i].KeySpawnPoint == keySpawnPoint)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
     }
 }

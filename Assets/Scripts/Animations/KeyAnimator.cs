@@ -2,46 +2,49 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class KeyAnimator : BaseAnimator
+namespace Animations
 {
-    private float _scaleDuration = 0.7f;
-
-    public event Action CollectedComplete;
-
-    public IEnumerator TryTurn()
+    public class KeyAnimator : BaseAnimator
     {
-        ControllerAnimations.TryTurnKey(true);
-        yield return null;
+        private float _scaleDuration = 0.7f;
 
-        float animationLength = ControllerAnimations.GetAnimationLength();
-        yield return new WaitForSeconds(animationLength);
+        public event Action CollectedComplete;
 
-        ControllerAnimations.TryTurnKey(false);
-    }
+        public IEnumerator TryTurn()
+        {
+            ControllerAnimations.SetBool(AnimationData.Params.TryTurnKey, true);
+            yield return null;
+
+            float animationLength = ControllerAnimations.GetAnimationLength();
+            yield return new WaitForSeconds(animationLength);
+
+            ControllerAnimations.SetBool(AnimationData.Params.TryTurnKey, false);
+        }
         
-    public IEnumerator Turn()
-    {
-        ControllerAnimations.TurnKey(true);
-        yield return null;
+        public IEnumerator Turn()
+        {
+            ControllerAnimations.SetBool(AnimationData.Params.TurnKey, true);
+            yield return null;
 
-        float animationLength = ControllerAnimations.GetAnimationLength();
-        yield return new WaitForSeconds(animationLength);
+            float animationLength = ControllerAnimations.GetAnimationLength();
+            yield return new WaitForSeconds(animationLength);
 
-        ControllerAnimations.TurnKey(false);
-    }
+            ControllerAnimations.SetBool(AnimationData.Params.TurnKey, false);
+        }
 
-    public override void TriggerAnimation()
-    {
-        StartCoroutine(Turn());
-    }
+        public override void TriggerAnimation()
+        {
+            StartCoroutine(Turn());
+        }
 
-    public override float GetScaleDuration()
-    {
-        return _scaleDuration;
-    }
+        public override float GetScaleDuration()
+        {
+            return _scaleDuration;
+        }
 
-    public override void OnAnimationComplete()
-    {
-        CollectedComplete?.Invoke();
+        public override void OnAnimationComplete()
+        {
+            CollectedComplete?.Invoke();
+        }
     }
 }

@@ -1,29 +1,26 @@
+using Spawners.SpawnerBeam;
+using Spawners.SpawnerKey;
 using UnityEngine;
-using Zenject;
 
-public class LaunchingSpawners : MonoBehaviour
+namespace Spawners
 {
-    [SerializeField] private SpawnerKeys _keysSpawner;
-    [SerializeField] private SpawnerPadlock _padlocksSpawner;
-    [SerializeField] private SpawnerChisels _chiselsSpawner;
-    [SerializeField] private SpawnerBeams _beamsSpawner;
-    [SerializeField] private SpawnerDoor _doorSpawner;
-
-    private SpawnerLockbox _lockboxSpawner;
-
-    [Inject]
-    public void Construct(SpawnerLockbox lockboxSpawner)
+    public class LaunchingSpawners : MonoBehaviour
     {
-        _lockboxSpawner = lockboxSpawner;
-    }
+        [SerializeField] private SpawnerKeys _keysSpawner;
+        [SerializeField] private SpawnerPadlock _padlocksSpawner;
+        [SerializeField] private SpawnerChisels _chiselsSpawner;
+        [SerializeField] private SpawnerBeams _beamsSpawner;
+        [SerializeField] private SpawnerDoor _doorSpawner;
 
-    private void Start()
-    {
-        _doorSpawner.Create();
-        _keysSpawner.Create();
-        _padlocksSpawner.Create();
-        _chiselsSpawner.Create();
-        _beamsSpawner.Create();
-        _lockboxSpawner.Create();
+        public SpawnerKeys KeysSpawner => _keysSpawner;
+
+        public void InitializeCreation()
+        {
+            _doorSpawner.Create();
+            _keysSpawner.Create();
+            _padlocksSpawner.Create();
+            _chiselsSpawner.Create();
+            _beamsSpawner.Create();
+        }
     }
 }

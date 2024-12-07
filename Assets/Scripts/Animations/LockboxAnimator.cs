@@ -1,59 +1,69 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(ControllerAnimations))]
-public class LockboxAnimator : MonoBehaviour
+namespace Animations
 {
-    private ControllerAnimations _animationController;
-
-    private void Awake()
+    [RequireComponent(typeof(ControllerAnimations))]
+    public class LockboxAnimator : MonoBehaviour
     {
-        _animationController = GetComponent<ControllerAnimations>();
-    }
+        private ControllerAnimations _animationController;
 
-    public IEnumerator Open()
-    {
-        _animationController.OpenLockbox(true);
+        private void Awake()
+        {
+            _animationController = GetComponent<ControllerAnimations>();
+        }
 
-        yield return Wait();
+        public void Reset()
+        {
+            StopAllCoroutines();
+            _animationController.ResetParameters();
+        }
 
-        _animationController.OpenLockbox(false);
-        _animationController.IdleOpenLockbox(true);
-    }
+        public IEnumerator Open()
+        {
+            _animationController.ResetParameters();
 
-    public IEnumerator Close()
-    {
-        _animationController.IdleOpenLockbox(false);
-        _animationController.CloseLockbox(true);
+            _animationController.SetBool(AnimationData.Params.OpenLockbox, true);
 
-        yield return Wait();
+            yield return Wait();
 
-        _animationController.CloseLockbox(false);
-        _animationController.DisappearanceLockbox(true);
+            _animationController.SetBool(AnimationData.Params.OpenLockbox, false);
+            _animationController.SetBool(AnimationData.Params.IdleOpenLockbox, true);
+        }
 
-        yield return Wait();
+        public IEnumerator Close()
+        {
+            _animationController.ResetParameters();
 
-        _animationController.DisappearanceLockbox(false);
+            _animationController.SetBool(AnimationData.Params.IdleOpenLockbox, false);
+            _animationController.SetBool(AnimationData.Params.CloseLockbox, true);
 
-        yield return Wait();
-    }
+            yield return Wait();
 
-    public IEnumerator Appearance()
-    {
-        _animationController.AppearanceLockbox(true);
-        yield return Wait();
-        _animationController.AppearanceLockbox(false);
-    }
+            _animationController.SetBool(AnimationData.Params.CloseLockbox, false);
+            _animationController.SetBool(AnimationData.Params.DisappearanceLockbox, true);
 
-    public void IdleOpen(bool isIdle)
-    {
-        _animationController.IdleOpenLockbox(isIdle);
-    }
+            yield return Wait();
 
-    private WaitForSeconds Wait()
-    {
-        float animationLength = _animationController.GetAnimationLength();
+            _animationController.SetBool(AnimationData.Params.DisappearanceLockbox, false);
+        }
 
-        return new WaitForSeconds(animationLength);
+        public IEnumerator Appearance()
+        {
+            _animationController.ResetParameters();
+
+            _animationController.SetBool(AnimationData.Params.AppearanceLockbox, true);
+
+            yield return Wait();
+
+            _animationController.SetBool(AnimationData.Params.AppearanceLockbox, false);
+        }
+
+        private WaitForSeconds Wait()
+        {
+            float animationLength = _animationController.GetAnimationLength();
+
+            return new WaitForSeconds(animationLength);
+        }
     }
 }
