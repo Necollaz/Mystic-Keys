@@ -6,6 +6,8 @@ namespace Menu
 {
     public class MainMenu : MonoBehaviour
     {
+        private const string SceneGame = "Game";
+
         [SerializeField] private Button _startButton;
         [SerializeField] private Button _settingsButton;
         [SerializeField] private MainMenuController _uiManager;
@@ -19,7 +21,7 @@ namespace Menu
 
         private void StartGame()
         {
-            SceneManager.LoadScene("Game");
+            SceneManager.LoadScene(SceneGame);
         }
 
         private void OpenSettings()

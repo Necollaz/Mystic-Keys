@@ -22,9 +22,9 @@ namespace BaseElements.FolderKey
 
         public event Action<Key> Collected;
 
+        public BaseColors Color { get; private set; }
         public int LayerIndex { get; set; }
         public int GroupIndex { get; set; }
-        public BaseColors Color { get; private set; }
         public bool IsInteractive { get; private set; }
         public bool IsPickedUp => _isPickedUp;
 
@@ -33,6 +33,7 @@ namespace BaseElements.FolderKey
             _animator = GetComponent<KeyAnimator>();
             _collider = GetComponent<Collider>();
             _renderer = GetComponentInChildren<Renderer>();
+
             _applyColorService = new ApplyColorService { ColorMaterials = _colorMaterials };
 
             _animator.CollectedComplete += OnAnimationComplete;

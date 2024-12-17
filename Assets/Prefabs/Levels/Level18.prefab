@@ -5522,6 +5522,7 @@ MonoBehaviour:
   - Color: 3
     Count: 3
   _groups: {fileID: 1253368501237192274}
+  _scoreTracker: {fileID: 3618754584650135642}
 --- !u!1 &3151292666859646071
 GameObject:
   m_ObjectHideFlags: 0
@@ -6576,6 +6577,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1937119046975947951}
   - {fileID: 8864788436332319035}
   - {fileID: 4658724297858992592}
   - {fileID: 7315380847561241561}
@@ -7477,6 +7479,50 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &4472292900194146840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1937119046975947951}
+  - component: {fileID: 3618754584650135642}
+  m_Layer: 0
+  m_Name: ScoreTracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1937119046975947951
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4472292900194146840}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.6301956, y: -4.522274, z: 5.9332075}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5971151123024796741}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3618754584650135642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4472292900194146840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5e3e21b436c48dba6263acf7073657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4576772801426752988
 GameObject:
   m_ObjectHideFlags: 0

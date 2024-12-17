@@ -18,6 +18,7 @@ namespace Player.InventorySystem
                 {
                     _activeKeys[slot] = key;
                     slot.SetKeySprite(key.GetSprite());
+
                     return true;
                 }
             }
@@ -46,14 +47,14 @@ namespace Player.InventorySystem
                 .ToList();
         }
 
-        public Dictionary<BaseColors, int> GetKeyCounts()
+        public Dictionary<BaseColors, int> GetCounts()
         {
             return _activeKeys.Values
                 .GroupBy(key => key.Color)
                 .ToDictionary(group => group.Key, group => group.Count());
         }
 
-        public BaseColors? GetRandomKeyColor()
+        public BaseColors? GetRandomColor()
         {
             BaseColors[] colors = _activeKeys.Select(kvp => kvp.Value.Color).ToArray();
 

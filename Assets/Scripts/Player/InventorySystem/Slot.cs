@@ -8,30 +8,32 @@ namespace Player.InventorySystem
     public class Slot
     {
         [SerializeField] private string _name;
+        [SerializeField] private bool _isActive;
         [SerializeField] private RectTransform _rectTransform;
-        [SerializeField] private ParticleSystem _inactiveSlot;
-        [SerializeField] private ParticleSystem _reyEffectRemove;
         [SerializeField] private Image _slotImage;
         [SerializeField] private Sprite _defaultSprite;
-
-        public bool IsActive;
+        [SerializeField] private ParticleSystem _inactiveSlot;
+        [SerializeField] private ParticleSystem _reyEffectRemove;
 
         private ParticleSystem _currentParticleSystem;
 
-        public void ActivateSlot()
+        public bool IsActive => _isActive;
+
+        public void Activate()
         {
-            IsActive = true;
+            _isActive = true;
             _slotImage.sprite = _defaultSprite;
 
             if (_currentParticleSystem != null)
             {
                 _currentParticleSystem.gameObject.SetActive(false);
+                _currentParticleSystem = null;
             }
         }
 
-        public void DeactivateSlot()
+        public void Deactivate()
         {
-            IsActive = false;
+            _isActive = false;
             _slotImage.sprite = _defaultSprite;
             CreateParticalSystem(_inactiveSlot);
         }

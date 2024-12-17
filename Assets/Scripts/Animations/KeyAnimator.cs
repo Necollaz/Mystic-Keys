@@ -10,6 +10,21 @@ namespace Animations
 
         public event Action CollectedComplete;
 
+        public override void TriggerAnimation()
+        {
+            StartCoroutine(Turn());
+        }
+
+        public override float GetScaleDuration()
+        {
+            return _scaleDuration;
+        }
+
+        public override void OnAnimationComplete()
+        {
+            CollectedComplete?.Invoke();
+        }
+
         public IEnumerator TryTurn()
         {
             ControllerAnimations.SetBool(AnimationData.Params.TryTurnKey, true);
@@ -30,21 +45,6 @@ namespace Animations
             yield return new WaitForSeconds(animationLength);
 
             ControllerAnimations.SetBool(AnimationData.Params.TurnKey, false);
-        }
-
-        public override void TriggerAnimation()
-        {
-            StartCoroutine(Turn());
-        }
-
-        public override float GetScaleDuration()
-        {
-            return _scaleDuration;
-        }
-
-        public override void OnAnimationComplete()
-        {
-            CollectedComplete?.Invoke();
         }
     }
 }

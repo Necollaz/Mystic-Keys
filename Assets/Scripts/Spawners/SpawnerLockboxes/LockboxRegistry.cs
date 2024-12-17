@@ -17,7 +17,7 @@ namespace Spawners.SpawnerLockboxes
             return _activeLockboxes;
         }
 
-        public void Register(Lockbox lockbox)
+        public void Add(Lockbox lockbox)
         {
             if (_activeLockboxes.Contains(lockbox) == false)
             {
@@ -29,7 +29,7 @@ namespace Spawners.SpawnerLockboxes
             }
         }
 
-        public void Unregister(Lockbox lockbox)
+        public void Remove(Lockbox lockbox)
         {
             if (_activeLockboxes.Contains(lockbox))
             {

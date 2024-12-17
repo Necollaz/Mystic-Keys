@@ -527,6 +527,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3057006707195425673}
   m_LocalEulerAnglesHint: {x: 0, y: -40, z: 0}
+--- !u!1 &4939101422490744354
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4423449353308600865}
+  - component: {fileID: 306640739488825452}
+  m_Layer: 0
+  m_Name: ScoreTracker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4423449353308600865
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4939101422490744354}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.6301956, y: -4.522274, z: 5.9332075}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2737383914150122589}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &306640739488825452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4939101422490744354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5e3e21b436c48dba6263acf7073657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5174311022516585205
 GameObject:
   m_ObjectHideFlags: 0
@@ -1121,6 +1165,7 @@ MonoBehaviour:
   - Color: 1
     Count: 3
   _groups: {fileID: 1831570679420336587}
+  _scoreTracker: {fileID: 306640739488825452}
 --- !u!1 &8579307366581559713
 GameObject:
   m_ObjectHideFlags: 0
@@ -1152,6 +1197,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4423449353308600865}
   - {fileID: 5796557769767755675}
   - {fileID: 9054995859084877917}
   - {fileID: 7140892250409775030}

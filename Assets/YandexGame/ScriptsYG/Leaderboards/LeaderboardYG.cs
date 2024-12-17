@@ -12,7 +12,7 @@ namespace YG
     public class LeaderboardYG : MonoBehaviour
     {
         [Tooltip("Техническое название соревновательной таблицы")]
-        public string nameLB;
+        public string _nameLB;
 
         [Tooltip("Максимальное кол-во получаемых игроков")]
         public int maxQuantityPlayers = 20;
@@ -94,7 +94,7 @@ namespace YG
 
         void OnUpdateLB(LBData lbData)
         {
-            if (lbData.technoName == nameLB)
+            if (lbData.technoName == _nameLB)
             {
                 string noData = "...";
 
@@ -213,12 +213,12 @@ namespace YG
 
         public void UpdateLB()
         {
-            YandexGame.GetLeaderboard(nameLB, maxQuantityPlayers, quantityTop, quantityAround, photoSize);
+            YandexGame.GetLeaderboard(_nameLB, maxQuantityPlayers, quantityTop, quantityAround, photoSize);
         }
 
-        public void NewScore(long score) => YandexGame.NewLeaderboardScores(nameLB, score);
+        public void NewScore(long score) => YandexGame.NewLeaderboardScores(_nameLB, score);
 
-        public void NewScoreTimeConvert(float score) => YandexGame.NewLBScoreTimeConvert(nameLB, score);
+        public void NewScoreTimeConvert(float score) => YandexGame.NewLBScoreTimeConvert(_nameLB, score);
 
         public string TimeTypeConvert(int score)
         {
@@ -227,7 +227,7 @@ namespace YG
 
         public void SetNameLB(string name)
         {
-            nameLB = name;
+            _nameLB = name;
         }
     }
 }

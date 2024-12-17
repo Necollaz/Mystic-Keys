@@ -11,8 +11,8 @@ namespace Levels
 
         private void Start()
         {
-            _restartLevel.onClick.AddListener(_levelLoader.RestartCurrentLevel);
-            _restartGame.onClick.AddListener(_levelLoader.RestartAllLevels);
+            _restartLevel.onClick.AddListener(_levelLoader.RestartCurrent);
+            _restartGame.onClick.AddListener(_levelLoader.RestartAll);
         }
     }
 }

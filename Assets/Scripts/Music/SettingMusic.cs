@@ -2,60 +2,48 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
-public class SettingMusic
+namespace Music
 {
-    private AudioMixer _mixer;
-    private Slider _generalSlider;
-    private Slider _musicSlider;
-    private Toggle _mute;
-    private Graphic _targetGraphic;
-    private Graphic _muteGraphic;
-    private VolumeControl _volumeControl;
-    private MuteControl _muteControl;
-    private UIUpdates _uiUpdates;
-
-    public SettingMusic(AudioMixer mixer, Slider generalSlider, Slider musicSlider, Toggle mute, Graphic targetGraphic, Graphic muteGraphic)
+    public class SettingMusic
     {
-        _mixer = mixer;
-        _generalSlider = generalSlider;
-        _musicSlider = musicSlider;
-        _mute = mute;
-        _targetGraphic = targetGraphic;
-        _muteGraphic = muteGraphic;
-    }
+        private const string AllVolumeParam = "AllMusicVolume";
+        private const string MusicVolumeParam = "MusicVolume";
+        private const string EffectsVolumeParam = "EffectsVolume";
 
-    public void Initialize()
-    {
-        _volumeControl = new VolumeControl(_mixer);
-        _muteControl = new MuteControl();
-        _uiUpdates = new UIUpdates(_targetGraphic, _muteGraphic);
+        private AudioMixer _mixer;
+        private Slider _generalSlider;
+        private Slider _musicSlider;
+        private Slider _effectSlider;
 
-        SetVolume("AllMusicVolume", _generalSlider);
-        SetVolume("MusicVolume", _musicSlider);
+        private VolumeControl _volumeControl;
 
-        _generalSlider.onValueChanged.AddListener(volume => ChangedVolume(volume));
-        _musicSlider.onValueChanged.AddListener(volume => _volumeControl.SetVolume("MusicVolume", volume));
-        _mute.onValueChanged.AddListener(isOn => MuteToggled(isOn));
+        public SettingMusic(AudioMixer mixer, Slider generalSlider, Slider musicSlider, Slider effectSlider)
+        {
+            _mixer = mixer;
+            _generalSlider = generalSlider;
+            _musicSlider = musicSlider;
+            _effectSlider = effectSlider;
+        }
 
-        _uiUpdates.UpdateGraphic(_mute.isOn, _mute);
-    }
+        public void Initialize()
+        {
+            _volumeControl = new VolumeControl(_mixer);
 
-    private void SetVolume(string parameterName, Slider slider)
-    {
-        float defaultVolume = 0.75f;
-        slider.value = PlayerPrefs.GetFloat(parameterName, defaultVolume);
-        _volumeControl.SetVolume(parameterName, slider.value);
-    }
+            SetVolume(AllVolumeParam, _generalSlider, defaultVolume: 0.75f);
+            SetVolume(MusicVolumeParam, _musicSlider, defaultVolume: 0.75f);
+            SetVolume(EffectsVolumeParam, _effectSlider, defaultVolume: 0.75f);
 
-    private void ChangedVolume(float volume)
-    {
-        _volumeControl.SetVolume("AllMusicVolume", volume);
-        _volumeControl.SetVolume("EffectsVolume", volume);
-    }
+            _generalSlider.onValueChanged.AddListener(volume => _volumeControl.SetVolume(AllVolumeParam, volume));
+            _musicSlider.onValueChanged.AddListener(volume => _volumeControl.SetVolume(MusicVolumeParam, volume));
+            _effectSlider.onValueChanged.AddListener(volume => _volumeControl.SetVolume(EffectsVolumeParam, volume));
+        }
 
-    private void MuteToggled(bool isOn)
-    {
-        _muteControl.Toggle(isOn, _volumeControl, _generalSlider.value);
-        _uiUpdates.UpdateGraphic(isOn, _mute);
+        private void SetVolume(string parameterName, Slider slider, float defaultVolume)
+        {
+            float volume = PlayerPrefs.GetFloat(parameterName, defaultVolume);
+            slider.value = volume;
+
+            _volumeControl.SetVolume(parameterName, volume);
+        }
     }
 }

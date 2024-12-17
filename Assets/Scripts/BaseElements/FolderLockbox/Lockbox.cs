@@ -27,10 +27,9 @@ namespace BaseElements.FolderLockbox
         public event Action<Lockbox> Filled;
         public event Action<Lockbox> Opened;
 
+        public BaseColors Color { get; private set; }
         public int CurrentKeyCount => _currentKeys;
         public int RequiredKeys => _requiredKeys;
-
-        public BaseColors Color { get; private set; }
 
         private void Awake()
         {

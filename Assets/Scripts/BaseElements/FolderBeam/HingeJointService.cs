@@ -51,7 +51,7 @@ namespace BaseElements.FolderBeam
             if (_chiselJointMap.TryGetValue(chisel, out HingeJoint joint))
             {
                 _hingeJoints.Remove(joint);
-                GameObject.Destroy(joint);
+                HingeJoint.Destroy(joint);
                 _chiselJointMap.Remove(chisel);
 
                 if (_hingeJoints.Count == 0)
@@ -65,7 +65,7 @@ namespace BaseElements.FolderBeam
         {
             foreach (HingeJoint joint in _hingeJoints)
             {
-                GameObject.Destroy(joint);
+                HingeJoint.Destroy(joint);
             }
 
             _hingeJoints.Clear();

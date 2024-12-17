@@ -12,7 +12,6 @@ namespace LayersAndGroup
         private Dictionary<int, HashSet<Key>> _activeKeysPerLayer = new Dictionary<int, HashSet<Key>>();
 
         public LayerInfo[] Layers => _layers;
-
         public int CurrentLayerIndex { get; private set; } = 0;
 
         public bool IsCurrent(int layerIndex)

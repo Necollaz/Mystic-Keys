@@ -1,7 +1,7 @@
 using System;
 using BaseElements.FolderKey;
 using BaseElements.FolderLockbox;
-using ScriptableObjectSlot;
+using SavesDataSlot;
 using Spawners.SpawnerInventorySlot;
 using Spawners.SpawnerLockboxes;
 using UnityEngine;
@@ -14,26 +14,21 @@ namespace Player.InventorySystem
         [SerializeField] private InventorySpawnSlots _spawnSlots;
         [SerializeField] private LockboxRegistry _lockboxRegistry;
         [SerializeField] private SpawnerLockbox _spawnerLockbox;
-        [SerializeField] private SlotDataManager _slotDataManager;
+        [SerializeField] private SlotDataStorage _slotDataManager;
 
         private SlotOrganizer _slotOrganizer;
         private KeyInventory _keyInventory;
         private MovemingKeys _movemingKeys;
 
-        public KeyInventory KeyInventory => _keyInventory;
-
         public event Action MaxSpawnPointsReached;
 
-        private void Awake()
-        {
-            _movemingKeys = GetComponent<MovemingKeys>();
-            _slotOrganizer = new SlotOrganizer(_spawnSlots, _slotDataManager.Slot);
-            _keyInventory = new KeyInventory();
-        }
+        public KeyInventory KeyInventory => _keyInventory;
 
-        private void Start()
-        {
-            _movemingKeys.Initialize(_keyInventory);
+        private void Awake()
+        {   
+            _movemingKeys = GetComponent<MovemingKeys>();
+            _slotOrganizer = new SlotOrganizer(_spawnSlots, _slotDataManager.SavesDataKey, _slotDataManager);
+            _keyInventory = new KeyInventory();
         }
 
         private void OnEnable()
@@ -44,6 +39,11 @@ namespace Player.InventorySystem
         private void OnDisable()
         {
             _lockboxRegistry.LockboxCreated -= OnLockboxCreated;
+        }
+
+        private void Start()
+        {
+            _movemingKeys.Initialize(_keyInventory);
         }
 
         public bool AddKey(Key key)
@@ -66,6 +66,11 @@ namespace Player.InventorySystem
             }
 
             _slotDataManager.Save();
+        }
+
+        public void InitializeSlots()
+        {
+            _slotOrganizer = new SlotOrganizer(_spawnSlots, _slotDataManager.SavesDataKey, _slotDataManager);
         }
 
         public bool IsMaxReached()

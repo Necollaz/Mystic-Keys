@@ -9,14 +9,15 @@ namespace BaseElements.FolderPadlock
     {
         private PadlockAnimator _padlockAnimator;
 
+        public event Action<Padlock> UnlockCompleted;
+
         public int GroupIndex { get; set; }
         public bool IsUnlocked { get; private set; }
-
-        public event Action<Padlock> UnlockCompleted;
 
         private void Awake()
         {
             _padlockAnimator = GetComponent<PadlockAnimator>();
+
             _padlockAnimator.UnlockComplete += OnUnlockComplete;
         }
 
@@ -30,6 +31,7 @@ namespace BaseElements.FolderPadlock
             if (IsUnlocked == false)
             {
                 IsUnlocked = true;
+
                 _padlockAnimator.PlayAnimation();
             }
         }

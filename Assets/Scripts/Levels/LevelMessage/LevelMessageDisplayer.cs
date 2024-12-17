@@ -8,36 +8,39 @@ namespace Levels.LevelMessage
         [SerializeField] private List<LevelMessage> _level1Messages;
         [SerializeField] private List<LevelMessage> _level5Messages;
 
-        public void ShowLevelMessages(int levelIndex)
-        {
-            int index = 4;
+        private int _indexLevel = 4;
 
-            DeactivateAllMessages();
+        public void Show(int levelIndex)
+        {
+            DeactivateAll();
 
             if (levelIndex == 0 && _level1Messages != null)
             {
-                foreach (LevelMessage message in _level1Messages)
-                {
-                    message.gameObject.SetActive(true);
-                }
+                Activate(_level1Messages);
             }
-            else if (levelIndex == index && _level5Messages != null)
+            else if (levelIndex == _indexLevel && _level5Messages != null)
             {
-                foreach (LevelMessage message in _level5Messages)
-                {
-                    message.gameObject.SetActive(true);
-                }
+                Activate(_level5Messages);
             }
         }
 
-        private void DeactivateAllMessages()
+        private void DeactivateAll()
         {
-            foreach (LevelMessage message in _level1Messages)
-            {
-                message.gameObject.SetActive(false);
-            }
+            Deactivate(_level1Messages);
+            Deactivate(_level5Messages);
+        }
 
-            foreach (LevelMessage message in _level5Messages)
+        private void Activate(List<LevelMessage> messages)
+        {
+            foreach (LevelMessage message in messages)
+            {
+                message.gameObject.SetActive(true);
+            }
+        }
+
+        private void Deactivate(List<LevelMessage> messages)
+        {
+            foreach (LevelMessage message in messages)
             {
                 message.gameObject.SetActive(false);
             }

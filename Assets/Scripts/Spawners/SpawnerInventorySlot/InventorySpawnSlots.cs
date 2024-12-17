@@ -8,9 +8,9 @@ namespace Spawners.SpawnerInventorySlot
     [Serializable]
     public class InventorySpawnSlots
     {
-        [SerializeField] private Slot[] _slots;
+        [SerializeField] private List<Slot> _slots;
 
-        public Slot[] GetAll()
+        public List<Slot> GetAll()
         {
             return _slots;
         }
@@ -22,7 +22,7 @@ namespace Spawners.SpawnerInventorySlot
 
         public List<Slot> GetInactive()
         {
-            return new List<Slot>(_slots).FindAll(slot => slot.IsActive == false);
+            return new List<Slot>(_slots).FindAll(slot => !slot.IsActive);
         }
     }
 }

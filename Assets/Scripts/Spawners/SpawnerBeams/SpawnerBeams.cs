@@ -34,7 +34,7 @@ namespace Spawners.SpawnerBeam
 
                 if (beam != null)
                 {
-                    beam.AllChiselsRemoved += HandleBeamDestruction;
+                    beam.AllChiselsRemoved += HandleDestruction;
 
                     foreach (Transform chiselSpawnPoint in pair.ChiselSpawnPoints)
                     {
@@ -55,17 +55,17 @@ namespace Spawners.SpawnerBeam
             return Vector3.Distance(a.position, b.position) < 0.01f && Quaternion.Angle(a.rotation, b.rotation) < 1f;
         }
 
-        private void HandleBeamDestruction(Beam beam)
+        private void HandleDestruction(Beam beam)
         {
-            StartCoroutine(ReturnToPool(beam));
+            StartCoroutine(Return(beam));
         }
 
-        private IEnumerator ReturnToPool(Beam beam)
+        private IEnumerator Return(Beam beam)
         {
             yield return null;
 
             Pool.Return(beam);
-            beam.AllChiselsRemoved -= HandleBeamDestruction;
+            beam.AllChiselsRemoved -= HandleDestruction;
         }
     }
 }

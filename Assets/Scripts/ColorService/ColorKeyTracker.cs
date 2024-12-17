@@ -41,17 +41,19 @@ namespace ColorService
         public int GetTotalForColor(BaseColors color)
         {
             _availableKeys.TryGetValue(color, out int count);
+
             return count;
         }
 
         private void UpdateCounts()
         {
             Dictionary<BaseColors, int> totalKeys = _keysSpawner.GetActive();
-            Dictionary<BaseColors, int> inventoryKeys = _keyInventory.GetKeyCounts();
+            Dictionary<BaseColors, int> inventoryKeys = _keyInventory.GetCounts();
 
             _availableKeys = new Dictionary<BaseColors, int>();
 
             HashSet<BaseColors> allColors = new HashSet<BaseColors>(totalKeys.Keys);
+
             allColors.UnionWith(inventoryKeys.Keys);
 
             foreach (BaseColors color in allColors)

@@ -4,7 +4,7 @@ using BaseElements.FolderLockbox;
 using ColorService;
 using LayersAndGroup;
 using Player.InventorySystem;
-using ScriptableObjectSlot;
+using SavesDataSlot;
 using Spawners.SpawnerKey;
 using UnityEngine;
 
@@ -14,13 +14,12 @@ namespace Spawners.SpawnerLockboxes
     {
         [SerializeField] private LockboxRegistry _lockboxRegistry;
         [SerializeField] private InactiveMarkerSpawner _inactiveMarkerSpawner;
+        [SerializeField] private SlotDataStorage _slotDataManager;
         [SerializeField, Range(1, 4)] private int _initialActivePoints = 1;
-        [SerializeField] private SlotDataManager _slotDataManager;
 
         private SpawnerKeys _keysSpawner;
         private KeyInventory _keyInventory;
         private KeyLayer _keyLayer;
-
         private LockboxSpawnPointsAvailability _spawnPointAvailability;
         private LockboxColorPicker _lockboxColorPicker;
         private ColorKeyTracker _colorKeyTracker;
@@ -32,7 +31,7 @@ namespace Spawners.SpawnerLockboxes
             base.Awake();
 
             _lockboxColorPicker = new LockboxColorPicker();
-            _spawnPointAvailability = new LockboxSpawnPointsAvailability(SpawnPoints, _initialActivePoints, _slotDataManager.Slot);
+            _spawnPointAvailability = new LockboxSpawnPointsAvailability(SpawnPoints, _initialActivePoints, _slotDataManager.SavesDataKey);
         }
 
         private void OnEnable()
@@ -91,7 +90,7 @@ namespace Spawners.SpawnerLockboxes
 
             foreach (Transform spawnPoint in inactiveSpawnPoints)
             {
-                _inactiveMarkerSpawner.CreateInactiveMarker(spawnPoint);
+                _inactiveMarkerSpawner.Create(spawnPoint);
             }
 
             if (_colorKeyTracker.HasKeys())
@@ -117,7 +116,7 @@ namespace Spawners.SpawnerLockboxes
             if (_colorKeyTracker.HasKeys())
             {
                 BaseColors? newColor = _lockboxColorPicker.GetSingleForLayer(_keyLayer, _colorKeyTracker, requiredKeys);
-                BaseColors? inventoryKeyColor = _keyInventory.GetRandomKeyColor();
+                BaseColors? inventoryKeyColor = _keyInventory.GetRandomColor();
 
                 if (newColor == null)
                 {
@@ -135,13 +134,13 @@ namespace Spawners.SpawnerLockboxes
         {
             Lockbox lockbox = Pool.Get();
             lockbox.Initialize(color);
-            _lockboxRegistry.Register(lockbox);
+            _lockboxRegistry.Add(lockbox);
             SetTransform(lockbox, spawnPoint);
         }
 
         private void OnHandleFilled(Lockbox filledLockbox)
         {
-            _lockboxRegistry.Unregister(filledLockbox);
+            _lockboxRegistry.Remove(filledLockbox);
             Pool.Return(filledLockbox);
             filledLockbox.gameObject.SetActive(false);
             TryCreateNext(filledLockbox.transform);

@@ -30,7 +30,7 @@ namespace Spawners
             chisel.PullOutComplete -= OnPullOutCompleted;
         }
 
-        public override void OnKeyCollected(Key key)
+        public override void OnCollected(Key key)
         {
             int groupIndex = key.GroupIndex;
 

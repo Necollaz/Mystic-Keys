@@ -28,6 +28,7 @@ namespace Pools
             {
                 T instance = _pool.Dequeue();
                 instance.gameObject.SetActive(true);
+
                 return instance;
             }
             else
@@ -46,6 +47,7 @@ namespace Pools
         {
             T instance = Object.Instantiate(_prefab, _parent);
             instance.gameObject.SetActive(false);
+
             return instance;
         }
     }

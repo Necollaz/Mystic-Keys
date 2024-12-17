@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BaseElements.FolderLockbox;
 using UnityEngine;
 
 namespace Spawners.SpawnerLockboxes
@@ -7,19 +8,19 @@ namespace Spawners.SpawnerLockboxes
     [Serializable]
     public class InactiveMarkerSpawner
     {
-        [SerializeField] private ParticleSystem _inactivePrefab;
+        [SerializeField] private LockboxMarker _marker;
 
-        private Dictionary<Transform, ParticleSystem> _markers = new Dictionary<Transform, ParticleSystem>();
+        private Dictionary<Transform, LockboxMarker> _markers = new Dictionary<Transform, LockboxMarker>();
 
-        public void CreateInactiveMarker(Transform point)
+        public void Create(Transform point)
         {
-            ParticleSystem marker = ParticleSystem.Instantiate(_inactivePrefab, point.position, point.rotation);
+            LockboxMarker marker = LockboxMarker.Instantiate(_marker, point.position, point.rotation);
             _markers.Add(point, marker);
         }
 
         public void Remove(Transform spawnPoint)
         {
-            if (_markers.TryGetValue(spawnPoint, out ParticleSystem marker))
+            if (_markers.TryGetValue(spawnPoint, out LockboxMarker marker))
             {
                 marker.gameObject.SetActive(false);
                 _markers.Remove(spawnPoint);
@@ -28,7 +29,7 @@ namespace Spawners.SpawnerLockboxes
 
         public void Clear()
         {
-            foreach (ParticleSystem marker in _markers.Values)
+            foreach (LockboxMarker marker in _markers.Values)
             {
                 marker.gameObject.SetActive(false);
             }

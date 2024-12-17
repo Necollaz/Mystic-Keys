@@ -1,29 +1,74 @@
 using Levels;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using YG;
 
 namespace Menu.Level
 {
-    public class LevelEndMenu : BaseEndMenu<IntervalWindow>
+    public class LevelEndMenu : MonoBehaviour
     {
+        private const string SceneMenu = "Menu";
+
+        [SerializeField] private IntervalWindow _window;
         [SerializeField] private Button _continue;
+        [SerializeField] private Button _exitButton;
+        [SerializeField] private LevelLoader _levelLoader;
+        [SerializeField] private ParticleSystem _particleSystem;
 
-        public override void Start()
+        private void Start()
         {
-            base.Start();
-
+            _exitButton.onClick.AddListener(OnExitClicked);
             _continue.onClick.AddListener(OnContinueClicked);
         }
 
-        public override void Show()
+        public void Show()
         {
-            base.Show();
+            _window.gameObject.SetActive(true);
+            Instantiate(_particleSystem, _window.transform);
         }
 
         private void OnContinueClicked()
         {
-            Window.gameObject.SetActive(false);
-            LevelLoader.ContinueToNextLevel();
+            int currentLevelIndex = _levelLoader.CurrentIndex;
+
+            if((currentLevelIndex + 1) % 5 == 0)
+            {
+                YandexGame.OpenFullAdEvent += OnAdOpened;
+                YandexGame.CloseFullAdEvent += OnAdClosed;
+                YandexGame.FullscreenShow();
+            }
+            else
+            {
+                ProceedToNext();
+            }
+        }
+
+        private void OnExitClicked()
+        {
+            _window.gameObject.SetActive(false);
+            SceneManager.LoadScene(SceneMenu);
+        }
+
+        private void OnAdOpened()
+        {
+            Time.timeScale = 0f;
+        }
+
+        private void OnAdClosed()
+        {
+            Time.timeScale = 1f;
+
+            YandexGame.OpenFullAdEvent -= OnAdOpened;
+            YandexGame.CloseFullAdEvent -= OnAdClosed;
+
+            ProceedToNext();
+        }
+
+        private void ProceedToNext()
+        {
+            _window.gameObject.SetActive(false);
+            _levelLoader.Continue();
         }
     }
 }

@@ -1,22 +1,23 @@
 using System.Collections.Generic;
+using SavesDataSlot;
 using UnityEngine;
 
 namespace Spawners.SpawnerLockboxes
 {
     public class LockboxSpawnPointsAvailability
     {
+        private SavesData _savesData;
         private Transform[] _spawnPoints;
         private List<int> _activeSpawnPointIndexes = new List<int>();
-        private SlotData _slotData;
 
         private int _initialActivePoints;
         private int _maxActivePoints = 4;
 
-        public LockboxSpawnPointsAvailability(Transform[] spawnPoints, int initialActivePoints, SlotData slotData)
+        public LockboxSpawnPointsAvailability(Transform[] spawnPoints, int initialActivePoints, SavesData savesData)
         {
             _spawnPoints = spawnPoints;
             _initialActivePoints = initialActivePoints;
-            _slotData = slotData;
+            _savesData = savesData;
 
             Initialize();
         }
@@ -65,7 +66,7 @@ namespace Spawners.SpawnerLockboxes
                 if (!_activeSpawnPointIndexes.Contains(i))
                 {
                     _activeSpawnPointIndexes.Add(i);
-                    _slotData.PurchasedLockboxSlots.Add(i);
+                    _savesData.PurchasedLockboxSlots.Add(i);
 
                     return _spawnPoints[i];
                 }
@@ -78,7 +79,7 @@ namespace Spawners.SpawnerLockboxes
         {
             _activeSpawnPointIndexes.Clear();
 
-            foreach (int index in _slotData.PurchasedLockboxSlots)
+            foreach (int index in _savesData.PurchasedLockboxSlots)
             {
                 if (!_activeSpawnPointIndexes.Contains(index) && index >= 0 && index < _spawnPoints.Length)
                 {
@@ -92,7 +93,7 @@ namespace Spawners.SpawnerLockboxes
 
                 for (int i = 0; i < activeCount; i++)
                 {
-                    _slotData.PurchasedLockboxSlots.Add(i);
+                    _savesData.PurchasedLockboxSlots.Add(i);
                     _activeSpawnPointIndexes.Add(i);
                 }
             }

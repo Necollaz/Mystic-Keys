@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SavesDataSlot;
 using Spawners.SpawnerInventorySlot;
 
 namespace Player.InventorySystem
@@ -6,41 +7,47 @@ namespace Player.InventorySystem
     public class SlotOrganizer
     {
         private InventorySpawnSlots _spawnSlots;
-        private List<Slot> _activeSlots;
-        private List<Slot> _inactiveSlots;
-        private SlotData _slotData;
+        private SavesData _savesData;
+        private SlotDataStorage _slotDataManager;
 
-        public int MaxActiveSlots { get; private set; } = 4;
-
-        public SlotOrganizer(InventorySpawnSlots spawnSlots, SlotData slotData)
+        public SlotOrganizer(InventorySpawnSlots spawnSlots, SavesData savesData, SlotDataStorage slotDataManager)
         {
             _spawnSlots = spawnSlots;
-            _slotData = slotData;
+            _savesData = savesData;
+            _slotDataManager = slotDataManager;
             Initialize();
         }
 
+        public int MaxActiveSlots { get; private set; } = 4;
+
         public List<Slot> GetActive()
         {
-            return _activeSlots;
+            return _spawnSlots.GetActive();
         }
 
         public void ActivateNext()
         {
-            if (_activeSlots.Count >= MaxActiveSlots)
+            if (_spawnSlots.GetActive().Count >= MaxActiveSlots)
             {
                 return;
             }
 
-            Slot[] allSlots = _spawnSlots.GetAll();
+            List<Slot> allSlots = _spawnSlots.GetAll();
 
-            for (int i = 0; i < allSlots.Length; i++)
+            for (int i = 0; i < allSlots.Count; i++)
             {
                 Slot currentSlot = allSlots[i];
 
                 if (!currentSlot.IsActive)
                 {
-                    currentSlot.ActivateSlot();
-                    _slotData.PurchasedInventorySlots.Add(i);
+                    currentSlot.Activate();
+
+                    if (!_savesData.PurchasedInventorySlots.Contains(i))
+                    {
+                        _spawnSlots.GetActive().Add(currentSlot);
+                        _savesData.PurchasedInventorySlots.Add(i);
+                        _slotDataManager.Save();
+                    }
 
                     UpdateLists();
 
@@ -51,14 +58,18 @@ namespace Player.InventorySystem
 
         private void Initialize()
         {
-            Slot[] allSlots = _spawnSlots.GetAll();
+            List<Slot> allSlots = _spawnSlots.GetAll();
 
-            foreach (int slotIndex in _slotData.PurchasedInventorySlots)
+            foreach (int slotIndex in _savesData.PurchasedInventorySlots)
             {
-                if (slotIndex >= 0 && slotIndex < allSlots.Length)
+                if (slotIndex >= 0 && slotIndex < allSlots.Count)
                 {
                     Slot slotToActivate = allSlots[slotIndex];
-                    slotToActivate.ActivateSlot();
+
+                    if (!slotToActivate.IsActive)
+                    {
+                        slotToActivate.Activate();
+                    }
                 }
             }
 
@@ -67,12 +78,11 @@ namespace Player.InventorySystem
 
         private void UpdateLists()
         {
-            _activeSlots = _spawnSlots.GetActive();
-            _inactiveSlots = _spawnSlots.GetInactive();
+            List<Slot> inactiveSlots = _spawnSlots.GetInactive();
 
-            foreach (Slot slot in _inactiveSlots)
+            foreach (Slot slot in inactiveSlots)
             {
-                slot.DeactivateSlot();
+                slot.Deactivate();
             }
         }
     }

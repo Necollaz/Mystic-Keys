@@ -29,7 +29,7 @@ namespace Spawners
             padlock.UnlockCompleted -= OnUnlockCompleted;
         }
 
-        public override void OnKeyCollected(Key key)
+        public override void OnCollected(Key key)
         {
             int groupIndex = key.GroupIndex;
             Padlock padlock = SpawnedInstances.FirstOrDefault(padlock => padlock.GroupIndex == groupIndex);

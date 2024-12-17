@@ -12,14 +12,14 @@ namespace YG.Example
         // Код для примера! Смена технического названия таблицы и её обновление в компоненте LeaderboardYG
         public void NewName()
         {
-            leaderboardYG.nameLB = nameLbInputField.text;
+            leaderboardYG._nameLB = nameLbInputField.text;
             leaderboardYG.UpdateLB();
         }
 
         public void NewScore()
         {
             // Статический метод добавление нового рекорда
-            YandexGame.NewLeaderboardScores(leaderboardYG.nameLB, int.Parse(scoreLbInputField.text));
+            YandexGame.NewLeaderboardScores(leaderboardYG._nameLB, int.Parse(scoreLbInputField.text));
 
             // Метод добавление нового рекорда обращением к компоненту LeaderboardYG
             // leaderboardYG.NewScore(int.Parse(scoreLbInputField.text));
@@ -28,7 +28,7 @@ namespace YG.Example
         public void NewScoreTimeConvert()
         {
             // Статический метод добавление нового рекорда конвертированного в time тип
-            YandexGame.NewLBScoreTimeConvert(leaderboardYG.nameLB, float.Parse(scoreLbInputField.text));
+            YandexGame.NewLBScoreTimeConvert(leaderboardYG._nameLB, float.Parse(scoreLbInputField.text));
 
             // Метод добавление нового рекорда обращением к компоненту LeaderboardYG
             // leaderboardYG.NewScoreTimeConvert(float.Parse(scoreLbInputField.text));

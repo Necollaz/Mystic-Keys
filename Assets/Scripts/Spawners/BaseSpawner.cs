@@ -7,6 +7,8 @@ namespace Spawners
 {
     public abstract class BaseSpawner<T> : MonoBehaviour where T : MonoBehaviour
     {
+        private const string BeamModel = "BeamModel";
+
         [Header("Spawn by points")]
         public T Prefab;
         public Transform[] SpawnPoints;
@@ -55,7 +57,7 @@ namespace Spawners
                 {
                     if (beamSpawnPoint != null)
                     {
-                        Transform ModelTransform = instance.transform.Find("BeamModel");
+                        Transform ModelTransform = instance.transform.Find(BeamModel);
 
                         if (ModelTransform != null)
                         {
