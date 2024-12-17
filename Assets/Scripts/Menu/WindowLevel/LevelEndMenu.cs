@@ -30,18 +30,12 @@ namespace Menu.Level
 
         private void OnContinueClicked()
         {
-            int currentLevelIndex = _levelLoader.CurrentIndex;
+            YandexGame.OpenFullAdEvent += OnAdOpened;
+            YandexGame.CloseFullAdEvent += OnAdClosed;
 
-            if((currentLevelIndex + 1) % 5 == 0)
-            {
-                YandexGame.OpenFullAdEvent += OnAdOpened;
-                YandexGame.CloseFullAdEvent += OnAdClosed;
-                YandexGame.FullscreenShow();
-            }
-            else
-            {
-                ProceedToNext();
-            }
+            YandexGame.FullscreenShow();
+            _window.gameObject.SetActive(false);
+            _levelLoader.Continue();
         }
 
         private void OnExitClicked()
@@ -61,14 +55,6 @@ namespace Menu.Level
 
             YandexGame.OpenFullAdEvent -= OnAdOpened;
             YandexGame.CloseFullAdEvent -= OnAdClosed;
-
-            ProceedToNext();
-        }
-
-        private void ProceedToNext()
-        {
-            _window.gameObject.SetActive(false);
-            _levelLoader.Continue();
         }
     }
 }

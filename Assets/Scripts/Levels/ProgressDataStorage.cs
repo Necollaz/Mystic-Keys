@@ -6,7 +6,6 @@ namespace Levels
     {
         private const string CurrentLevelIndexKey = "CurrentLevelIndex";
         private const string RandomLevelPhaseKey = "IsRandomLevelPhase";
-        private const string TotalLevelsCompletedKey = "TotalLevelsCompleted";
 
         public void Save(int currentLevelIndex, bool isRandomLevelPhase)
         {
@@ -33,16 +32,6 @@ namespace Levels
         {
             PlayerPrefs.DeleteKey(CurrentLevelIndexKey);
             PlayerPrefs.DeleteKey(RandomLevelPhaseKey);
-        }
-
-        public void SaveTotalCompleted(int totalLevels)
-        {
-            PlayerPrefs.SetInt(TotalLevelsCompletedKey, totalLevels);
-        }
-
-        public int LoadTotalCompleted()
-        {
-            return PlayerPrefs.GetInt(TotalLevelsCompletedKey, 0);
         }
     }
 }

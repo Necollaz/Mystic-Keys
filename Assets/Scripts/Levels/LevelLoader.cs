@@ -27,11 +27,9 @@ namespace Levels
 
         private int _currentIndex;
         private int _lastRandomIndex = -1;
-        private int _totalLevelsCompleted;
         private bool _isRandomPhase = false;
 
         public int CurrentIndex => _currentIndex;
-        public int TotalLevelsCompleted => _totalLevelsCompleted;
 
         private void Start()
         {
@@ -43,9 +41,6 @@ namespace Levels
 
         public void Continue()
         {
-            _totalLevelsCompleted++;
-            _progressDataStorage.SaveTotalCompleted(_totalLevelsCompleted);
-
             UnloadCurrent();
 
             if (!_isRandomPhase)
@@ -156,13 +151,11 @@ namespace Levels
             {
                 _currentIndex = _progressDataStorage.LoadLevelIndex();
                 _isRandomPhase = _progressDataStorage.IsRandomLevelPhase();
-                _totalLevelsCompleted = _progressDataStorage.LoadTotalCompleted();
             }
             else
             {
                 _currentIndex = 0;
                 _isRandomPhase = false;
-                _totalLevelsCompleted = 0;
             }
         }
 

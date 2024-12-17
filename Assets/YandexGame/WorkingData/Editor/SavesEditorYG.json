@@ -1,5 +1,5 @@
 {
-    "idSave": 162,
+    "idSave": 163,
     "isFirstSession": false,
     "language": "ru",
     "promptDone": false,
@@ -7,6 +7,7 @@
         0
     ],
     "PurchasedLockboxSlots": [
-        0
+        0,
+        1
     ]
 }
