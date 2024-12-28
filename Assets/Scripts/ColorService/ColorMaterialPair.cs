@@ -6,7 +6,7 @@ namespace ColorService
     [Serializable]
     public class ColorMaterialPair
     {
-        public BaseColors color;
-        public Material material;
+        public BaseColors Color;
+        public Material Material;
     }
 }

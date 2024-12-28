@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using UnityEngine;
 using Pools;
 using Spawners.SpawnerBeam;
-using UnityEngine;
 
 namespace Spawners
 {
-    public abstract class BaseSpawner<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class BaseSpawner<T> : MonoBehaviour 
+        where T : MonoBehaviour
     {
         private const string BeamModel = "BeamModel";
 
@@ -13,7 +14,8 @@ namespace Spawners
         public T Prefab;
         public Transform[] SpawnPoints;
         public BasePool<T> Pool;
-        public int SizePool = 10;
+        
+        private readonly int _sizePool = 10;
 
         public List<T> SpawnedInstances { get; private set; } = new List<T>();
 
@@ -43,7 +45,7 @@ namespace Spawners
 
         public void CreateByPoints()
         {
-            int spawnCount = Mathf.Min(SizePool, SpawnPoints.Length);
+            int spawnCount = Mathf.Min(_sizePool, SpawnPoints.Length);
 
             for (int i = 0; i < spawnCount; i++)
             {
@@ -61,8 +63,8 @@ namespace Spawners
 
                         if (ModelTransform != null)
                         {
-                            ModelTransform.localScale = beamSpawnPoint.beamModelSize;
-                            ModelTransform.localEulerAngles = beamSpawnPoint.beamModelEulerAngles;
+                            ModelTransform.localScale = beamSpawnPoint.BeamModelSize;
+                            ModelTransform.localEulerAngles = beamSpawnPoint.BeamModelEulerAngles;
                         }
                     }
                 }
@@ -73,7 +75,7 @@ namespace Spawners
 
         public void CreateByGroups()
         {
-            int spawnCount = Mathf.Min(SizePool, GetGroupCount());
+            int spawnCount = Mathf.Min(_sizePool, GetGroupCount());
 
             for (int i = 0; i < spawnCount; i++)
             {
@@ -94,7 +96,7 @@ namespace Spawners
 
         private void InitializePool()
         {
-            Pool = new BasePool<T>(Prefab, SizePool, transform);
+            Pool = new BasePool<T>(Prefab, _sizePool, transform);
         }
     }
 }

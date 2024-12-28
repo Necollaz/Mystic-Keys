@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Spawners.SpawnerKey
 {
-    public abstract class SpawnerWithKey<TSpawned> : BaseSpawner<TSpawned> where TSpawned : MonoBehaviour
+    public abstract class SpawnerWithKey<TSpawned> : BaseSpawner<TSpawned> 
+        where TSpawned : MonoBehaviour
     {
         [SerializeField] private SpawnGroupLocator _groups;
         [SerializeField] private SpawnerKeys _keySpawner;

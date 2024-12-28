@@ -3,8 +3,9 @@ using UnityEngine;
 
 namespace Pools
 {
-    public class PoolChisel : BasePool<Chisel>
+    public class PoolChisels : BasePool<Chisel>
     {
-        public PoolChisel(Chisel prefab, int initialSize, Transform parent = null) : base(prefab, initialSize, parent) { }
+        public PoolChisels(Chisel prefab, int initialSize, Transform parent = null) 
+            : base(prefab, initialSize, parent) { }
     }
 }

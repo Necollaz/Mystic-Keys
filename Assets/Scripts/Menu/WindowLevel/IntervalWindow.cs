@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Menu.Level
+namespace Menu.WindowLevel
 {
     public class IntervalWindow : MonoBehaviour { }
 }

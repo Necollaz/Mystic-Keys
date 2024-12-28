@@ -1,5 +1,5 @@
-using Spawners.SpawnerBeam;
 using Spawners.SpawnerKey;
+using Spawners.SpawnerBeam;
 using UnityEngine;
 
 namespace Spawners

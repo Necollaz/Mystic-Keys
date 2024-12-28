@@ -6,16 +6,15 @@ namespace Animations
     {
         public static class Params 
         {
-            public const string PullingOut = "isPullingOut";
-            public const string Turning = "isTurning";
-            public const string TryTurning = "isTryTurning";
-            public const string Unlocking = "isUnlocking";
-            public const string Appearancing = "isAppearancing";
-            public const string Disappearancing = "isDisappearancing";
-            public const string Opening = "isOpening";
-            public const string Closing = "isClosing";
-            public const string IdleOpening = "isIdleOpening";
-    
+            private const string PullingOut = "isPullingOut";
+            private const string Turning = "isTurning";
+            private const string TryTurning = "isTryTurning";
+            private const string Unlocking = "isUnlocking";
+            private const string Appearancing = "isAppearancing";
+            private const string Disappearancing = "isDisappearancing";
+            private const string Opening = "isOpening";
+            private const string Closing = "isClosing";
+            private const string IdleOpening = "isIdleOpening";
             public static readonly int PullOutChisel = Animator.StringToHash(PullingOut);
             public static readonly int TurnKey = Animator.StringToHash(Turning);
             public static readonly int TryTurnKey = Animator.StringToHash(TryTurning);

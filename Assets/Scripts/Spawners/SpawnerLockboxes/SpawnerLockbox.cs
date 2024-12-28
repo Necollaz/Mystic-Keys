@@ -15,7 +15,7 @@ namespace Spawners.SpawnerLockboxes
         [SerializeField] private LockboxRegistry _lockboxRegistry;
         [SerializeField] private InactiveMarkerSpawner _inactiveMarkerSpawner;
         [SerializeField] private SlotDataStorage _slotDataManager;
-        [SerializeField, Range(1, 4)] private int _initialActivePoints = 1;
+        [SerializeField] [Range(1, 4)] private int _initialActivePoints = 1;
 
         private SpawnerKeys _keysSpawner;
         private KeyInventory _keyInventory;

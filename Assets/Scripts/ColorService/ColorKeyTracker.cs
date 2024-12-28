@@ -10,7 +10,6 @@ namespace ColorService
     {
         private readonly SpawnerKeys _keysSpawner;
         private readonly KeyInventory _keyInventory;
-
         private Dictionary<BaseColors, int> _availableKeys;
         
         public ColorKeyTracker(SpawnerKeys keysSpawner, KeyInventory keyInventory)

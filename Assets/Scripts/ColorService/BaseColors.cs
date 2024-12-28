@@ -5,6 +5,6 @@ namespace ColorService
         Red,
         Green,
         Yellow,
-        Blue
+        Blue,
     }
 }

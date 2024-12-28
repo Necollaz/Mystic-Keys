@@ -10,9 +10,9 @@ namespace ColorService
         {
             foreach (ColorMaterialPair pair in ColorMaterials)
             {
-                if (pair.color == color)
+                if (pair.Color == color)
                 {
-                    renderer.material = pair.material;
+                    renderer.material = pair.Material;
                     return;
                 }
             }

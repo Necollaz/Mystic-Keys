@@ -1,8 +1,8 @@
-using Player.InventorySystem;
-using Spawners.SpawnerLockboxes;
 using System;
 using UnityEngine;
 using YG;
+using Player.InventorySystem;
+using Spawners.SpawnerLockboxes;
 
 namespace Levels.UnlockSlots
 {
@@ -35,11 +35,11 @@ namespace Levels.UnlockSlots
 
         private void Reward(int id)
         {
-            if(id == 1)
+            if (id == 1)
             {
                 _spawnerLockbox.PurchaseSlot();
             }
-            else if(id == 2)
+            else if (id == 2)
             {
                 _inventory.BuyingSlot();
             }
@@ -52,17 +52,11 @@ namespace Levels.UnlockSlots
 
         private void UpdateButtons()
         {
-            UpdateButtonState(
-                condition: _spawnerLockbox.IsMaxReached,
-                showAction: _buttonInitializer.ShowUnlockLockboxButton,
-                hideAction: _buttonInitializer.HideUnlockLockboxButton
-                );
+            UpdateButtonState(condition: _spawnerLockbox.IsMaxReached, showAction: _buttonInitializer.ShowUnlockLockboxButton,
+                hideAction: _buttonInitializer.HideUnlockLockboxButton);
 
-            UpdateButtonState(
-                condition: _inventory.IsMaxReached,
-                showAction: _buttonInitializer.ShowUnlockSlotButton,
-                hideAction: _buttonInitializer.HideUnlockSlotButton
-                );
+            UpdateButtonState(condition: _inventory.IsMaxReached, showAction: _buttonInitializer.ShowUnlockSlotButton,
+                hideAction: _buttonInitializer.HideUnlockSlotButton);
         }
 
         private void UpdateButtonState(Func<bool> condition, Action showAction, Action hideAction)

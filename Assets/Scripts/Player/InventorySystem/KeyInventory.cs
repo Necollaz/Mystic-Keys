@@ -58,7 +58,7 @@ namespace Player.InventorySystem
         {
             BaseColors[] colors = _activeKeys.Select(kvp => kvp.Value.Color).ToArray();
 
-            if(colors.Length == 0)
+            if (colors.Length == 0)
             {
                 return null;
             }

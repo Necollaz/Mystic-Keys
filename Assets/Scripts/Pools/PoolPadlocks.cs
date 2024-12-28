@@ -3,8 +3,9 @@ using UnityEngine;
 
 namespace Pools
 {
-    public class PoolPadlock : BasePool<Padlock>
+    public class PoolPadlocks : BasePool<Padlock>
     {
-        public PoolPadlock(Padlock prefab, int initialSize, Transform parent = null) : base(prefab, initialSize, parent) { }
+        public PoolPadlocks(Padlock prefab, int initialSize, Transform parent = null) 
+            : base(prefab, initialSize, parent) { }
     }
 }

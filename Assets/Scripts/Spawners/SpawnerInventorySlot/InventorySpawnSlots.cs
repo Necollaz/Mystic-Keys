@@ -1,7 +1,7 @@
 using System;
-using Player.InventorySystem;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
+using Player.InventorySystem;
 
 namespace Spawners.SpawnerInventorySlot
 {

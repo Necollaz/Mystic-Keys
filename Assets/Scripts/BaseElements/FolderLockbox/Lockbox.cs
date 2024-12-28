@@ -1,10 +1,10 @@
-using Animations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ColorService;
+using Animations;
 using BaseElements.FolderKey;
+using ColorService;
 
 namespace BaseElements.FolderLockbox
 {

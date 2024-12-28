@@ -7,11 +7,10 @@ namespace BaseElements.FolderBeam
 {
     public class HingeJointService
     {
-        private Transform _parentTransform;
-        private Transform _hingeAxisTransform;
-
-        private List<HingeJoint> _hingeJoints = new List<HingeJoint>();
-        private Dictionary<Chisel, HingeJoint> _chiselJointMap = new Dictionary<Chisel, HingeJoint>();
+        private readonly Transform _parentTransform;
+        private readonly Transform _hingeAxisTransform;
+        private readonly List<HingeJoint> _hingeJoints = new List<HingeJoint>();
+        private readonly Dictionary<Chisel, HingeJoint> _chiselJointMap = new Dictionary<Chisel, HingeJoint>();
 
         public event Action AllHingesRemoved;
 

@@ -6,7 +6,7 @@ namespace Animations
 {
     public class KeyAnimator : BaseAnimator
     {
-        private float _scaleDuration = 0.7f;
+        private readonly float _scaleDuration = 0.7f;
 
         public event Action CollectedComplete;
 
@@ -36,7 +36,7 @@ namespace Animations
             ControllerAnimations.SetBool(AnimationData.Params.TryTurnKey, false);
         }
         
-        public IEnumerator Turn()
+        private IEnumerator Turn()
         {
             ControllerAnimations.SetBool(AnimationData.Params.TurnKey, true);
             yield return null;

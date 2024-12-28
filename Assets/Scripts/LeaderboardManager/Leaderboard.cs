@@ -8,11 +8,17 @@ namespace LeaderboardManager
 {
     public class Leaderboard : MonoBehaviour
     {
-        private const string NameLiderboard = "LeaderBoard";
+        private const string NameLeaderboard = "LeaderBoard";
         private const string Ru = "ru";
         private const string En = "en";
         private const string Tr = "tr";
-
+        private const string AnonimDataRu = "Нет данных";
+        private const string AnonimDataEn = "No data";
+        private const string AnonimDataTr = "Veri yok";
+        private const string AnonimNameRu = "Аноним";
+        private const string AnonimNameEn = "Anonymous";
+        private const string AnonimNameTr = "Anonim";
+        
         [SerializeField] private GridLayoutGroup _gridLayout;
         [SerializeField] private VerticalLayoutGroup _currentPlayerLayoutGroup;
         [SerializeField] private PlayerData _playerData;
@@ -20,7 +26,7 @@ namespace LeaderboardManager
         [SerializeField] private int _maxPlayer = 7;
 
         private PlayerData _currentPlayerEntry;
-        private List<PlayerData> _playerDataEntries = new List<PlayerData>();
+        private readonly List<PlayerData> _playerDataEntries = new List<PlayerData>();
 
         private void OnEnable()
         {
@@ -33,20 +39,19 @@ namespace LeaderboardManager
             YandexGame.onGetLeaderboard -= OnUpdate;
         }
 
-        public void RequestLeaderboardData()
+        private void RequestLeaderboardData()
         {
-            string leaderboardName = NameLiderboard;
+            string leaderboardName = NameLeaderboard;
             int maxQuantityPlayers = _maxPlayer;
             int quantityTop = _maxPlayer;
             int quantityAround = 0;
-            string photoSize = "";
 
-            YandexGame.GetLeaderboard(leaderboardName, maxQuantityPlayers, quantityTop, quantityAround, photoSize);
+            YandexGame.GetLeaderboard(leaderboardName, maxQuantityPlayers, quantityTop, quantityAround, null);
         }
 
         private void OnUpdate(LBData lbData)
         {
-            if (lbData.technoName != NameLiderboard)
+            if (lbData.technoName != NameLeaderboard)
             {
                 return;
             }
@@ -65,13 +70,13 @@ namespace LeaderboardManager
                 _currentPlayerEntry = null;
             }
 
-            if (lbData.entries == "no data")
+            if (lbData.entries == AnonimDataEn)
             {
                 string noDataMessage = YandexGame.savesData.language switch
                 {
-                    Ru => "Нет данных",
-                    En => "No data",
-                    Tr => "Veri yok",
+                    Ru => AnonimDataRu,
+                    En => AnonimDataEn,
+                    Tr => AnonimDataTr,
                     _ => "...",
                 };
 
@@ -112,21 +117,15 @@ namespace LeaderboardManager
             }
         }
 
-        public void OnRefreshButtonClicked()
-        {
-            RequestLeaderboardData();
-        }
-
         private string GetAnonimName()
         {
             return YandexGame.savesData.language switch
             {
-                Ru => "Аноним",
-                En => "Anonymous",
-                Tr => "Anonim",
-                _ => "Anonymous",
+                Ru => AnonimNameRu,
+                En => AnonimNameEn,
+                Tr => AnonimNameTr,
+                _ => AnonimNameEn,
             };
         }
-
     }
 }

@@ -8,7 +8,7 @@ namespace Spawners.SpawnerLockboxes
     public class LockboxRegistry : MonoBehaviour
     {
         private readonly List<Lockbox> _activeLockboxes = new List<Lockbox>();
-    
+        
         public event Action<Lockbox> LockboxCreated;
         public event Action<Lockbox> LockboxFilled;
 

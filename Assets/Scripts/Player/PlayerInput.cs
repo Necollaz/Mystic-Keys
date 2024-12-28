@@ -36,7 +36,7 @@ namespace Player
 
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    if(hit.collider.TryGetComponent(out Key key))
+                    if (hit.collider.TryGetComponent(out Key key))
                     {
                         if (key.IsInteractive)
                         {

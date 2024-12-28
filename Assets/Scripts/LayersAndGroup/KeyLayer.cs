@@ -21,7 +21,7 @@ namespace LayersAndGroup
 
         public void Register(int layerIndex, Key key)
         {
-            if(_activeKeysPerLayer.ContainsKey(layerIndex) == false)
+            if (_activeKeysPerLayer.ContainsKey(layerIndex) == false)
             {
                 _activeKeysPerLayer[layerIndex] = new HashSet<Key>();
             }

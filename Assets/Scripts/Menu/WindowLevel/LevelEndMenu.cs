@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using YG;
 
-namespace Menu.Level
+namespace Menu.WindowLevel
 {
     public class LevelEndMenu : MonoBehaviour
     {

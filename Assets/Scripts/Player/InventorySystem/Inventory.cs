@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Player.InventorySystem
 {
-    [RequireComponent(typeof(MovemingKeys))]
+    [RequireComponent(typeof(MovingKeys))]
     public class Inventory : MonoBehaviour
     {
         [SerializeField] private InventorySpawnSlots _spawnSlots;
@@ -18,15 +18,15 @@ namespace Player.InventorySystem
 
         private SlotOrganizer _slotOrganizer;
         private KeyInventory _keyInventory;
-        private MovemingKeys _movemingKeys;
+        private MovingKeys _movingKeys;
 
         public event Action MaxSpawnPointsReached;
 
         public KeyInventory KeyInventory => _keyInventory;
 
         private void Awake()
-        {   
-            _movemingKeys = GetComponent<MovemingKeys>();
+        {
+            _movingKeys = GetComponent<MovingKeys>();
             _slotOrganizer = new SlotOrganizer(_spawnSlots, _slotDataManager.SavesDataKey, _slotDataManager);
             _keyInventory = new KeyInventory();
         }
@@ -43,7 +43,7 @@ namespace Player.InventorySystem
 
         private void Start()
         {
-            _movemingKeys.Initialize(_keyInventory);
+            _movingKeys.Initialize(_keyInventory);
         }
 
         public bool AddKey(Key key)
@@ -80,7 +80,7 @@ namespace Player.InventorySystem
 
         private void OnLockboxCreated(Lockbox lockbox)
         {
-            lockbox.Opened += _movemingKeys.OnLockboxOpened;
+            lockbox.Opened += _movingKeys.OnLockboxOpened;
         }
     }
 }

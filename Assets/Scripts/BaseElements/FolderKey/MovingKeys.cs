@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace BaseElements.FolderKey
 {
-    public class MovemingKeys : MonoBehaviour
+    public class MovingKeys : MonoBehaviour
     {
         private KeyInventory _keyInventory;
 

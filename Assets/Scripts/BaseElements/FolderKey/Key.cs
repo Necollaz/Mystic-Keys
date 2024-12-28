@@ -64,11 +64,11 @@ namespace BaseElements.FolderKey
 
         public void UseActive()
         {
-            if(_isPickedUp == false)
+            if (_isPickedUp == false)
             {
                 _isPickedUp = true;
 
-                if(_collider != null)
+                if (_collider != null)
                 {
                     _collider.enabled = false;
                 }

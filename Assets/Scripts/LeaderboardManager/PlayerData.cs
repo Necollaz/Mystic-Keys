@@ -15,21 +15,21 @@ namespace LeaderboardManager
         private string _score;
         private bool _thisPlayer;
 
-        public void SetData(string rank, string name, string score, bool isThisPlayer)
+        public void SetData(string rankUser, string nameUser, string score, bool isThisPlayer)
         {
-            _rank = rank;
-            _name = name;
+            _rank = rankUser;
+            _name = nameUser;
             _score = score;
             _thisPlayer = isThisPlayer;
         }
 
         public void UpdateEntries()
         {
-            if (_rankText && _rank != null || _nameText && _name != null || _scoreText && _score != null)
+            if (_rankText != null && _rank != null && _nameText != null && _name != null && _scoreText != null && _score != null)
             {
-                _rankText.text = _rank.ToString();
+                _rankText.text = _rank;
                 _nameText.text = _name;
-                _scoreText.text = _score.ToString();
+                _scoreText.text = _score;
             }
 
             if (_marker != null)
