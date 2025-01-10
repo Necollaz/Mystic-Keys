@@ -1,0 +1,13 @@
+/UserSettings/
+/Temp/
+/.idea/
+/.git/
+/Library/
+/Logs/
+/obj/
+/.gitattributes/
+/Assembly-CSharp.csproj/
+/Assembly-CSharp-Editor.csproj/
+/CFXREditor.csproj/
+/CFXRRuntime.csproj/
+/Mystic-Keys.sln/
