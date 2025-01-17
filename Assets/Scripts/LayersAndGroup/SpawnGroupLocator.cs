@@ -5,7 +5,7 @@ namespace LayersAndGroup
     public class SpawnGroupLocator : MonoBehaviour
     {
         public SubGroup[] SubGroup;
-
+        
         public int FindGroupIndex(Transform keySpawnPoint)
         {
             for (int i = 0; i < SubGroup.Length; i++)
@@ -15,7 +15,7 @@ namespace LayersAndGroup
                     return i;
                 }
             }
-
+            
             return -1;
         }
     }

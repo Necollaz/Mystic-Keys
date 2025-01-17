@@ -6,7 +6,7 @@ namespace Menu
     {
         [SerializeField] private CanvasGroup _gameUI;
         [SerializeField] private PauseMenu _pauseMenu;
-
+        
         private void Update()
         {
             if (_pauseMenu.IsPaused)

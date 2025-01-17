@@ -7,19 +7,19 @@ namespace SavesDataSlot
     public class SlotDataStorage : MonoBehaviour
     {
         [SerializeField] private SavesData _savesData;
-
+        
         public SavesData SavesDataKey => _savesData;
-
+        
         private void OnEnable()
         {
             YandexGame.GetDataEvent += OnLoad;
         }
-
+        
         private void OnDisable()
         {
             YandexGame.GetDataEvent -= OnLoad;
         }
-
+        
         private void Awake()
         {
             if (YandexGame.SDKEnabled)
@@ -31,8 +31,20 @@ namespace SavesDataSlot
                 InitializeDefault();
             }
         }
-
-        public void OnLoad()
+        
+        public void Save()
+        {
+            if (YandexGame.savesData == null)
+            {
+                YandexGame.savesData = new SavesYG();
+            }
+            
+            YandexGame.savesData.PurchasedInventorySlots = new List<int>(_savesData.PurchasedInventorySlots);
+            YandexGame.savesData.PurchasedLockboxSlots = new List<int>(_savesData.PurchasedLockboxSlots);
+            YandexGame.SaveProgress();
+        }
+        
+        private void OnLoad()
         {
             if (YandexGame.savesData != null)
             {
@@ -45,32 +57,20 @@ namespace SavesDataSlot
                 Save();
             }
         }
-
-        public void Save()
-        {
-            if (YandexGame.savesData == null)
-            {
-                YandexGame.savesData = new SavesYG();
-            }
-
-            YandexGame.savesData.PurchasedInventorySlots = new List<int>(_savesData.PurchasedInventorySlots);
-            YandexGame.savesData.PurchasedLockboxSlots = new List<int>(_savesData.PurchasedLockboxSlots);
-            YandexGame.SaveProgress();
-        }
-
+        
         private void InitializeDefault()
         {
             InitializeList(ref _savesData.PurchasedLockboxSlots);
             InitializeList(ref _savesData.PurchasedInventorySlots);
         }
-
+        
         public void Reset()
         {
             ClearAndInitializeList(ref _savesData.PurchasedLockboxSlots);
             ClearAndInitializeList(ref _savesData.PurchasedInventorySlots);
             Save();
         }
-
+        
         private void InitializeList(ref List<int> slotList)
         {
             if (slotList == null || slotList.Count == 0)
@@ -79,7 +79,7 @@ namespace SavesDataSlot
                 Save();
             }
         }
-
+        
         private void ClearAndInitializeList(ref List<int> slotList)
         {
             slotList.Clear();

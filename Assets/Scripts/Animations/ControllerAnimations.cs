@@ -6,17 +6,17 @@ namespace Animations
     public class ControllerAnimations : MonoBehaviour
     {
         private Animator _animator;
-
+        
         private void Awake()
         {
-            _animator = GetComponent<Animator>(); 
+            _animator = GetComponent<Animator>();
         }
-
+        
         public void SetBool(int parameterHash, bool value)
         {
             _animator.SetBool(parameterHash, value);
         }
-
+        
         public void ResetParameters()
         {
             _animator.SetBool(AnimationData.Params.OpenLockbox, false);
@@ -25,7 +25,7 @@ namespace Animations
             _animator.SetBool(AnimationData.Params.DisappearanceLockbox, false);
             _animator.SetBool(AnimationData.Params.AppearanceLockbox, false);
         }
-
+        
         public float GetAnimationLength()
         {
             AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
