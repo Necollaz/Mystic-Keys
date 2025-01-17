@@ -8,7 +8,7 @@ namespace Levels
         [SerializeField] private Button _restartLevel;
         [SerializeField] private Button _restartGame;
         [SerializeField] private LevelLoader _levelLoader;
-
+        
         private void Start()
         {
             _restartLevel.onClick.AddListener(_levelLoader.RestartCurrent);

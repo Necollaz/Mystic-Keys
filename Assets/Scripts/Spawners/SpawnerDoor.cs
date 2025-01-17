@@ -8,7 +8,7 @@ namespace Spawners
         {
             base.Awake();
         }
-
+        
         public override void Create()
         {
             CreateByPoints();

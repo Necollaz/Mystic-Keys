@@ -2,5 +2,7 @@ using UnityEngine;
 
 namespace Levels.UnlockSlots
 {
-    public class StorePurchaseSlots : MonoBehaviour { }
+    public class StorePurchaseSlots : MonoBehaviour
+    {
+    }
 }

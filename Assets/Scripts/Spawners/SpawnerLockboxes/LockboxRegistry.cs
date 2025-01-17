@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using BaseElements.FolderLockbox;
 using UnityEngine;
+using BaseElements.FolderLockbox;
 
 namespace Spawners.SpawnerLockboxes
 {
@@ -11,34 +11,34 @@ namespace Spawners.SpawnerLockboxes
         
         public event Action<Lockbox> LockboxCreated;
         public event Action<Lockbox> LockboxFilled;
-
+        
         public List<Lockbox> GetActive()
         {
             return _activeLockboxes;
         }
-
+        
         public void Add(Lockbox lockbox)
         {
             if (_activeLockboxes.Contains(lockbox) == false)
             {
                 _activeLockboxes.Add(lockbox);
-
+                
                 lockbox.Filled += OnFilled;
-
+                
                 LockboxCreated?.Invoke(lockbox);
             }
         }
-
+        
         public void Remove(Lockbox lockbox)
         {
             if (_activeLockboxes.Contains(lockbox))
             {
                 _activeLockboxes.Remove(lockbox);
-
+                
                 lockbox.Filled -= OnFilled;
             }
         }
-
+        
         private void OnFilled(Lockbox filledLockbox)
         {
             LockboxFilled?.Invoke(filledLockbox);
